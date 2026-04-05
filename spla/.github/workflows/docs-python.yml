@@ -1,0 +1,39 @@
+name: Docs Python
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/**'
+      - 'python/pyspla/**'
+
+jobs:
+  documentation:
+    # Do not attempt to deploy documentation on forks
+    if: github.repository_owner == 'SparseLinearAlgebra'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.12.5 ]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install packages
+        run: python -m pip install pdoc
+
+      - name: Build docs
+        run: pdoc -o pydocs python/pyspla
+        env:
+          SPLA_DOCS: true
+
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pydocs/
+          destination_dir: docs-python
