@@ -26,6 +26,8 @@
 
 Если в **родительском** каталоге относительно `spla-bench` есть папка `graphs-theory-datasets/`, она автоматически становится источником матриц (см. `DATASET_FOLDER` в `spla-bench/scripts/config.py`).
 
+В Git попадает только небольшой пример `coAuthorsCiteseer.mtx` (лимит GitHub 100 МБ). Остальные `.mtx` из этой папки перечислены в **корневом `.gitignore`** — после клона репозитория их нужно **скачать локально** (см. `DATASET_URL` в `spla-bench/scripts/config.py` или Suite Sparse Collection).
+
 Ожидаемый формат: **Matrix Market** (`.mtx`). Имя набора в конфиге должно совпадать с именем файла **без** `.mtx` (например, `coAuthorsCiteseer` → `coAuthorsCiteseer.mtx`).
 
 Типичный набор для отчёта:
