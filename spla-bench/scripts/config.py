@@ -377,6 +377,7 @@ or to the .mtx
 # По умолчанию без rgg_n_2_23_s0 (≈8M вершин — LAGraph/Spla могут занимать десятки ГБ и часы).
 # Полный список: SPLA_BENCH_DATASETS_JSON='["coAuthorsCiteseer","coPapersDBLP","hollywood-2009","rgg_n_2_23_s0"]' python3 benchmark.py ...
 _DEFAULT_BENCHMARK_DATASETS = [
+    'sssp_toy_weighted',
     'coAuthorsCiteseer',
     'coPapersDBLP',
     'hollywood-2009',
@@ -385,6 +386,10 @@ _DEFAULT_BENCHMARK_DATASETS = [
 BENCHMARK_DATASETS = json.loads(
     os.environ.get('SPLA_BENCH_DATASETS_JSON', json.dumps(_DEFAULT_BENCHMARK_DATASETS[:-1]))
 )
+
+# Число trial в LAGraph gappagerank_demo зашито в исходнике (ntrials = 16).
+# Драйвер Spla для PR передаёт столько же --niters, чтобы среднее по прогонам было сопоставимо.
+PR_TRIALS_LAGRAPH_GAPPAGERANK = 16
 
 """
 Path to the benchmarks output directory

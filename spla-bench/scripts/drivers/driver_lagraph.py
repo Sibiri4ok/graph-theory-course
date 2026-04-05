@@ -4,6 +4,7 @@ import time
 from typing import List
 
 from drivers.driver import ExecutionResult, Driver
+from drivers import lagraph_output_parse as lag_parse
 from lib.dataset import Dataset
 from lib.algorithm import AlgorithmName
 from lib.tool import ToolName
@@ -11,12 +12,21 @@ from lib.util import check_output
 from lib.dataset import DatasetValueType
 
 
+def _lagraph_subprocess_env() -> dict:
+    env = os.environ.copy()
+    nt = os.environ.get("LAGRAPH_NUM_THREADS")
+    if nt is not None and nt.strip() != "":
+        env["OMP_NUM_THREADS"] = nt.strip()
+    return env
+
+
 class DriverLaGraph(Driver):
     def can_run_bfs(self, dataset: Dataset) -> bool:
         return dataset.get_element_type() == DatasetValueType.void
 
     def can_run_sssp(self, dataset: Dataset) -> bool:
-        return dataset.get_element_type() == DatasetValueType.float
+        t = dataset.get_element_type()
+        return t in (DatasetValueType.float, DatasetValueType.int)
 
     def can_run_tc(self, dataset: Dataset) -> bool:
         return True
@@ -34,9 +44,15 @@ class DriverLaGraph(Driver):
                 self.exec_path(AlgorithmName.bfs),
                 dataset.path,
                 sources_file.name
-            ])
+            ], env=_lagraph_subprocess_env())
 
-            return DriverLaGraph._parse_output(output, "parent only", 9, "warmup", 4)
+            return DriverLaGraph._parse_output(
+                output,
+                lag_parse.BFS_TRIAL_LINE_PREFIX,
+                lag_parse.BFS_TRIAL_TIME_TOKEN,
+                lag_parse.BFS_WARMUP_LINE_PREFIX,
+                lag_parse.BFS_WARMUP_TIME_TOKEN,
+            )
 
     def run_sssp(self,
                  dataset: Dataset,
@@ -48,9 +64,13 @@ class DriverLaGraph(Driver):
                 self.exec_path(AlgorithmName.sssp),
                 dataset.path,
                 sources_file.name
-            ])
+            ], env=_lagraph_subprocess_env())
 
-            return DriverLaGraph._parse_output(output, "sssp", 8)
+            return DriverLaGraph._parse_output(
+                output,
+                lag_parse.SSSP_TRIAL_LINE_PREFIX,
+                lag_parse.SSSP_TRIAL_TIME_TOKEN,
+            )
 
     def run_tc(self,
                dataset: Dataset,
@@ -59,9 +79,15 @@ class DriverLaGraph(Driver):
         output = check_output([
             self.exec_path(AlgorithmName.tc),
             dataset.path
-        ])
+        ], env=_lagraph_subprocess_env())
 
-        return DriverLaGraph._parse_output(output, "trial ", 2, "nthreads: ", 3)
+        return DriverLaGraph._parse_output(
+            output,
+            lag_parse.TC_TRIAL_LINE_PREFIX,
+            lag_parse.TC_TRIAL_TIME_TOKEN,
+            lag_parse.TC_WARMUP_LINE_PREFIX,
+            lag_parse.TC_WARMUP_TIME_TOKEN,
+        )
 
     def run_pr(self,
                dataset: Dataset,
@@ -71,9 +97,15 @@ class DriverLaGraph(Driver):
         output = check_output([
             self.exec_path(AlgorithmName.pr),
             str(dataset.path),
-        ])
+        ], env=_lagraph_subprocess_env())
 
-        return DriverLaGraph._parse_output(output, "trial:", 3, None, None)
+        return DriverLaGraph._parse_output(
+            output,
+            lag_parse.PR_TRIAL_LINE_PREFIX,
+            lag_parse.PR_TRIAL_TIME_TOKEN,
+            None,
+            None,
+        )
 
     def tool_name(self) -> ToolName:
         return ToolName.lagraph

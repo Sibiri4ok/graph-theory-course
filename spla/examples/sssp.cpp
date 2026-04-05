@@ -10,7 +10,7 @@
 /* of this software and associated documentation files (the "Software"), to deal  */
 /* in the Software without restriction, including without limitation the rights   */
 /* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
-/* copies of the Software, and to permit persons to whom the Software is          */
+/* copies of the Software, and/or permit persons to whom the Software is          */
 /* furnished to do so, subject to the following conditions:                       */
 /*                                                                                */
 /* The above copyright notice and this permission notice shall be included in all */
@@ -26,9 +26,12 @@
 /**********************************************************************************/
 
 #include "common.hpp"
+#include "mtx_load_weighted.hpp"
 #include "options.hpp"
 
 #include <spla.hpp>
+
+#include <algorithm>
 
 
 int main(int argc, const char* const* argv) {
@@ -41,18 +44,35 @@ int main(int argc, const char* const* argv) {
         return ret;
     }
 
-    spla::Timer     timer;
-    spla::Timer     timer_cpu;
-    spla::Timer     timer_gpu;
-    spla::Timer     timer_ref;
-    spla::MtxLoader loader;
+    spla::Timer timer;
+    spla::Timer timer_cpu;
+    spla::Timer timer_gpu;
+    spla::Timer timer_ref;
 
     timer.start();
 
-    if (!loader.load(args[OPT_MTXPATH].as<std::string>())) {
-        std::cerr << "failed to load graph";
+    const std::string mtx_path = args[OPT_MTXPATH].as<std::string>();
+
+    spla::uint                nrows = 0, ncols = 0;
+    std::vector<spla::uint>   Ai;
+    std::vector<spla::uint>   Aj;
+    std::vector<float>        Ax;
+
+    if (!spla::examples::mtx_load_weighted(
+            mtx_path,
+            true,   // индексы в .mtx с 1
+            false,  // ориентированный граф (веса SSSP как в файле; без дублирования рёбер)
+            true,   // убрать петли
+            nrows,
+            ncols,
+            Ai,
+            Aj,
+            Ax)) {
+        std::cerr << "failed to load graph\n";
         return 1;
     }
+
+    const spla::uint N = std::max(nrows, ncols);
 
     std::string acc_info;
 
@@ -63,7 +83,6 @@ int main(int argc, const char* const* argv) {
     library->get_accelerator_info(acc_info);
     std::cout << "env: " << acc_info << std::endl;
 
-    const spla::uint                N     = loader.get_n_rows();
     const spla::uint                s     = args[OPT_SOURCE].as<int>();
     spla::ref_ptr<spla::Vector>     v_cpu = spla::Vector::make(N, spla::FLOAT);
     spla::ref_ptr<spla::Vector>     v_acc = spla::Vector::make(N, spla::FLOAT);
@@ -73,12 +92,8 @@ int main(int argc, const char* const* argv) {
     desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
     desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());
 
-    const spla::uint w  = 1.0f;
-    const auto&      Ai = loader.get_Ai();
-    const auto&      Aj = loader.get_Aj();
-
-    for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        A->set_float(Ai[k], Aj[k], w);
+    for (std::size_t k = 0; k < Ai.size(); ++k) {
+        A->set_float(Ai[k], Aj[k], Ax[k]);
     }
 
     const int n_iters = args[OPT_NITERS].as<int>();
@@ -112,17 +127,21 @@ int main(int argc, const char* const* argv) {
         std::vector<std::vector<spla::uint>> ref_Ai(N, std::vector<spla::uint>());
         std::vector<std::vector<float>>      ref_Ax(N, std::vector<float>());
 
-        for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+        for (std::size_t k = 0; k < Ai.size(); ++k) {
             ref_Ai[Ai[k]].push_back(Aj[k]);
-            ref_Ax[Ai[k]].push_back(w);
+            ref_Ax[Ai[k]].push_back(Ax[k]);
         }
 
         timer_ref.lap_begin();
         spla::sssp_naive(ref_v, ref_Ai, ref_Ax, s, spla::ref_ptr<spla::Descriptor>());
         timer_ref.lap_end();
 
-        if (args[OPT_RUN_CPU].as<bool>()) verify_exact("cpu", v_cpu, ref_v);
-        if (args[OPT_RUN_GPU].as<bool>()) verify_exact("acc", v_acc, ref_v);
+        if (args[OPT_RUN_CPU].as<bool>()) {
+            verify_exact("cpu", v_cpu, ref_v);
+        }
+        if (args[OPT_RUN_GPU].as<bool>()) {
+            verify_exact("acc", v_acc, ref_v);
+        }
     }
 
     spla::Library::get()->finalize();

@@ -155,6 +155,23 @@ namespace spla {
 
 #pragma region Sssp
 
+    namespace {
+
+        void sssp_rebuild_feedback_from_v(const ref_ptr<Vector>& v, ref_ptr<Vector>& feedback, uint N,
+                                          float inf, const ref_ptr<Scalar>& inf_init) {
+            feedback->clear();
+            feedback->set_fill_value(inf_init);
+            for (uint ii = 0; ii < N; ii++) {
+                float di = 0.0f;
+                v->get_float(ii, di);
+                if (di < inf) {
+                    feedback->set_float(ii, di);
+                }
+            }
+        }
+
+    }// namespace
+
     Status sssp(const ref_ptr<Vector>&     v,
                 const ref_ptr<Matrix>&     A,
                 uint                       s,
@@ -171,7 +188,6 @@ namespace spla {
         ref_ptr<Scalar> feedback_size  = Scalar::make_int(0);
         ref_ptr<Scalar> inf_init       = Scalar::make_float(inf);
         int             current_level  = 1;
-        bool            feedback_empty = false;
 
         v->set_fill_value(inf_init);
         feedback->set_fill_value(inf_init);
@@ -180,14 +196,13 @@ namespace spla {
         v->set_float(s, 0.0f);
         feedback->set_float(s, 0.0f);
 
+#ifndef SPLA_RELEASE
         bool  push         = descriptor->get_push_only();
         bool  pull         = descriptor->get_pull_only();
         bool  push_pull    = descriptor->get_push_pull();
         float front_factor = descriptor->get_front_factor();
-
         if (!(push || pull || push_pull)) push = true;
 
-#ifndef SPLA_RELEASE
         std::string mode;
         if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
         if (pull) mode = "(pull)";
@@ -196,19 +211,29 @@ namespace spla {
         std::cout << "start sssp from " << s << " " << mode << std::endl;
 
         Timer tight;
+#else
+        (void)descriptor;
 #endif
-        while (!feedback_empty) {
+        // Jacobi-стиль: на каждом раунде подаём в min-plus все текущие финитные расстояния,
+        // иначе после v_eadd fdb не подходит как вход следующего vxm (алгоритм останавливался
+        // после одного шага на цепочке).
+        for (uint bf_round = 0; bf_round < N; bf_round++) {
+            if (bf_round > 0) {
+                sssp_rebuild_feedback_from_v(v, feedback, N, inf, inf_init);
+            }
+
+            exec_v_count_mf(feedback_size, feedback);
+            if (feedback_size->as_int() == 0) {
+                break;
+            }
+
 #ifndef SPLA_RELEASE
             tight.start();
 #endif
-            float front_density  = float(feedback_size->as_int()) / float(N);
-            bool  is_push_better = (front_density <= front_factor);
-
-            if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            } else {
-                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            }
+            // Только push (vxm): semiring min-plus для рёбер i→j — new[j] = min_i (dist[i] + A[i,j]);
+            // это v×M по строкам A. mxv_masked в Spla для этого шага даёт неверную геометрию на
+            // ориентированных графах (цепочка при push-pull и «плотном» фронте).
+            exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
 
             exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
             exec_v_count_mf(feedback_size, feedback);
@@ -221,8 +246,11 @@ namespace spla {
             Library::get()->time_profile_dump();
             Library::get()->time_profile_reset();
 #endif
-            feedback_empty = feedback_size->as_int() == 0;
             current_level += 1;
+
+            if (feedback_size->as_int() == 0) {
+                break;
+            }
         }
 
         return Status::Ok;

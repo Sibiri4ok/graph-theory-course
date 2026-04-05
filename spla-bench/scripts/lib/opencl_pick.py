@@ -67,20 +67,37 @@ def _is_gpu_like(platform_name: str, device_name: str) -> bool:
     return any(k in blob for k in keys)
 
 
+def _opencl_log_pick(platform_id: int, device_id: int, detail: str = "") -> None:
+    if os.environ.get("SPLA_OPENCL_LOG", "").strip().lower() not in (
+        "1",
+        "true",
+        "yes",
+    ):
+        return
+    msg = f"platform={platform_id} device={device_id}"
+    if detail:
+        msg = f"{msg} ({detail})"
+    util.print_status("spla-opencl", "picked", msg)
+
+
 def pick_spla_opencl_platform_device() -> Tuple[int, int]:
     env_p = os.environ.get("SPLA_OPENCL_PLATFORM")
     env_d = os.environ.get("SPLA_OPENCL_DEVICE")
     if env_p is not None and env_d is not None:
-        return int(env_p), int(env_d)
+        p, d = int(env_p), int(env_d)
+        _opencl_log_pick(p, d, "from SPLA_OPENCL_PLATFORM/DEVICE")
+        return p, d
 
     try:
         out = util.check_output(["clinfo", "-l"])
         text = out.decode("utf-8", errors="replace")
     except (subprocess.CalledProcessError, FileNotFoundError):
+        _opencl_log_pick(0, 0, "clinfo missing or failed, fallback")
         return 0, 0
 
     plats = _parse_clinfo_listing(text)
     if not plats:
+        _opencl_log_pick(0, 0, "empty clinfo -l")
         return 0, 0
 
     candidates: List[Tuple[int, int, int]] = []
@@ -99,4 +116,5 @@ def pick_spla_opencl_platform_device() -> Tuple[int, int]:
 
     candidates.sort(key=lambda t: (t[2], t[0], t[1]))
     best = candidates[0]
+    _opencl_log_pick(best[0], best[1], "auto from clinfo -l")
     return best[0], best[1]

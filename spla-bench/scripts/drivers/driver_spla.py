@@ -1,4 +1,5 @@
 import drivers.driver as driver
+import config
 
 from lib.dataset import Dataset
 from lib.algorithm import AlgorithmName
@@ -17,7 +18,8 @@ class DriverSpla(driver.Driver):
         return dataset.get_element_type() == DatasetValueType.void
 
     def can_run_sssp(self, dataset: Dataset) -> bool:
-        return dataset.get_element_type() == DatasetValueType.float
+        t = dataset.get_element_type()
+        return t in (DatasetValueType.float, DatasetValueType.int)
 
     def can_run_tc(self, dataset: Dataset) -> bool:
         return True
@@ -75,10 +77,11 @@ class DriverSpla(driver.Driver):
 
     def run_pr(self,
                dataset: Dataset,
-               num_iterations: int) -> driver.ExecutionResult:
+               _num_iterations: int) -> driver.ExecutionResult:
 
+        niters = config.PR_TRIALS_LAGRAPH_GAPPAGERANK
         output = check_output(self._spla_cmd(
-            AlgorithmName.pr, dataset, num_iterations, [],
+            AlgorithmName.pr, dataset, niters, [],
         ))
         return DriverSpla._parse_output(output)
 

@@ -29,6 +29,8 @@ class ExecutionResult:
         return statistics.median(self.times)
 
     def stdev(self):
+        if len(self.times) < 2:
+            return 0.0
         return statistics.stdev(self.times)
 
     def brief_str(self) -> str:

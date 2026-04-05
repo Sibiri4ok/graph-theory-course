@@ -4,7 +4,7 @@
 
 | Стек | Роль в эксперименте | Где выполняется работа |
 |------|---------------------|-------------------------|
-| **SuiteSparse:GraphBLAS + LAGraph** | «Классика» GraphBLAS: BFS, SSSP, TC, **PageRank** (`gappagerank_demo`) | **CPU** (мультипоточная реализация GraphBLAS; число потоков задаётся внутри демо LAGraph, по умолчанию видно в логе, напр. `threads 8`) |
+| **SuiteSparse:GraphBLAS + LAGraph** | «Классика» GraphBLAS: BFS, SSSP, TC, **PageRank** (`gappagerank_demo`) | **CPU** (мультипоточная реализация GraphBLAS). Число потоков OpenMP можно задать **`LAGRAPH_NUM_THREADS`** (скрипт пробрасывает в **`OMP_NUM_THREADS`** для подпроцессов демо); иначе — как в сборке GraphBLAS по умолчанию |
 | **Spla** | BFS, SSSP, TC и **PageRank** ([`spla/examples/pr.cpp`](spla/examples/pr.cpp)), бэкенд **OpenCL** | Ускоритель выбирается автоматически или вручную: **GPU (OpenCL)** или **CPU через POCL** (Portable Computing Language), если отдельной GPU нет |
 
 Инфраструктура замеров: каталог [`spla-bench/`](spla-bench/). Исходники Spla для сборки берутся из корня репозитория [`spla/`](spla/), если эта папка есть; иначе — из `spla-bench/deps/spla` (см. `spla-bench/scripts/config.py`).
@@ -13,8 +13,11 @@
 
 ## 1. Что именно измеряется
 
-- **LAGraph**: время серии запусков из демо (`bfs_demo`, `sssp_demo`, `tc_demo`, `gappagerank_demo`). Скрипт парсит строки вида `Avg: ...` / `trial ...` и переводит в миллисекунды для отчёта. Для **PageRank** демо внутри всегда выполняет **16 trial**; параметр `niters` бенчмарка на это не влияет (см. `gappagerank_demo.c`).
+- **LAGraph**: время серии запусков из демо (`bfs_demo`, `sssp_demo`, `tc_demo`, `gappagerank_demo`). Скрипт парсит строки вида `Avg: ...` / `trial ...` и переводит в миллисекунды для отчёта. Имена полей и индексы токенов в строках зафиксированы в [`spla-bench/scripts/drivers/lagraph_output_parse.py`](spla-bench/scripts/drivers/lagraph_output_parse.py) рядом с драйвером. Для **PageRank** демо внутри всегда выполняет **16 trial**; драйвер Spla для PR передаёт **`--niters=16`**, чтобы число лап совпадало (см. `PR_TRIALS_LAGRAPH_GAPPAGERANK` в `config.py` и `gappagerank_demo.c`).
 - **Spla**: для честного сравнения с «ускорителем» в драйвере бенчмарка отключены эталон и чисто-CPU путь примеров: передаются флаги `--run-cpu=false --run-ref=false --run-gpu=true`. В отчёт попадают **лапы по строке `gpu(ms):`** (время шагов на стороне хоста вокруг OpenCL-исполнения; это не чистый GPU kernel time, но согласованная метрика для прогонов). Для **PR** используется тот же формат вывода, что у `bfs`/`tc` ([`pr.cpp`](spla/examples/pr.cpp)); параметры `alpha` и `eps` — значения по умолчанию из `options.hpp`.
+- **Статистика**: при одном замере списка времён **stdev** в отчёте берётся как **0** (иначе `statistics.stdev` в Python падает на одном элементе).
+
+**SSSP в Spla:** высокоуровневый цикл в [`spla/src/algorithm.cpp`](spla/src/algorithm.cpp) использует шаг **push** (`vxm` в min-plus): для ориентированного графа это `new[j] = min_i (dist[i] + A[i,j])`. Режим **pull** через `mxv_masked` в текущей реализации Spla для этой семантики не подходит; в `sssp` всегда вызывается `vxm`. После шага релаксации «фидбек» для следующей итерации пересобирается из вектора расстояний (Jacobi-стиль), иначе разреженное представление после `v_eadd_fdb` не совпадает с полным множеством финитных `dist`.
 
 **Важно для защиты:** вы сравниваете *реализации на разном железе*: многопоточный GraphBLAS на CPU против Spla на выбранном OpenCL-устройстве. Итог зависит от машины, драйверов и размера графа.
 
@@ -26,7 +29,7 @@
 
 Если в **родительском** каталоге относительно `spla-bench` есть папка `graphs-theory-datasets/`, она автоматически становится источником матриц (см. `DATASET_FOLDER` в `spla-bench/scripts/config.py`).
 
-В Git попадает только небольшой пример `coAuthorsCiteseer.mtx` (лимит GitHub 100 МБ). Остальные `.mtx` из этой папки перечислены в **корневом `.gitignore`** — после клона репозитория их нужно **скачать локально** (см. `DATASET_URL` в `spla-bench/scripts/config.py` или Suite Sparse Collection).
+В Git попадают небольшие примеры: `coAuthorsCiteseer.mtx` и взвешенная цепочка **`sssp_toy_weighted.mtx`** (проверка SSSP). Остальные `.mtx` из этой папки в **корневом `.gitignore`** — после клона их нужно **скачать локально** (см. `DATASET_URL` в `spla-bench/scripts/config.py` или Suite Sparse Collection).
 
 Ожидаемый формат: **Matrix Market** (`.mtx`). Имя набора в конфиге должно совпадать с именем файла **без** `.mtx` (например, `coAuthorsCiteseer` → `coAuthorsCiteseer.mtx`).
 
@@ -34,6 +37,7 @@
 
 | Имя в конфиге | Файл | Комментарий |
 |---------------|------|-------------|
+| `sssp_toy_weighted` | `sssp_toy_weighted.mtx` | крошечный ориентированный граф с целочисленными весами (smoke для SSSP) |
 | `coAuthorsCiteseer` | `coAuthorsCiteseer.mtx` | co-authorship, pattern symmetric |
 | `coPapersDBLP` | `coPapersDBLP.mtx` | крупнее |
 | `hollywood-2009` | `hollywood-2009.mtx` | очень крупный для TC |
@@ -61,11 +65,13 @@
 | Алгоритм | Условие на `.mtx` |
 |----------|-------------------|
 | **BFS** | тип значений **pattern / void** (есть только структура рёбер) |
-| **SSSP** | тип значений **float** (веса рёбер) |
+| **SSSP** | тип значений **float** или **int** (веса рёбер; в Spla пример загружает и приводит к float) |
 | **TC** (треугольники) | запускается на доступных матрицах по правилам драйвера (для ваших pattern-графов — да) |
 | **PR** (PageRank) | **pattern / void**, как и BFS: в [`pr.cpp`](spla/examples/pr.cpp) из структуры рёбер считаются степени вершин и строится взвешенная `float`-матрица для итераций PageRank |
 
-Поэтому на текущих наборах из `graphs-theory-datasets/` **SSSP обычно пропускается** (в логе: `not runnable on some drivers, skipping`). Чтобы замерить SSSP, добавьте матрицу с вещественными весами и имя в список датасетов.
+По умолчанию в списке бенчмарка есть `sssp_toy_weighted` (веса **integer** в Matrix Market). Для больших графов добавьте `.mtx` с полем значений **real** / **integer** и имя в `BENCHMARK_DATASETS` или в `SPLA_BENCH_DATASETS_JSON`.
+
+Быстрая проверка корректности Spla на цепочке: **`python3 spla-bench/scripts/test_sssp_toy.py`** (нужен собранный `spla/build/sssp`).
 
 Число **повторов** одного алгоритма на графе зависит от числа рёбер: в `config.py` заданы пороги `DatasetSize` (tiny / small / …), а в `drivers/driver.py` вызывается `dataset.get_category().iterations()`.
 
@@ -77,7 +83,7 @@
 
 ### 4.1. LAGraph
 
-Всегда используется связка **LAGraph + libgraphblas** из сборки под вашу ОС. Вычисления — **на CPU** (параллелизм внутри SuiteSparse).
+Всегда используется связка **LAGraph + libgraphblas** из сборки под вашу ОС. Вычисления — **на CPU** (параллелизм внутри SuiteSparse). Чтобы зафиксировать число потоков при прогонах из `benchmark.py`, задайте **`export LAGRAPH_NUM_THREADS=8`** (скрипт выставит **`OMP_NUM_THREADS`** для дочерних процессов демо).
 
 ### 4.2. Spla (OpenCL)
 
@@ -92,6 +98,8 @@
 ```bash
 export SPLA_OPENCL_PLATFORM=1   # номер из `clinfo -l`
 export SPLA_OPENCL_DEVICE=0
+# Опционально: одна строка в лог при выборе устройства драйвером бенчмарка
+export SPLA_OPENCL_LOG=1
 ```
 
 **Проверка списка устройств:**
