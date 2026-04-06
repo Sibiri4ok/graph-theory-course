@@ -36,7 +36,8 @@ def main():
                         type=AlgorithmName,
                         choices=list(AlgorithmName),
                         help='Один алгоритм. Если не указан — по очереди bfs, sssp, tc, pr '
-                             '(sssp пропускается на pattern-матрицах; все результаты — в одной папке benchmarks/recent/)')
+                             '(sssp пропускается на pattern-матрицах; датасеты — все *.mtx в graphs-theory-datasets/ '
+                             'или SPLA_BENCH_DATASETS_JSON; результаты — benchmarks/recent/)')
     parser.add_argument('--tool',
                         type=ToolName,
                         choices=list(ToolName),

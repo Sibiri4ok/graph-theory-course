@@ -369,13 +369,12 @@ DEFAULT_SOURCE = 0
 """
 List of the datasets, which will be used for the benchmark
 Name must correspond to the key in the DATASET_URL dictionary,
-or to the .mtx
+or to the .mtx file name without extension.
 
 [MUTABLE]
 
 """
-# По умолчанию без rgg_n_2_23_s0 (≈8M вершин — LAGraph/Spla могут занимать десятки ГБ и часы).
-# Полный список: SPLA_BENCH_DATASETS_JSON='["coAuthorsCiteseer","coPapersDBLP","hollywood-2009","rgg_n_2_23_s0"]' python3 benchmark.py ...
+# Запасной список, если в graphs-theory-datasets ещё нет ни одного .mtx (тогда подтянутся по URL).
 _DEFAULT_BENCHMARK_DATASETS = [
     'sssp_toy_weighted',
     'coAuthorsCiteseer',
@@ -383,9 +382,70 @@ _DEFAULT_BENCHMARK_DATASETS = [
     'hollywood-2009',
     'rgg_n_2_23_s0',
 ]
-BENCHMARK_DATASETS = json.loads(
-    os.environ.get('SPLA_BENCH_DATASETS_JSON', json.dumps(_DEFAULT_BENCHMARK_DATASETS[:-1]))
-)
+
+# Из авто-списка по папке курса убираем сверхтяжёлый граф, пока не задано SPLA_BENCH_INCLUDE_HEAVY=1.
+_AUTO_EXCLUDE_HEAVY_DATASETS = frozenset({'rgg_n_2_23_s0'})
+
+
+def _is_auxiliary_mtx_name(stem: str) -> bool:
+    """
+    В архивах Suite Sparse часто лежит несколько .mtx (метки вершин, сообщества, координаты).
+    Их не считаем матрицами смежности для общего бенчмарка.
+    """
+    s = stem.lower()
+    if s.endswith('_nodename') or s.endswith('_nodeid'):
+        return True
+    if 'communities' in s:
+        return True
+    if s.endswith('_coord'):
+        return True
+    if s.endswith('_labels') or s.endswith('_label'):
+        return True
+    return False
+
+
+def _discovered_mtx_dataset_names() -> List[str]:
+    """Имена наборов = stem всех *.mtx в DATASET_FOLDER (алфавитный порядок), без вспомогательных файлов."""
+    if not DATASET_FOLDER.is_dir():
+        return []
+    return sorted(
+        p.stem
+        for p in DATASET_FOLDER.glob('*.mtx')
+        if p.is_file() and not _is_auxiliary_mtx_name(p.stem)
+    )
+
+
+def _resolve_benchmark_datasets() -> List[str]:
+    """
+    Порядок приоритета:
+    1) SPLA_BENCH_DATASETS_JSON — полный явный список (как раньше).
+    2) Если DATASET_FOLDER — это graphs-theory-datasets курса: все локальные *.mtx,
+       кроме имён из _AUTO_EXCLUDE_HEAVY_DATASETS (если нет SPLA_BENCH_INCLUDE_HEAVY=1).
+    3) Иначе (spla-bench/dataset): статический список без последнего элемента (rgg).
+    4) Если в п.2 после фильтра список пуст — как п.3.
+    """
+    env_json = os.environ.get('SPLA_BENCH_DATASETS_JSON')
+    if env_json is not None and env_json.strip() != '':
+        return json.loads(env_json)
+
+    course_dir = _GRAPHS_DATASETS.resolve()
+    using_course_graphs = DATASET_FOLDER.resolve() == course_dir
+
+    if using_course_graphs:
+        names = _discovered_mtx_dataset_names()
+        include_heavy = os.environ.get('SPLA_BENCH_INCLUDE_HEAVY', '').strip().lower() in (
+            '1', 'true', 'yes',
+        )
+        if not include_heavy:
+            names = [n for n in names if n not in _AUTO_EXCLUDE_HEAVY_DATASETS]
+        if names:
+            return names
+
+    # Запасной вариант без rgg_n_2_23_s0 (как раньше).
+    return list(_DEFAULT_BENCHMARK_DATASETS[:-1])
+
+
+BENCHMARK_DATASETS = _resolve_benchmark_datasets()
 
 # Число trial в LAGraph gappagerank_demo зашито в исходнике (ntrials = 16).
 # Драйвер Spla для PR передаёт столько же --niters, чтобы среднее по прогонам было сопоставимо.

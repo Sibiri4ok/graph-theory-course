@@ -139,7 +139,7 @@ You also can test your local `.mtx` dataset. To do this, add a JSON object, whic
 }
 ```
 
-After you set the dataset url, or configured its the local version, please add its name to the `BENCHMARK_DATASETS` list in the [`scripts/config.py`](./scripts/config.py). This list represents datasets, on which the bechmarks will be run. 
+In the course repo, if matrices live in `graphs-theory-datasets/`, benchmark uses **all** `*.mtx` files found there (see `config._resolve_benchmark_datasets()`), unless you override with `SPLA_BENCH_DATASETS_JSON`. Otherwise add names to the fallback list in [`scripts/config.py`](./scripts/config.py) or set the env JSON. 
 
 > Note: Name of the dataset (key in this dictionary) must match
 name of the `.mtx` file in the archive
