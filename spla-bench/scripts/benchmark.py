@@ -30,7 +30,8 @@ def tool_to_driver(tool: ToolName) -> Driver:
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Bebchmarking tool for the graph algorithms')
+        description='Benchmark graph algorithms. По умолчанию: LAGraph + Spla; '
+                    'все бэкенды spla-bench — через --tools graphblast gunrock lagraph spla.')
 
     parser.add_argument('--algo',
                         type=AlgorithmName,
@@ -42,13 +43,14 @@ def main():
                         type=ToolName,
                         choices=list(ToolName),
                         default=None,
-                        help='Select tool to use (otherwise all tools are benchmarked)')
+                        help='Один инструмент. Если не заданы --tool / --tools — по умолчанию lagraph и spla')
     parser.add_argument('--tools',
                         nargs='+',
                         type=ToolName,
                         choices=list(ToolName),
                         default=None,
-                        help='Несколько инструментов за один прогон (например: lagraph spla)')
+                        help='Несколько инструментов (например lagraph spla). Все четыре: '
+                             '--tools graphblast gunrock lagraph spla')
     parser.add_argument('--output',
                         default=config.BENCHMARK_OUTPUT,
                         help='File to dump benchmark results')
@@ -71,10 +73,10 @@ def main():
     drivers: List[Driver]
     if args.tools is not None:
         drivers = [tool_to_driver(t) for t in args.tools]
-    elif args.tool is None:
-        drivers = list(map(tool_to_driver, list(ToolName)))
-    else:
+    elif args.tool is not None:
         drivers = [tool_to_driver(args.tool)]
+    else:
+        drivers = [tool_to_driver(t) for t in config.DEFAULT_BENCHMARK_TOOLS]
 
     algorithms: List[AlgorithmName] = []
     if args.algo is None:
@@ -97,15 +99,15 @@ def main():
                 status_algo_dataset = f'algo: {algo}, dataset: {dataset.name}'
 
                 print_status(status_algo_dataset,
-                             'check if all tools can be used')
+                             'check if all selected tools can be used')
 
                 all_can_run = all(map(
-                    lambda driver: driver.can_run(dataset, algo), drivers
+                    lambda d: d.can_run(dataset, algo), drivers
                 ))
 
                 if not all_can_run:
                     print_status(status_algo_dataset,
-                                 f'not runnable on some drivers, skipping')
+                                 'not runnable on some selected tools, skipping')
                     continue
 
                 print_status(status_algo_dataset, 'start benchmarking')

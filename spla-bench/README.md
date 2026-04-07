@@ -139,7 +139,7 @@ You also can test your local `.mtx` dataset. To do this, add a JSON object, whic
 }
 ```
 
-In the course repo, if matrices live in `graphs-theory-datasets/`, benchmark uses **all** `*.mtx` files found there (see `config._resolve_benchmark_datasets()`), unless you override with `SPLA_BENCH_DATASETS_JSON`. Otherwise add names to the fallback list in [`scripts/config.py`](./scripts/config.py) or set the env JSON. 
+In the course repo, if matrices live in `graphs-theory-datasets/`, benchmark uses **all** `*.mtx` files found there (see `config._resolve_benchmark_datasets()`), unless you override with `SPLA_BENCH_DATASETS_JSON`. By default [`scripts/benchmark.py`](./scripts/benchmark.py) runs **only `lagraph` and `spla`** (`DEFAULT_BENCHMARK_TOOLS` in `config.py`); for all four backends use `--tools graphblast gunrock lagraph spla`. The Spla driver selects **POCL (OpenCL on CPU)** only — see [`scripts/lib/opencl_pick.py`](./scripts/lib/opencl_pick.py). 
 
 > Note: Name of the dataset (key in this dictionary) must match
 name of the `.mtx` file in the archive
@@ -161,7 +161,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --algo {bfs,tc,sssp}  Select algorithm to run (otherwise all algorithms are benchmarked)
   --tool {graphblast,spla,lagraph,gunrock}
-                        Select tool to use (otherwise all tools are benchmarked)
+                        Select tool to use (course default without --tool/--tools: lagraph + spla only)
   --output OUTPUT       File to dump benchmark results
   --format {OutputFormat.raw,OutputFormat.csv}
                         Format to dump benchmark results

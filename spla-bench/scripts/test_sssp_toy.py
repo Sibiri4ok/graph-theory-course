@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Проверка Spla SSSP на маленькой цепочке с эталоном (--run-ref=true).
-Запуск из любой директории: python3 spla-bench/scripts/test_sssp_toy.py
+Те же индексы OpenCL, что и в бенчмарке: только POCL (CPU).
+Запуск: python3 spla-bench/scripts/test_sssp_toy.py
 """
 
 from __future__ import annotations
@@ -11,7 +12,8 @@ import sys
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve()
-REPO_ROOT = SCRIPT.parent.parent.parent
+SCRIPTS_DIR = SCRIPT.parent
+REPO_ROOT = SCRIPTS_DIR.parent.parent
 SPLA_SSSP = REPO_ROOT / "spla" / "build" / "sssp"
 MTX = REPO_ROOT / "graphs-theory-datasets" / "sssp_toy_weighted.mtx"
 
@@ -24,13 +26,18 @@ def main() -> int:
         print(f"Нет матрицы {MTX}.", file=sys.stderr)
         return 2
 
+    sys.path.insert(0, str(SCRIPTS_DIR))
+    from lib.opencl_pick import pick_spla_opencl_platform_device
+
+    plat, dev = pick_spla_opencl_platform_device()
+
     cmd = [
         str(SPLA_SSSP),
         f"--mtxpath={MTX}",
         "--niters=1",
         "--source=0",
-        "--platform=0",
-        "--device=0",
+        f"--platform={plat}",
+        f"--device={dev}",
         "--run-cpu=true",
         "--run-gpu=true",
         "--run-ref=true",

@@ -14,6 +14,10 @@ from lib.tool import ToolName
 from lib.algorithm import AlgorithmName
 
 
+# По умолчанию benchmark.py сравнивает только эти стеки (курсовое задание).
+# Все четыре инструмента spla-bench: явно --tools graphblast gunrock lagraph spla
+DEFAULT_BENCHMARK_TOOLS: tuple = (ToolName.lagraph, ToolName.spla)
+
 """
 System information
 """

@@ -1,8 +1,11 @@
 """
-Выбор пары (platform_id, device_id) для Spla (OpenCL).
+Выбор пары (platform_id, device_id) для Spla в бенчмарке.
 
-Предпочтение: реальный ускоритель (встроенная/дискретная GPU), иначе POCL CPU.
-Переопределение: переменные окружения SPLA_OPENCL_PLATFORM, SPLA_OPENCL_DEVICE.
+Используется только **POCL** (Portable Computing Language) — OpenCL на CPU,
+чтобы сравнение с LAGraph было на CPU.
+
+Переопределение: SPLA_OPENCL_PLATFORM и SPLA_OPENCL_DEVICE (если POCL не на
+стандартных индексах или нет clinfo).
 """
 
 from __future__ import annotations
@@ -49,22 +52,16 @@ def _is_pocl(name: str) -> bool:
     return "portable computing language" in n or n.strip() == "pocl"
 
 
-def _is_gpu_like(platform_name: str, device_name: str) -> bool:
-    blob = f"{platform_name} {device_name}".lower()
-    keys = (
-        "graphics",
-        "nvidia",
-        "amd",
-        "cuda",
-        "gpu",
-        "radeon",
-        "adreno",
-        "mali",
-        "iris",
-        "uhd",
-        "intel(r) opencl",
-    )
-    return any(k in blob for k in keys)
+def _pick_pocl_device(
+    plats: List[Tuple[int, str, List[Tuple[int, str]]]],
+) -> Optional[Tuple[int, int]]:
+    for pid, pname, devs in plats:
+        if not _is_pocl(pname):
+            continue
+        if devs:
+            return pid, devs[0][0]
+        return pid, 0
+    return None
 
 
 def _opencl_log_pick(platform_id: int, device_id: int, detail: str = "") -> None:
@@ -81,6 +78,7 @@ def _opencl_log_pick(platform_id: int, device_id: int, detail: str = "") -> None
 
 
 def pick_spla_opencl_platform_device() -> Tuple[int, int]:
+    """Только POCL (CPU). GPU в бенчмарке не используется."""
     env_p = os.environ.get("SPLA_OPENCL_PLATFORM")
     env_d = os.environ.get("SPLA_OPENCL_DEVICE")
     if env_p is not None and env_d is not None:
@@ -100,21 +98,10 @@ def pick_spla_opencl_platform_device() -> Tuple[int, int]:
         _opencl_log_pick(0, 0, "empty clinfo -l")
         return 0, 0
 
-    candidates: List[Tuple[int, int, int]] = []
-    for pid, pname, devs in plats:
-        if not devs:
-            candidates.append((pid, 0, 2 if _is_pocl(pname) else 1))
-            continue
-        for did, dname in devs:
-            if _is_pocl(pname):
-                pri = 2
-            elif _is_gpu_like(pname, dname):
-                pri = 0
-            else:
-                pri = 1
-            candidates.append((pid, did, pri))
+    pocl = _pick_pocl_device(plats)
+    if pocl is not None:
+        _opencl_log_pick(pocl[0], pocl[1], "POCL CPU (benchmark)")
+        return pocl
 
-    candidates.sort(key=lambda t: (t[2], t[0], t[1]))
-    best = candidates[0]
-    _opencl_log_pick(best[0], best[1], "auto from clinfo -l")
-    return best[0], best[1]
+    _opencl_log_pick(0, 0, "no POCL in clinfo — установите POCL или задайте SPLA_OPENCL_PLATFORM/DEVICE")
+    return 0, 0
