@@ -1,0 +1,153 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/**'
+      - 'deps/**'
+      - 'include/**'
+      - 'sources/**'
+      - 'tests/**'
+      - 'package/**'
+      - '.gitignore'
+      - '.gitmodules'
+      - 'CMakeLists.txt'
+  pull_request:
+    branches: [ main ]
+
+env:
+  build_dir: "build"
+  config: "Release"
+  build_tests: "ON"
+  artifact: "native"
+
+jobs:
+
+  windows:
+    runs-on: windows-latest
+    env:
+      ocl_nug_version: "0.777.77"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install OpenCL
+        shell: bash
+        run: |
+          export NUGETDIR="C:\\NUGET"
+          export OCL_ROOT="$NUGETDIR\\opencl-nug.${{ env.ocl_nug_version }}\\build\\native"
+          echo "OCL_ROOT=${OCL_ROOT}" >> $GITHUB_ENV
+          echo "OpenCL path = ${OCL_ROOT}"
+          nuget install opencl-nug -Version ${{ env.ocl_nug_version }} -OutputDirectory $NUGETDIR
+          choco install opencl-intel-cpu-runtime
+
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.0.0
+        id: install-boost
+        with:
+          boost_version: 1.77.0
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Configure CMake
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.artifact}}
+          path: ${{env.build_dir}}/spla_x64.dll
+
+
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install OpenCL ICD
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clinfo
+          sudo apt-get install -y ocl-icd-opencl-dev
+          sudo apt-get install -y intel-opencl-icd
+
+      - name: OpenCL Info
+        run: clinfo
+
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.0.0
+        id: install-boost
+        with:
+          boost_version: 1.77.0
+
+      - name: Configure CMake
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.artifact}}
+          path: ${{env.build_dir}}/libspla_x64.so
+
+  macos:
+    runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.0.0
+        id: install-boost
+        with:
+          boost_version: 1.77.0
+
+      - name: Configure CMake x64
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=x86_64
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources x64
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Configure CMake arm64
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=arm64
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources arm64
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.artifact}}
+          path: |
+            ${{env.build_dir}}/libspla_x64.dylib
+            ${{env.build_dir}}/libspla_arm64.dylib

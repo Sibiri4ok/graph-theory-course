@@ -1,0 +1,4 @@
+# Крупные матрицы SuiteSparse (>100 МБ лимит GitHub) — подкладывать локально или скачать по URL из README / spla-bench/scripts/config.py
+graphs-theory-datasets/*.mtx
+!graphs-theory-datasets/coAuthorsCiteseer.mtx
+!graphs-theory-datasets/sssp_toy_weighted.mtx
