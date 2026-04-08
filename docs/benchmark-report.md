@@ -1,8 +1,6 @@
 # Отчёт о замерах: LAGraph vs Spla
 
-**Текущий код:** бенчмарк Spla использует **только POCL (CPU)**; GPU не выбирается (`opencl_pick.py`).
-
-Таблицы §5–8 и приложение A соответствуют прогону **`Tue Apr  7 03:02:15 2026`** (`spla-bench/benchmarks/recent/*.csv` → эта папка).
+**Текущий код:** бенчмарк Spla использует **только POCL (CPU)**
 
 ---
 
@@ -10,12 +8,10 @@
 
 | Требование | Как зафиксировано в отчёте / репозитории |
 |------------|------------------------------------------|
-| Два стека: GraphBLAS+LAGraph и Spla | Таблицы **lagraph** / **spla**; `benchmark.py` по умолчанию только эти инструменты |
+| Два стека: GraphBLAS+LAGraph и Spla | Таблицы **lagraph** / **spla**|
 | Готовые реализации (демо LAGraph, примеры Spla) | `spla-bench/deps/lagraph/.../benchmark`, `spla/build/{bfs,sssp,tc,pr}` |
 | Оба на CPU в бенчмарке | LAGraph — CPU; Spla — только **POCL** (OpenCL на CPU) |
-| Набор данных в духе Spla README / Suite Sparse | `.mtx` в `graphs-theory-datasets/` |
-| Инфраструктура spla-bench | CSV в `benchmarks/recent/*.csv` |
-| Методология времени | §3 |
+| Набор данных в `graphs-theory-datasets/` |
 
 ---
 
@@ -23,109 +19,17 @@
 
 | Поле | Значение |
 |------|----------|
-| **Дата / папка прогона** | 7 апр. 2026, `spla-bench/benchmarks/Tue Apr  7 03:02:15 2026` |
 | **ОС / ядро** | Ubuntu 24.04.3 LTS, Linux 6.17.0-20-generic |
-| **CPU** | 11th Gen Intel Core i5-1135G7 @ 2.40GHz, **8** логических CPU |
-| **RAM** | ~38 GiB всего (по `free -h` на момент снятия сведений) |
-| **OpenCL (`clinfo -l`)** | Platform #0: **Intel(R) OpenCL Graphics** → **Iris Xe**; Platform #1: **POCL** → CPU |
-| **Устройство Spla в таблицах §5–8** | **POCL** (CPU), как в текущем коде бенчмарка |
-| **Коммит репозитория** | `8f2cd39` (ветка `feature/add-task1`; возможны незакоммиченные правки) |
-| **`CMAKE_BUILD_TYPE` (Spla)** | `Release` (`spla/build/CMakeCache.txt`) |
-| **`LAGRAPH_NUM_THREADS` / `OMP_NUM_THREADS`** | В среде не заданы (демо используют потоки GraphBLAS по умолчанию) |
-| **Команда запуска** | `python3 benchmark.py --format csv --printer all` (из `spla-bench/scripts`) |
-| **Список датасетов** | Авто: все подходящие `*.mtx` в `graphs-theory-datasets/` (без вспомогательных имён и без `rgg_n_2_23_s0`, если не `SPLA_BENCH_INCLUDE_HEAVY`) |
+| **CPU** | 11th Gen Intel Core i5-1135G7 @ 2.40GHz, 4 ядра, 8 потоков|
+| **RAM** | 32 GB|
+--
 
 ---
-
-## 3. Метрики (оговорка для текста работы)
-
-- **LAGraph:** время вокруг вызова в демо, **CPU**, многопоточный GraphBLAS.
-- **Spla:** лапы по **`gpu(ms):`** — хост вокруг OpenCL, не `CL_PROFILING_*` по ядрам (на POCL это исполнение на CPU через OpenCL).
-- Выводы — для конфигурации **CPU + POCL-CPU**; при смене устройства зафиксируйте `clinfo -l` и при желании `SPLA_OPENCL_LOG=1`.
-
----
-
-## 4. Покрытие: алгоритм × датасет
-
-| Алгоритм | Тип `.mtx` | В этом прогоне |
-|----------|------------|----------------|
-| BFS | pattern | Все перечисленные в §5 графы |
-| SSSP | float/int | Только **`sssp_toy_weighted`** (остальные в наборе — pattern) |
-| TC | по драйверу | Все строки в §7, включая toy |
-| PR | pattern | Все строки в §8 (без toy — нет в `pr.csv`) |
-
----
-
-## 5. BFS — медиана времени (мс)
-
-Источник: `benchmarks/recent/bfs.csv`.
-
-| dataset | LAGraph | Spla |
-|---------|--------:|-----:|
-| cit-Patents | 1.50 | 745.03 |
-| coAuthorsCiteseer | 6.50 | 23.28 |
-| coPapersDBLP | 31.85 | 90.79 |
-| com-Orkut | 50.60 | 335.94 |
-| hollywood-2009 | 39.00 | 128.87 |
-| indochina-2004 | 4.15 | 1637.57 |
-| roadNet-CA | 152.40 | 291.30 |
-| road_central | 1479.25 | 3075.39 |
-| soc-LiveJournal1 | 186.70 | 474.45 |
-
----
-
-## 6. SSSP — медиана времени (мс)
-
-Источник: `benchmarks/recent/sssp.csv`.
-
-| dataset | LAGraph | Spla |
-|---------|--------:|-----:|
-| sssp_toy_weighted | 0.10 | 0.01 |
-
----
-
-## 7. TC (треугольники) — медиана времени (мс)
-
-Источник: `benchmarks/recent/tc.csv`.
-
-| dataset | LAGraph | Spla |
-|---------|--------:|-----:|
-| cit-Patents | 621.92 | 1878.63 |
-| coAuthorsCiteseer | 15.77 | 62.13 |
-| coPapersDBLP | 469.82 | 2365.57 |
-| com-Orkut | 18963.37 | 69331.05 |
-| hollywood-2009 | 12370.96 | 75926.95 |
-| indochina-2004 | 28828.04 | 325158.50 |
-| roadNet-CA | 42.43 | 63.02 |
-| road_central | 421.88 | 697.24 |
-| soc-LiveJournal1 | 2961.78 | 10768.65 |
-| sssp_toy_weighted | 0.01 | 0.00 |
-
----
-
-## 8. PageRank — медиана времени (мс)
-
-Источник: `benchmarks/recent/pr.csv`.
-
-| dataset | LAGraph | Spla |
-|---------|--------:|-----:|
-| cit-Patents | 324.40 | 524.09 |
-| coAuthorsCiteseer | 67.55 | 9.99 |
-| coPapersDBLP | 277.05 | 126.45 |
-| com-Orkut | 4318.25 | 1863.34 |
-| hollywood-2009 | 944.65 | 979.62 |
-| indochina-2004 | 2601.60 | 2559.86 |
-| roadNet-CA | 211.00 | 98.16 |
-| road_central | 2455.05 | 529.65 |
-| soc-LiveJournal1 | 1871.10 | 1429.61 |
-
----
-
-## Приложение A. Полные метрики из CSV (warm_up, avg, median, stdev, мс)
+Полные метрики из CSV (warm_up, avg, median, stdev, мс)
 
 Формат ячеек как в `benchmark.py --printer all`.
 
-### A.1 BFS
+### BFS
 
 | dataset | LAGraph | Spla |
 |---------|---------|------|
@@ -139,13 +43,16 @@
 | road_central | warm_up=1396.58, avg=1479.25, median=1479.25, stdev=31.61 | warm_up=0.00, avg=3075.39, median=3075.39, stdev=16.62 |
 | soc-LiveJournal1 | warm_up=250.72, avg=186.70, median=186.70, stdev=40.02 | warm_up=0.00, avg=474.45, median=474.45, stdev=3.98 |
 
-### A.2 SSSP
+### SSSP
 
 | dataset | LAGraph | Spla |
 |---------|---------|------|
-| sssp_toy_weighted | warm_up=0.00, avg=0.12, median=0.10, stdev=0.04 | warm_up=0.00, avg=0.01, median=0.01, stdev=0.01 |
+| sssp_balanced_tree_127 | warm_up=0.00, avg=0.78, median=0.60, stdev=0.71 | warm_up=0.00, avg=0.05, median=0.05, stdev=0.01 |
+| sssp_grid_20_weighted | warm_up=0.00, avg=1.95, median=1.90, stdev=0.28 | warm_up=0.00, avg=1.62, median=1.57, stdev=0.14 |
+| sssp_random_200_weighted | warm_up=0.00, avg=1.20, median=1.10, stdev=0.16 | warm_up=0.00, avg=0.23, median=0.23, stdev=0.02 |
+| sssp_toy_weighted | warm_up=0.00, avg=0.20, median=0.10, stdev=0.54 | warm_up=0.00, avg=0.02, median=0.02, stdev=0.01 |
 
-### A.3 TC
+### TC
 
 | dataset | LAGraph | Spla |
 |---------|---------|------|
@@ -160,7 +67,7 @@
 | soc-LiveJournal1 | warm_up=2404.06, avg=2877.44, median=2961.78, stdev=212.46 | warm_up=0.00, avg=10768.65, median=10768.65, stdev=323.78 |
 | sssp_toy_weighted | warm_up=0.02, avg=0.01, median=0.01, stdev=0.00 | warm_up=0.00, avg=0.00, median=0.00, stdev=0.00 |
 
-### A.4 PageRank
+### PageRank
 
 | dataset | LAGraph | Spla |
 |---------|---------|------|
@@ -176,15 +83,12 @@
 
 ---
 
-## 9. Где лежат сырые данные
+## Где лежат сырые данные
 
-- `spla-bench/benchmarks/recent/*.csv` (симлинк на последний прогон)
-- Копия того же прогона: `spla-bench/benchmarks/Tue Apr  7 03:02:15 2026/`
+- `spla-bench/benchmarks/recent/*.csv`
 
 ---
 
-## 10. Как обновить после нового замера
+## Как провести замер
 
 1. `python3 benchmark.py` из `spla-bench/scripts`.
-2. Обновить дату и путь в §2, при необходимости шапку.
-3. Перенести числа из новых `recent/*.csv` в §5–8 и приложение A.
