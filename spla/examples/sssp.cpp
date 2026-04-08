@@ -1,0 +1,163 @@
+/**********************************************************************************/
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
+/**********************************************************************************/
+/* MIT License                                                                    */
+/*                                                                                */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/*                                                                                */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and/or permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
+/*                                                                                */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
+/*                                                                                */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
+/**********************************************************************************/
+
+#include "common.hpp"
+#include "mtx_load_weighted.hpp"
+#include "options.hpp"
+
+#include <spla.hpp>
+
+#include <algorithm>
+
+
+int main(int argc, const char* const* argv) {
+    std::shared_ptr<cxxopts::Options> options = make_options("sssp", "sssp (single-source shortest path) algorithm with spla library");
+    cxxopts::ParseResult              args;
+    int                               ret;
+
+    if (parse_options(argc, argv, options, args, ret)) {
+        std::cerr << "failed to parse options";
+        return ret;
+    }
+
+    spla::Timer timer;
+    spla::Timer timer_cpu;
+    spla::Timer timer_gpu;
+    spla::Timer timer_ref;
+
+    timer.start();
+
+    const std::string mtx_path = args[OPT_MTXPATH].as<std::string>();
+
+    spla::uint                nrows = 0, ncols = 0;
+    std::vector<spla::uint>   Ai;
+    std::vector<spla::uint>   Aj;
+    std::vector<float>        Ax;
+
+    if (!spla::examples::mtx_load_weighted(
+            mtx_path,
+            true,   // индексы в .mtx с 1
+            false,  // ориентированный граф (веса SSSP как в файле; без дублирования рёбер)
+            true,   // убрать петли
+            nrows,
+            ncols,
+            Ai,
+            Aj,
+            Ax)) {
+        std::cerr << "failed to load graph\n";
+        return 1;
+    }
+
+    const spla::uint N = std::max(nrows, ncols);
+
+    std::string acc_info;
+
+    spla::Library* library = spla::Library::get();
+    library->set_platform(args[OPT_PLATFORM].as<int>());
+    library->set_device(args[OPT_DEVICE].as<int>());
+    library->set_queues_count(1);
+    library->get_accelerator_info(acc_info);
+    std::cout << "env: " << acc_info << std::endl;
+
+    const spla::uint                s     = args[OPT_SOURCE].as<int>();
+    spla::ref_ptr<spla::Vector>     v_cpu = spla::Vector::make(N, spla::FLOAT);
+    spla::ref_ptr<spla::Vector>     v_acc = spla::Vector::make(N, spla::FLOAT);
+    spla::ref_ptr<spla::Matrix>     A     = spla::Matrix::make(N, N, spla::FLOAT);
+    spla::ref_ptr<spla::Descriptor> desc  = spla::Descriptor::make();
+
+    desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
+    desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());
+
+    for (std::size_t k = 0; k < Ai.size(); ++k) {
+        A->set_float(Ai[k], Aj[k], Ax[k]);
+    }
+
+    const int n_iters = args[OPT_NITERS].as<int>();
+
+    if (args[OPT_RUN_CPU].as<bool>()) {
+        library->set_force_no_acceleration(true);
+
+        for (int i = 0; i < n_iters; ++i) {
+            v_cpu->clear();
+
+            timer_cpu.lap_begin();
+            spla::sssp(v_cpu, A, s, desc);
+            timer_cpu.lap_end();
+        }
+    }
+
+    if (args[OPT_RUN_GPU].as<bool>()) {
+        library->set_force_no_acceleration(false);
+
+        for (int i = 0; i < n_iters; ++i) {
+            v_acc->clear();
+
+            timer_gpu.lap_begin();
+            spla::sssp(v_acc, A, s, desc);
+            timer_gpu.lap_end();
+        }
+    }
+
+    if (args[OPT_RUN_REF].as<bool>()) {
+        std::vector<float>                   ref_v(N);
+        std::vector<std::vector<spla::uint>> ref_Ai(N, std::vector<spla::uint>());
+        std::vector<std::vector<float>>      ref_Ax(N, std::vector<float>());
+
+        for (std::size_t k = 0; k < Ai.size(); ++k) {
+            ref_Ai[Ai[k]].push_back(Aj[k]);
+            ref_Ax[Ai[k]].push_back(Ax[k]);
+        }
+
+        timer_ref.lap_begin();
+        spla::sssp_naive(ref_v, ref_Ai, ref_Ax, s, spla::ref_ptr<spla::Descriptor>());
+        timer_ref.lap_end();
+
+        if (args[OPT_RUN_CPU].as<bool>()) {
+            verify_exact("cpu", v_cpu, ref_v);
+        }
+        if (args[OPT_RUN_GPU].as<bool>()) {
+            verify_exact("acc", v_acc, ref_v);
+        }
+    }
+
+    spla::Library::get()->finalize();
+
+    timer.stop();
+
+    std::cout << "total(ms): " << timer.get_elapsed_ms() << std::endl;
+    std::cout << "cpu(ms): ";
+    timer_cpu.print();
+    std::cout << std::endl;
+    std::cout << "gpu(ms): ";
+    timer_gpu.print();
+    std::cout << std::endl;
+    std::cout << "ref(ms): ";
+    timer_ref.print();
+    std::cout << std::endl;
+
+    return 0;
+}

@@ -1,0 +1,56 @@
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build deps and POCL (OpenCL CPU)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            cmake \
+            ninja-build \
+            python3 \
+            clinfo \
+            pocl-opencl-icd
+
+      - name: Show OpenCL platforms
+        run: clinfo -l
+
+      - name: Configure Spla
+        run: |
+          cmake -S spla -B spla/build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSPLA_BUILD_TESTS=OFF
+
+      - name: Build Spla SSSP example
+        run: cmake --build spla/build --target sssp -j"$(nproc)"
+
+      - name: Python scripts compile check
+        working-directory: spla-bench/scripts
+        run: |
+          python3 -m compileall -q .
+          python3 benchmark.py --help
+
+      - name: SSSP toy smoke test (Spla + POCL)
+        run: python3 spla-bench/scripts/test_sssp_toy.py

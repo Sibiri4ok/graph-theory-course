@@ -1,0 +1,14 @@
+# IDE files
+/**/.idea
+/*build*/
+/**/.vscode
+
+# Graph files
+graph-dataset.zip
+dataset*
+
+# Auto gen registry
+registry.txt
+
+# Python cache files
+/**/__pycache__
