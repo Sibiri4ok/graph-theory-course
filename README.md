@@ -61,4 +61,5 @@ python3 benchmark.py --format csv --printer all
 | `SPLA_BENCH_DATASETS_JSON` | Список датасетов вместо авто |
 ---
 
+Презентация: https://docs.google.com/presentation/d/1-u1yYyy-zqMXFitpSdddRZ1C8yF5MuX7tuNe3DUw__c/edit?usp=sharing
 
