@@ -1,0 +1,28 @@
+[2026-05-25T01:20:23+03:00] Experiment start: NP=2 threads=2 runs=3
+[2026-05-25T01:20:23+03:00] RUN bfs_web-Google_2p
+[2026-05-25T01:20:32+03:00] OK bfs_web-Google_2p
+[2026-05-25T01:20:32+03:00] RUN pr_web-Google_2p
+[2026-05-25T01:21:01+03:00] OK pr_web-Google_2p
+[2026-05-25T01:21:01+03:00] RUN sssp_web-Google_2p
+[2026-05-25T01:21:10+03:00] OK sssp_web-Google_2p
+[2026-05-25T01:21:10+03:00] RUN tc_web-Google_2p
+[2026-05-25T01:21:26+03:00] OK tc_web-Google_2p
+[2026-05-25T01:21:26+03:00] RUN bfs_roadNet-PA_2p
+[2026-05-25T01:22:14+03:00] OK bfs_roadNet-PA_2p
+[2026-05-25T01:22:14+03:00] RUN pr_roadNet-PA_2p
+[2026-05-25T01:22:31+03:00] OK pr_roadNet-PA_2p
+[2026-05-25T01:22:31+03:00] RUN sssp_roadNet-PA_2p
+[2026-05-25T01:23:02+03:00] OK sssp_roadNet-PA_2p
+[2026-05-25T01:23:02+03:00] RUN tc_roadNet-PA_2p
+[2026-05-25T01:23:07+03:00] OK tc_roadNet-PA_2p
+[2026-05-25T01:23:07+03:00] RUN bfs_wiki-talk-temporal_2p
+[2026-05-25T01:23:15+03:00] OK bfs_wiki-talk-temporal_2p
+[2026-05-25T01:23:15+03:00] RUN pr_wiki-talk-temporal_2p
+[2026-05-25T01:23:58+03:00] OK pr_wiki-talk-temporal_2p
+[2026-05-25T01:23:58+03:00] RUN sssp_wiki-talk-temporal_2p
+[2026-05-25T01:24:03+03:00] OK sssp_wiki-talk-temporal_2p
+[2026-05-25T01:24:03+03:00] RUN tc_wiki-talk-temporal_2p
+[2026-05-25T01:24:46+03:00] OK tc_wiki-talk-temporal_2p
+[2026-05-25T01:24:46+03:00] Experiment finished. Stats in /home/danil/graph-theory-task-2/experiments/results/stats
+Wrote /home/danil/graph-theory-task-2/experiments/report.csv (60 rows)
+Wrote /home/danil/graph-theory-task-2/experiments/REPORT.md

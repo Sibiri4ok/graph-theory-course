@@ -1,0 +1,167 @@
+[2026-05-25T00:23:18+03:00] Experiment start: NP=1 2 4 6 8 threads=2 runs=3
+[2026-05-25T00:23:18+03:00] RUN bfs_web-Google_1p
+[2026-05-25T00:23:24+03:00] OK bfs_web-Google_1p
+[2026-05-25T00:23:24+03:00] RUN bfs_web-Google_2p
+[2026-05-25T00:23:27+03:00] FAIL bfs_web-Google_2p
+[2026-05-25T00:23:27+03:00] RUN bfs_web-Google_4p
+[2026-05-25T00:23:39+03:00] OK bfs_web-Google_4p
+[2026-05-25T00:23:39+03:00] RUN bfs_web-Google_6p
+[2026-05-25T00:23:40+03:00] FAIL bfs_web-Google_6p
+[2026-05-25T00:23:40+03:00] RUN bfs_web-Google_8p
+[2026-05-25T00:23:41+03:00] FAIL bfs_web-Google_8p
+[2026-05-25T00:23:41+03:00] RUN pr_web-Google_1p
+[2026-05-25T00:24:05+03:00] OK pr_web-Google_1p
+[2026-05-25T00:24:05+03:00] RUN pr_web-Google_2p
+[2026-05-25T00:24:08+03:00] FAIL pr_web-Google_2p
+[2026-05-25T00:24:08+03:00] RUN pr_web-Google_4p
+[2026-05-25T00:24:52+03:00] OK pr_web-Google_4p
+[2026-05-25T00:24:52+03:00] RUN pr_web-Google_6p
+[2026-05-25T00:24:53+03:00] FAIL pr_web-Google_6p
+[2026-05-25T00:24:53+03:00] RUN pr_web-Google_8p
+[2026-05-25T00:24:54+03:00] FAIL pr_web-Google_8p
+[2026-05-25T00:24:54+03:00] RUN sssp_web-Google_1p
+[2026-05-25T00:24:59+03:00] OK sssp_web-Google_1p
+[2026-05-25T00:24:59+03:00] RUN sssp_web-Google_2p
+[2026-05-25T00:25:02+03:00] FAIL sssp_web-Google_2p
+[2026-05-25T00:25:02+03:00] RUN sssp_web-Google_4p
+[2026-05-25T00:25:20+03:00] OK sssp_web-Google_4p
+[2026-05-25T00:25:20+03:00] RUN sssp_web-Google_6p
+[2026-05-25T00:25:20+03:00] FAIL sssp_web-Google_6p
+[2026-05-25T00:25:20+03:00] RUN sssp_web-Google_8p
+[2026-05-25T00:25:21+03:00] FAIL sssp_web-Google_8p
+[2026-05-25T00:25:21+03:00] RUN tc_web-Google_1p
+[2026-05-25T00:25:24+03:00] FAIL tc_web-Google_1p
+[2026-05-25T00:25:24+03:00] RUN tc_web-Google_2p
+[2026-05-25T00:25:26+03:00] FAIL tc_web-Google_2p
+[2026-05-25T00:25:26+03:00] RUN tc_web-Google_4p
+[2026-05-25T00:25:28+03:00] FAIL tc_web-Google_4p
+[2026-05-25T00:25:28+03:00] RUN tc_web-Google_6p
+[2026-05-25T00:25:29+03:00] FAIL tc_web-Google_6p
+[2026-05-25T00:25:29+03:00] RUN tc_web-Google_8p
+[2026-05-25T00:25:30+03:00] FAIL tc_web-Google_8p
+[2026-05-25T00:25:30+03:00] RUN bfs_roadNet-PA_1p
+[2026-05-25T00:27:20+03:00] Experiment start: NP=1 2 4 6 8 threads=2 runs=3
+[2026-05-25T00:27:20+03:00] SKIP bfs_web-Google_1p (valid stats exist)
+[2026-05-25T00:27:20+03:00] RUN bfs_web-Google_2p
+[2026-05-25T00:27:23+03:00] FAIL bfs_web-Google_2p
+[2026-05-25T00:27:23+03:00] SKIP bfs_web-Google_4p (valid stats exist)
+[2026-05-25T00:27:23+03:00] RUN bfs_web-Google_6p
+[2026-05-25T00:27:42+03:00] OK bfs_web-Google_6p
+[2026-05-25T00:27:42+03:00] RUN bfs_web-Google_8p
+[2026-05-25T00:28:06+03:00] OK bfs_web-Google_8p
+[2026-05-25T00:28:06+03:00] SKIP pr_web-Google_1p (valid stats exist)
+[2026-05-25T00:28:06+03:00] RUN pr_web-Google_2p
+[2026-05-25T00:28:09+03:00] FAIL pr_web-Google_2p
+[2026-05-25T00:28:09+03:00] SKIP pr_web-Google_4p (valid stats exist)
+[2026-05-25T00:28:09+03:00] RUN pr_web-Google_6p
+[2026-05-25T00:28:59+03:00] OK pr_web-Google_6p
+[2026-05-25T00:28:59+03:00] RUN pr_web-Google_8p
+[2026-05-25T00:30:03+03:00] OK pr_web-Google_8p
+[2026-05-25T00:30:03+03:00] SKIP sssp_web-Google_1p (valid stats exist)
+[2026-05-25T00:30:03+03:00] RUN sssp_web-Google_2p
+[2026-05-25T00:30:07+03:00] FAIL sssp_web-Google_2p
+[2026-05-25T00:30:07+03:00] SKIP sssp_web-Google_4p (valid stats exist)
+[2026-05-25T00:30:07+03:00] RUN sssp_web-Google_6p
+[2026-05-25T00:30:31+03:00] OK sssp_web-Google_6p
+[2026-05-25T00:30:31+03:00] RUN sssp_web-Google_8p
+[2026-05-25T00:31:07+03:00] OK sssp_web-Google_8p
+[2026-05-25T00:31:07+03:00] RUN tc_web-Google_1p
+[2026-05-25T00:31:26+03:00] OK tc_web-Google_1p
+[2026-05-25T00:31:26+03:00] RUN tc_web-Google_2p
+[2026-05-25T00:31:29+03:00] FAIL tc_web-Google_2p
+[2026-05-25T00:31:29+03:00] RUN tc_web-Google_4p
+[2026-05-25T00:31:49+03:00] OK tc_web-Google_4p
+[2026-05-25T00:31:49+03:00] RUN tc_web-Google_6p
+[2026-05-25T00:32:09+03:00] OK tc_web-Google_6p
+[2026-05-25T00:32:09+03:00] RUN tc_web-Google_8p
+[2026-05-25T00:32:29+03:00] OK tc_web-Google_8p
+[2026-05-25T00:32:29+03:00] SKIP bfs_roadNet-PA_1p (valid stats exist)
+[2026-05-25T00:32:29+03:00] RUN bfs_roadNet-PA_2p
+[2026-05-25T00:32:32+03:00] FAIL bfs_roadNet-PA_2p
+[2026-05-25T00:32:32+03:00] RUN bfs_roadNet-PA_4p
+[2026-05-25T00:34:16+03:00] OK bfs_roadNet-PA_4p
+[2026-05-25T00:34:16+03:00] RUN bfs_roadNet-PA_6p
+[2026-05-25T00:37:15+03:00] OK bfs_roadNet-PA_6p
+[2026-05-25T00:37:15+03:00] RUN bfs_roadNet-PA_8p
+[2026-05-25T00:41:41+03:00] OK bfs_roadNet-PA_8p
+[2026-05-25T00:41:41+03:00] RUN pr_roadNet-PA_1p
+[2026-05-25T00:41:56+03:00] OK pr_roadNet-PA_1p
+[2026-05-25T00:41:56+03:00] RUN pr_roadNet-PA_2p
+[2026-05-25T00:41:59+03:00] FAIL pr_roadNet-PA_2p
+[2026-05-25T00:41:59+03:00] RUN pr_roadNet-PA_4p
+[2026-05-25T00:42:20+03:00] OK pr_roadNet-PA_4p
+[2026-05-25T00:42:20+03:00] RUN pr_roadNet-PA_6p
+[2026-05-25T00:42:50+03:00] OK pr_roadNet-PA_6p
+[2026-05-25T00:42:50+03:00] RUN pr_roadNet-PA_8p
+[2026-05-25T00:43:32+03:00] OK pr_roadNet-PA_8p
+[2026-05-25T00:43:32+03:00] RUN sssp_roadNet-PA_1p
+[2026-05-25T00:43:46+03:00] OK sssp_roadNet-PA_1p
+[2026-05-25T00:43:46+03:00] RUN sssp_roadNet-PA_2p
+[2026-05-25T00:43:49+03:00] FAIL sssp_roadNet-PA_2p
+[2026-05-25T00:43:49+03:00] RUN sssp_roadNet-PA_4p
+[2026-05-25T00:45:02+03:00] OK sssp_roadNet-PA_4p
+[2026-05-25T00:45:02+03:00] RUN sssp_roadNet-PA_6p
+[2026-05-25T00:47:08+03:00] OK sssp_roadNet-PA_6p
+[2026-05-25T00:47:08+03:00] RUN sssp_roadNet-PA_8p
+[2026-05-25T00:50:13+03:00] OK sssp_roadNet-PA_8p
+[2026-05-25T00:50:13+03:00] RUN tc_roadNet-PA_1p
+[2026-05-25T00:50:16+03:00] OK tc_roadNet-PA_1p
+[2026-05-25T00:50:16+03:00] RUN tc_roadNet-PA_2p
+[2026-05-25T00:50:19+03:00] FAIL tc_roadNet-PA_2p
+[2026-05-25T00:50:19+03:00] RUN tc_roadNet-PA_4p
+[2026-05-25T00:50:24+03:00] OK tc_roadNet-PA_4p
+[2026-05-25T00:50:24+03:00] RUN tc_roadNet-PA_6p
+[2026-05-25T00:50:29+03:00] OK tc_roadNet-PA_6p
+[2026-05-25T00:50:29+03:00] RUN tc_roadNet-PA_8p
+[2026-05-25T00:50:36+03:00] OK tc_roadNet-PA_8p
+[2026-05-25T00:50:36+03:00] RUN bfs_wiki-talk-temporal_1p
+[2026-05-25T00:50:40+03:00] OK bfs_wiki-talk-temporal_1p
+[2026-05-25T00:50:40+03:00] RUN bfs_wiki-talk-temporal_2p
+[2026-05-25T00:50:43+03:00] FAIL bfs_wiki-talk-temporal_2p
+[2026-05-25T00:50:43+03:00] RUN bfs_wiki-talk-temporal_4p
+[2026-05-25T00:50:52+03:00] OK bfs_wiki-talk-temporal_4p
+[2026-05-25T00:50:52+03:00] RUN bfs_wiki-talk-temporal_6p
+[2026-05-25T00:51:04+03:00] OK bfs_wiki-talk-temporal_6p
+[2026-05-25T00:51:04+03:00] RUN bfs_wiki-talk-temporal_8p
+[2026-05-25T00:51:18+03:00] OK bfs_wiki-talk-temporal_8p
+[2026-05-25T00:51:18+03:00] RUN pr_wiki-talk-temporal_1p
+[2026-05-25T00:51:50+03:00] OK pr_wiki-talk-temporal_1p
+[2026-05-25T00:51:50+03:00] RUN pr_wiki-talk-temporal_2p
+[2026-05-25T00:51:53+03:00] FAIL pr_wiki-talk-temporal_2p
+[2026-05-25T00:51:53+03:00] RUN pr_wiki-talk-temporal_4p
+[2026-05-25T00:52:41+03:00] OK pr_wiki-talk-temporal_4p
+[2026-05-25T00:52:41+03:00] RUN pr_wiki-talk-temporal_6p
+[2026-05-25T00:53:43+03:00] OK pr_wiki-talk-temporal_6p
+[2026-05-25T00:53:43+03:00] RUN pr_wiki-talk-temporal_8p
+[2026-05-25T00:55:04+03:00] OK pr_wiki-talk-temporal_8p
+[2026-05-25T00:55:04+03:00] RUN sssp_wiki-talk-temporal_1p
+[2026-05-25T00:55:06+03:00] OK sssp_wiki-talk-temporal_1p
+[2026-05-25T00:55:06+03:00] RUN sssp_wiki-talk-temporal_2p
+[2026-05-25T00:55:09+03:00] FAIL sssp_wiki-talk-temporal_2p
+[2026-05-25T00:55:09+03:00] RUN sssp_wiki-talk-temporal_4p
+[2026-05-25T00:55:15+03:00] OK sssp_wiki-talk-temporal_4p
+[2026-05-25T00:55:15+03:00] RUN sssp_wiki-talk-temporal_6p
+[2026-05-25T00:55:23+03:00] OK sssp_wiki-talk-temporal_6p
+[2026-05-25T00:55:23+03:00] RUN sssp_wiki-talk-temporal_8p
+[2026-05-25T00:55:34+03:00] OK sssp_wiki-talk-temporal_8p
+[2026-05-25T00:55:34+03:00] RUN tc_wiki-talk-temporal_1p
+[2026-05-25T00:55:40+03:00] FAIL tc_wiki-talk-temporal_1p
+[2026-05-25T00:55:40+03:00] RUN tc_wiki-talk-temporal_2p
+[2026-05-25T00:55:43+03:00] FAIL tc_wiki-talk-temporal_2p
+[2026-05-25T00:55:43+03:00] RUN tc_wiki-talk-temporal_4p
+[2026-05-25T00:55:51+03:00] FAIL tc_wiki-talk-temporal_4p
+[2026-05-25T00:55:51+03:00] RUN tc_wiki-talk-temporal_6p
+[2026-05-25T00:55:59+03:00] FAIL tc_wiki-talk-temporal_6p
+[2026-05-25T00:55:59+03:00] RUN tc_wiki-talk-temporal_8p
+[2026-05-25T00:56:08+03:00] FAIL tc_wiki-talk-temporal_8p
+[2026-05-25T00:56:08+03:00] Experiment finished. Stats in /home/danil/graph-theory-task-2/experiments/results/stats
+Traceback (most recent call last):
+  File "/home/danil/graph-theory-task-2/experiments/build_report.py", line 146, in <module>
+    main()
+  File "/home/danil/graph-theory-task-2/experiments/build_report.py", line 72, in main
+    algo, dataset, np = parse_id(stem)
+                        ^^^^^^^^^^^^^^
+  File "/home/danil/graph-theory-task-2/experiments/build_report.py", line 63, in parse_id
+    return algo, graph[: -1] if graph.endswith("p") else graph, int(np_s[:-1])
+                                                                ^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'roadNet-P'

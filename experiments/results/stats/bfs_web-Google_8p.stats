@@ -1,0 +1,43 @@
+STAT_TYPE, HOST_ID, REGION, CATEGORY, TOTAL_TYPE, TOTAL
+STAT, 0, dGraph_Generic, EdgeLoading, HMAX, 1712
+STAT, 0, dGraph_Generic, CuSPStateRounds, HOST_0, 100
+STAT, 0, dGraph_Generic, EdgeInspection, HMAX, 459
+STAT, 0, dGraph_Generic, GraphReading, HMAX, 60
+STAT, 0, DistBench, GraphConstructTime, HMAX, 2949
+STAT, 0, InitializeGraph_0, Time, HMAX, 61
+STAT, 0, Gluon, ReduceSendBytes_BFS_0, HSUM, 17478832
+STAT, 0, Gluon, ReduceNumMessages_BFS_0, HSUM, 896
+STAT, 0, Gluon, Sync_BFS_0, HMAX, 2782
+STAT, 0, Gluon, ReduceSendBytes_BFS_1, HSUM, 17478832
+STAT, 0, Gluon, ReduceNumMessages_BFS_1, HSUM, 896
+STAT, 0, Gluon, Sync_BFS_1, HMAX, 3005
+STAT, 0, Gluon, ReduceSendBytes_BFS_2, HSUM, 17478832
+STAT, 0, Gluon, ReduceNumMessages_BFS_2, HSUM, 896
+STAT, 0, Gluon, Sync_BFS_2, HMAX, 2788
+STAT, 0, BFS, NumWorkItems_0, HSUM, 12353257
+STAT, 0, BFS, NumIterations_0, HMAX, 16
+STAT, 0, BFS, Timer_0, HMAX, 4674
+STAT, 0, BFS, NumWorkItems_1, HSUM, 12353257
+STAT, 0, BFS, NumIterations_1, HMAX, 16
+STAT, 0, BFS, Timer_1, HMAX, 5182
+STAT, 0, BFS, NumWorkItems_2, HSUM, 12353257
+STAT, 0, BFS, NumIterations_2, HMAX, 16
+STAT, 0, BFS, Timer_2, HMAX, 4913
+STAT, 0, BFS, TimerTotal, HMAX, 19541
+STAT, 0, BFS_0, Time, HMAX, 397
+STAT, 0, InitializeGraph_1, Time, HMAX, 65
+STAT, 0, BFS_1, Time, HMAX, 454
+STAT, 0, InitializeGraph_2, Time, HMAX, 60
+STAT, 0, BFS_2, Time, HMAX, 518
+STAT, 0, Gluon, ReplicationFactor, HOST_0, 4.44735
+PARAM, 0, DistBench, CommandLine, HOST_0, /home/danil/graph-theory-task-2/Galois/build/lonestar/analytics/distributed/bfs/bfs-push-dist /home/danil/graph-theory-task-2/datasets/web-Google.sgr --symmetricGraph -t=2 --runs=3 -exec=Sync -startNode=0 -statFile=/home/danil/graph-theory-task-2/experiments/results/stats/bfs_web-Google_8p.stats
+PARAM, 0, DistBench, Threads, HOST_0, 1
+PARAM, 0, DistBench, Hosts, HOST_0, 8
+PARAM, 0, DistBench, Runs, HOST_0, 3
+PARAM, 0, DistBench, Run_UUID, HOST_0, 9f01148d-4ee1-405b-8a21-205399164cd2
+PARAM, 0, DistBench, Input, HOST_0, /home/danil/graph-theory-task-2/datasets/web-Google.sgr
+PARAM, 0, DistBench, PartitionScheme, HOST_0, oec
+PARAM, 0, DistBench, Hostname, HOST_0, danil
+PARAM, 0, BFS, Max Iterations, HOST_0, 1000
+PARAM, 0, BFS, Source Node ID, HOST_0, 0
+PARAM, 0, dGraph, GenericPartitioner, HOST_0, 0

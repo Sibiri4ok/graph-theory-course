@@ -1,0 +1,44 @@
+STAT_TYPE, HOST_ID, REGION, CATEGORY, TOTAL_TYPE, TOTAL
+STAT, 0, dGraph_Generic, EdgeLoading, HMAX, 98
+STAT, 0, dGraph_Generic, CuSPStateRounds, HOST_0, 100
+STAT, 0, dGraph_Generic, EdgeInspection, HMAX, 125
+STAT, 0, dGraph_Generic, GraphReading, HMAX, 30
+STAT, 0, DistBench, GraphConstructTime, HMAX, 500
+STAT, 0, InitializeGraph_0, Time, HMAX, 8
+STAT, 0, Gluon, ReduceSendBytes_BFS_0, HSUM, 2030272
+STAT, 0, Gluon, ReduceNumMessages_BFS_0, HSUM, 3888
+STAT, 0, Gluon, Sync_BFS_0, HMAX, 17901
+STAT, 0, Gluon, ReduceSendBytes_BFS_1, HSUM, 2030272
+STAT, 0, Gluon, ReduceNumMessages_BFS_1, HSUM, 3888
+STAT, 0, Gluon, Sync_BFS_1, HMAX, 19608
+STAT, 0, Gluon, ReduceSendBytes_BFS_2, HSUM, 2030272
+STAT, 0, Gluon, ReduceNumMessages_BFS_2, HSUM, 3888
+STAT, 0, Gluon, Sync_BFS_2, HMAX, 19788
+STAT, 0, BFS, NumWorkItems_0, HSUM, 177488465
+STAT, 0, BFS, NumIterations_0, HMAX, 324
+STAT, 0, BFS, Timer_0, HMAX, 32056
+STAT, 0, BFS, NumWorkItems_1, HSUM, 177488465
+STAT, 0, BFS, NumIterations_1, HMAX, 324
+STAT, 0, BFS, Timer_1, HMAX, 34430
+STAT, 0, BFS, NumWorkItems_2, HSUM, 177488465
+STAT, 0, BFS, NumIterations_2, HMAX, 324
+STAT, 0, BFS, Timer_2, HMAX, 33730
+STAT, 0, BFS, TimerTotal, HMAX, 101125
+STAT, 0, BFS_0, Time, HMAX, 1835
+STAT, 0, InitializeGraph_1, Time, HMAX, 18
+STAT, 0, BFS_1, Time, HMAX, 1489
+STAT, 0, InitializeGraph_2, Time, HMAX, 22
+STAT, 0, BFS_2, Time, HMAX, 1616
+STAT, 0, BFSSanityCheck, Time, HMAX, 1
+STAT, 0, Gluon, ReplicationFactor, HOST_0, 1.01467
+PARAM, 0, DistBench, CommandLine, HOST_0, /home/danil/graph-theory-task-2/Galois/build/lonestar/analytics/distributed/bfs/bfs-push-dist /home/danil/graph-theory-task-2/datasets/roadNet-PA.sgr --symmetricGraph -t=2 --runs=3 -exec=Sync -startNode=0 -statFile=/home/danil/graph-theory-task-2/experiments/results/stats/bfs_roadNet-PA_4p.stats
+PARAM, 0, DistBench, Threads, HOST_0, 1
+PARAM, 0, DistBench, Hosts, HOST_0, 4
+PARAM, 0, DistBench, Runs, HOST_0, 3
+PARAM, 0, DistBench, Run_UUID, HOST_0, 01220785-1394-4ad3-8841-623c94cac821
+PARAM, 0, DistBench, Input, HOST_0, /home/danil/graph-theory-task-2/datasets/roadNet-PA.sgr
+PARAM, 0, DistBench, PartitionScheme, HOST_0, oec
+PARAM, 0, DistBench, Hostname, HOST_0, danil
+PARAM, 0, BFS, Max Iterations, HOST_0, 1000
+PARAM, 0, BFS, Source Node ID, HOST_0, 0
+PARAM, 0, dGraph, GenericPartitioner, HOST_0, 0

@@ -1,0 +1,44 @@
+STAT_TYPE, HOST_ID, REGION, CATEGORY, TOTAL_TYPE, TOTAL
+STAT, 0, dGraph_Generic, EdgeLoading, HMAX, 714
+STAT, 0, dGraph_Generic, CuSPStateRounds, HOST_0, 100
+STAT, 0, dGraph_Generic, EdgeInspection, HMAX, 601
+STAT, 0, dGraph_Generic, GraphReading, HMAX, 55
+STAT, 0, DistBench, GraphConstructTime, HMAX, 1976
+STAT, 0, InitializeGraph_0, Time, HMAX, 56
+STAT, 0, Gluon, ReduceSendBytes_BFS_0, HSUM, 9329832
+STAT, 0, Gluon, ReduceNumMessages_BFS_0, HSUM, 392
+STAT, 0, Gluon, Sync_BFS_0, HMAX, 1598
+STAT, 0, Gluon, ReduceSendBytes_BFS_1, HSUM, 9329832
+STAT, 0, Gluon, ReduceNumMessages_BFS_1, HSUM, 392
+STAT, 0, Gluon, Sync_BFS_1, HMAX, 1615
+STAT, 0, Gluon, ReduceSendBytes_BFS_2, HSUM, 9329832
+STAT, 0, Gluon, ReduceNumMessages_BFS_2, HSUM, 392
+STAT, 0, Gluon, Sync_BFS_2, HMAX, 1482
+STAT, 0, BFS, NumWorkItems_0, HSUM, 17946602
+STAT, 0, BFS, NumIterations_0, HMAX, 7
+STAT, 0, BFS, Timer_0, HMAX, 2609
+STAT, 0, BFS, NumWorkItems_1, HSUM, 17946602
+STAT, 0, BFS, NumIterations_1, HMAX, 7
+STAT, 0, BFS, Timer_1, HMAX, 2740
+STAT, 0, BFS, NumWorkItems_2, HSUM, 17946602
+STAT, 0, BFS, NumIterations_2, HMAX, 7
+STAT, 0, BFS, Timer_2, HMAX, 2384
+STAT, 0, BFS, TimerTotal, HMAX, 11326
+STAT, 0, BFS_0, Time, HMAX, 278
+STAT, 0, InitializeGraph_1, Time, HMAX, 43
+STAT, 0, BFS_1, Time, HMAX, 275
+STAT, 0, InitializeGraph_2, Time, HMAX, 56
+STAT, 0, BFS_2, Time, HMAX, 271
+STAT, 0, BFSSanityCheck, Time, HMAX, 6
+STAT, 0, Gluon, ReplicationFactor, HOST_0, 2.55878
+PARAM, 0, DistBench, CommandLine, HOST_0, /home/danil/graph-theory-task-2/Galois/build/lonestar/analytics/distributed/bfs/bfs-push-dist /home/danil/graph-theory-task-2/datasets/wiki-talk-temporal.sgr --symmetricGraph -t=2 --runs=3 -exec=Sync -startNode=0 -statFile=/home/danil/graph-theory-task-2/experiments/results/stats/bfs_wiki-talk-temporal_8p.stats
+PARAM, 0, DistBench, Threads, HOST_0, 1
+PARAM, 0, DistBench, Hosts, HOST_0, 8
+PARAM, 0, DistBench, Runs, HOST_0, 3
+PARAM, 0, DistBench, Run_UUID, HOST_0, 8d47c5b7-af40-4fed-bdd2-3323faf695b5
+PARAM, 0, DistBench, Input, HOST_0, /home/danil/graph-theory-task-2/datasets/wiki-talk-temporal.sgr
+PARAM, 0, DistBench, PartitionScheme, HOST_0, oec
+PARAM, 0, DistBench, Hostname, HOST_0, danil
+PARAM, 0, BFS, Max Iterations, HOST_0, 1000
+PARAM, 0, BFS, Source Node ID, HOST_0, 0
+PARAM, 0, dGraph, GenericPartitioner, HOST_0, 0

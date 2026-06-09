@@ -1,0 +1,26 @@
+STAT_TYPE, HOST_ID, REGION, CATEGORY, TOTAL_TYPE, TOTAL
+STAT, 0, dGraph_Generic, EdgeLoading, HMAX, 194
+STAT, 0, dGraph_Generic, CuSPStateRounds, HOST_0, 100
+STAT, 0, dGraph_Generic, EdgeInspection, HMAX, 178
+STAT, 0, dGraph_Generic, GraphReading, HMAX, 75
+STAT, 0, DistBench, GraphConstructTime, HMAX, 615
+STAT, 0, InitializeGraph_0, Time, HMAX, 30
+STAT, 0, Gluon, ReduceNumMessages_BFS_0, HSUM, 0
+STAT, 0, BFS, NumWorkItems_0, HSUM, 13188886
+STAT, 0, BFS, NumIterations_0, HMAX, 10
+STAT, 0, BFS, Timer_0, HMAX, 1141
+STAT, 0, BFS, TimerTotal, HMAX, 1812
+STAT, 0, BFS_0, Time, HMAX, 1136
+STAT, 0, BFSSanityCheck, Time, HMAX, 24
+STAT, 0, Gluon, ReplicationFactor, HOST_0, 1
+PARAM, 0, DistBench, CommandLine, HOST_0, Galois/build/lonestar/analytics/distributed/bfs/bfs-push-dist datasets/web-Google.sgr --symmetricGraph -t=2 --runs=1 -exec=Sync -startNode=0 -statFile=experiments/results/stats/_smoke_bfs.stats
+PARAM, 0, DistBench, Threads, HOST_0, 1
+PARAM, 0, DistBench, Hosts, HOST_0, 1
+PARAM, 0, DistBench, Runs, HOST_0, 1
+PARAM, 0, DistBench, Run_UUID, HOST_0, 8ef6ed46-c330-4d0a-bd6e-f21f85acc237
+PARAM, 0, DistBench, Input, HOST_0, datasets/web-Google.sgr
+PARAM, 0, DistBench, PartitionScheme, HOST_0, oec
+PARAM, 0, DistBench, Hostname, HOST_0, danil
+PARAM, 0, BFS, Max Iterations, HOST_0, 1000
+PARAM, 0, BFS, Source Node ID, HOST_0, 0
+PARAM, 0, dGraph, GenericPartitioner, HOST_0, 0
