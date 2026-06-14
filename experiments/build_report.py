@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Build REPORT.md from experiments/results/stats/*.stats (does not overwrite report.csv)."""
+"""Build REPORT.md and report.csv from experiments/results/stats/*.stats."""
+import csv
 import sys
 from pathlib import Path
 
@@ -125,13 +126,72 @@ def write_report_md(rows):
     REPORT_MD.write_text("\n".join(lines))
 
 
+CSV_COLUMNS = [
+    "algorithm",
+    "dataset",
+    "mpi_processes",
+    "threads",
+    "runs",
+    "primary_metric",
+    "primary_metric_value",
+    "status",
+    "total_time",
+    "total_time_exec",
+    "compute_time",
+    "sync_time",
+    "barrier_time",
+    "sync_bytes",
+    "graph_construct_time",
+    "replication_factor",
+    "comm_mem_max",
+    "comm_mem_min",
+    "inspect_bytes",
+    "load_bytes",
+    "load_messages",
+    "peak_load_bytes",
+    "replication_nodes",
+    "replication_edges",
+    "total_node_proxies",
+    "total_edge_proxies",
+    "edge_inspection_time",
+    "edge_loading_time",
+]
+
+METRIC_KEYS = CSV_COLUMNS[8:]
+
+
+def write_report_csv(rows):
+    out_rows = []
+    for algo_key, dataset, np, m, status in rows:
+        algo_name = ALGO_LABEL[algo_key]
+        pk = ALGO_PRIMARY[algo_name]
+        row = {
+            "algorithm": algo_name,
+            "dataset": dataset,
+            "mpi_processes": np,
+            "threads": m.get("num_threads", ""),
+            "runs": m.get("runs", ""),
+            "primary_metric": pk,
+            "primary_metric_value": m.get(pk, ""),
+            "status": status,
+        }
+        for key in METRIC_KEYS:
+            row[key] = m.get(key, "")
+        out_rows.append(row)
+
+    with open(REPORT_CSV, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(out_rows)
+    print(f"Wrote {REPORT_CSV} ({len(out_rows)} rows)")
+
+
 def main():
     rows = collect_rows()
     write_report_md(rows)
+    write_report_csv(rows)
     ok = sum(1 for r in rows if r[4] == "ok")
     print(f"Wrote {REPORT_MD} ({ok}/{len(rows)} runs with valid stats)")
-    if REPORT_CSV.exists():
-        print(f"Left unchanged: {REPORT_CSV}")
 
 
 if __name__ == "__main__":

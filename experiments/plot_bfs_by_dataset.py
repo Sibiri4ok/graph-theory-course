@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """BFS dashboard: one presentation figure per dataset (metrics vs MPI)."""
 from pathlib import Path
+import csv
+import re
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -8,6 +10,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 CSV = ROOT / "experiments" / "report.csv"
+STATS_DIR = ROOT / "experiments" / "results" / "stats"
 OUT_DIR = ROOT / "experiments" / "plots" / "bfs" / "by_dataset"
 
 DATASETS = [
@@ -80,10 +83,51 @@ def _annotate_points(ax, x, y, color: str) -> None:
         )
 
 
+def _timer_min_max(algo_slug: str, dataset: str, mpi_processes: int) -> tuple[float, float]:
+    path = STATS_DIR / f"{algo_slug}_{dataset}_{mpi_processes}p.stats"
+    values: list[float] = []
+    if not path.exists():
+        return float("nan"), float("nan")
+
+    with open(path, newline="") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if len(row) < 6:
+                continue
+            category = row[3].strip()
+            if category == "Timer_0":
+                continue
+            if not re.fullmatch(r"Timer_\d+", category):
+                continue
+            try:
+                values.append(float(row[5]))
+            except ValueError:
+                pass
+
+    if not values:
+        return float("nan"), float("nan")
+    return min(values), max(values)
+
+
+def _add_timer_bounds(sub: pd.DataFrame, algo_slug: str) -> pd.DataFrame:
+    sub = sub.copy()
+    mins: list[float] = []
+    maxs: list[float] = []
+    for _, row in sub.iterrows():
+        mn, mx = _timer_min_max(algo_slug, row["dataset"], int(row["mpi_processes"]))
+        mins.append(mn)
+        maxs.append(mx)
+    sub["timer_min_excl_first"] = mins
+    sub["timer_max_excl_first"] = maxs
+    return sub
+
+
 def plot_dataset(df: pd.DataFrame, dataset: str, subtitle: str) -> None:
     sub = df[df["dataset"] == dataset].sort_values("mpi_processes")
     if sub.empty:
         return
+    sub = _add_timer_bounds(sub, "bfs")
 
     accent = ACCENT.get(dataset, "#334155")
     fig = plt.figure(figsize=(14, 8.5))
@@ -94,10 +138,11 @@ def plot_dataset(df: pd.DataFrame, dataset: str, subtitle: str) -> None:
         color="#0f172a",
         y=0.98,
     )
+    runs = int(sub["runs"].iloc[0]) if "runs" in sub.columns and len(sub) else 3
     fig.text(
         0.5,
         0.93,
-        "MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs=3",
+        f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs}",
         ha="center",
         fontsize=10,
         color="#64748b",
@@ -126,8 +171,45 @@ def plot_dataset(df: pd.DataFrame, dataset: str, subtitle: str) -> None:
             markeredgewidth=2,
             markeredgecolor=accent,
             zorder=3,
+            label="Mean",
         )
         _annotate_points(ax, x, y, accent)
+
+        scale_y = y
+        if col == "total_time_exec":
+            y_min = pd.to_numeric(sub["timer_min_excl_first"], errors="coerce").values
+            y_max = pd.to_numeric(sub["timer_max_excl_first"], errors="coerce").values
+            ax.plot(
+                x,
+                y_min,
+                color="#16a34a",
+                linewidth=1.8,
+                linestyle="--",
+                marker="v",
+                markersize=6,
+                zorder=2,
+                label="Min (runs 1-19)",
+            )
+            ax.plot(
+                x,
+                y_max,
+                color="#dc2626",
+                linewidth=1.8,
+                linestyle="--",
+                marker="^",
+                markersize=6,
+                zorder=2,
+                label="Max (runs 1-19)",
+            )
+            scale_y = pd.concat(
+                [
+                    pd.Series(y, dtype="float64"),
+                    pd.Series(y_min, dtype="float64"),
+                    pd.Series(y_max, dtype="float64"),
+                ],
+                ignore_index=True,
+            ).dropna().values
+            ax.legend(loc="best", fontsize=7, frameon=True, framealpha=0.9)
 
         ax.set_xticks(MPI_TICKS)
         ax.set_xlabel("MPI processes", fontsize=9)
@@ -135,9 +217,9 @@ def plot_dataset(df: pd.DataFrame, dataset: str, subtitle: str) -> None:
         ax.set_title(title, pad=8)
         ax.grid(True, axis="both")
         ax.set_xlim(0.2, 8.8)
-        _format_yaxis(ax, use_log and (y > 0).all())
+        _format_yaxis(ax, use_log and (scale_y > 0).all())
 
-        if use_log and (y <= 0).any():
+        if use_log and (scale_y <= 0).any():
             _format_yaxis(ax, False)
             ax.set_ylim(bottom=0)
 

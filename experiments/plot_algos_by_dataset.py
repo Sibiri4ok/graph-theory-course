@@ -10,6 +10,8 @@
   - graph_construct_time
 """
 from pathlib import Path
+import csv
+import re
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -17,6 +19,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 CSV = ROOT / "experiments" / "report.csv"
+STATS_DIR = ROOT / "experiments" / "results" / "stats"
 
 DATASETS = [
     ("roadNet-PA", "Road network — Pennsylvania"),
@@ -138,6 +141,46 @@ def _plot_load_vs_peak_bytes(ax, x, y_load, y_peak, accent: str) -> None:
     ax.legend(loc="upper left", fontsize=7, frameon=True, framealpha=0.9)
 
 
+def _timer_min_max(algo_slug: str, dataset: str, mpi_processes: int) -> tuple[float, float]:
+    path = STATS_DIR / f"{algo_slug}_{dataset}_{mpi_processes}p.stats"
+    values: list[float] = []
+    if not path.exists():
+        return float("nan"), float("nan")
+
+    with open(path, newline="") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if len(row) < 6:
+                continue
+            category = row[3].strip()
+            if category == "Timer_0":
+                continue
+            if not re.fullmatch(r"Timer_\d+", category):
+                continue
+            try:
+                values.append(float(row[5]))
+            except ValueError:
+                pass
+
+    if not values:
+        return float("nan"), float("nan")
+    return min(values), max(values)
+
+
+def _add_timer_bounds(sub: pd.DataFrame, algo_slug: str) -> pd.DataFrame:
+    sub = sub.copy()
+    mins: list[float] = []
+    maxs: list[float] = []
+    for _, row in sub.iterrows():
+        mn, mx = _timer_min_max(algo_slug, row["dataset"], int(row["mpi_processes"]))
+        mins.append(mn)
+        maxs.append(mx)
+    sub["timer_min_excl_first"] = mins
+    sub["timer_max_excl_first"] = maxs
+    return sub
+
+
 def plot_dataset_for_algo(
     df: pd.DataFrame,
     algo_label: str,
@@ -145,12 +188,16 @@ def plot_dataset_for_algo(
     algo_slug: str,
     dataset: str,
     subtitle: str,
+    *,
+    runs_label: str = "3",
+    out_path: Path | None = None,
 ) -> None:
     sub = df[(df["algorithm"] == algo_label) & (df["dataset"] == dataset)].sort_values(
         "mpi_processes"
     )
     if sub.empty:
         return
+    sub = _add_timer_bounds(sub, algo_slug)
 
     out_dir = ROOT / "experiments" / "plots" / algo_slug / "by_dataset"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -164,10 +211,11 @@ def plot_dataset_for_algo(
         color="#0f172a",
         y=0.98,
     )
+    runs_label = str(int(sub["runs"].iloc[0])) if "runs" in sub.columns and len(sub) else "3"
     fig.text(
         0.5,
         0.93,
-        "MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs=3",
+        f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs_label}",
         ha="center",
         fontsize=10,
         color="#64748b",
@@ -189,6 +237,13 @@ def plot_dataset_for_algo(
             y_load = pd.to_numeric(sub["load_bytes"], errors="coerce").values
             y_peak = pd.to_numeric(sub["peak_load_bytes"], errors="coerce").values
             y = y_load
+            scale_y = pd.concat(
+                [
+                    pd.Series(y_load, dtype="float64"),
+                    pd.Series(y_peak, dtype="float64"),
+                ],
+                ignore_index=True,
+            ).dropna().values
             _plot_load_vs_peak_bytes(ax, x, y_load, y_peak, accent)
         else:
             y = pd.to_numeric(sub[col], errors="coerce").values
@@ -203,8 +258,45 @@ def plot_dataset_for_algo(
                 markeredgewidth=2,
                 markeredgecolor=accent,
                 zorder=3,
+                label="Mean",
             )
             _annotate_points(ax, x, y, accent)
+            scale_y = y
+
+            if col == "total_time_exec":
+                y_min = pd.to_numeric(sub["timer_min_excl_first"], errors="coerce").values
+                y_max = pd.to_numeric(sub["timer_max_excl_first"], errors="coerce").values
+                ax.plot(
+                    x,
+                    y_min,
+                    color="#16a34a",
+                    linewidth=1.8,
+                    linestyle="--",
+                    marker="v",
+                    markersize=6,
+                    zorder=2,
+                    label="Min (runs 1-19)",
+                )
+                ax.plot(
+                    x,
+                    y_max,
+                    color="#dc2626",
+                    linewidth=1.8,
+                    linestyle="--",
+                    marker="^",
+                    markersize=6,
+                    zorder=2,
+                    label="Max (runs 1-19)",
+                )
+                scale_y = pd.concat(
+                    [
+                        pd.Series(y, dtype="float64"),
+                        pd.Series(y_min, dtype="float64"),
+                        pd.Series(y_max, dtype="float64"),
+                    ],
+                    ignore_index=True,
+                ).dropna().values
+                ax.legend(loc="best", fontsize=7, frameon=True, framealpha=0.9)
 
         ylabel = f"{title} ({unit})" if unit else title
 
@@ -214,13 +306,14 @@ def plot_dataset_for_algo(
         ax.set_title(title, pad=8)
         ax.grid(True, axis="both")
         ax.set_xlim(0.2, 8.8)
-        _format_yaxis(ax, use_log and (y > 0).all())
+        _format_yaxis(ax, use_log and (scale_y > 0).all())
 
-        if use_log and (y <= 0).any():
+        if use_log and (scale_y <= 0).any():
             _format_yaxis(ax, False)
             ax.set_ylim(bottom=0)
 
-    out = out_dir / f"{algo_slug}_{dataset}.png"
+    out = out_path or (out_dir / f"{algo_slug}_{dataset}.png")
+    out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=160, facecolor=fig.get_facecolor())
     plt.close(fig)
     print(f"Wrote {out}")

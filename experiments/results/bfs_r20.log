@@ -1,0 +1,2452 @@
+===== BFS roadNet-PA MPI=1 runs=20 2026-06-12T13:37:14+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.000981 seconds to read 168 bytes in 19 seeks (0.171254 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[0] Edge inspection time: 0.064469 seconds to read 42125080 bytes (653.416 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.062586 seconds to read 42125080 bytes (673.075 MBPS)
+[0] Graph construction complete.
+[0] InitializeGraph::go called
+[0] BFS::go run 0 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 1 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 2 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 5 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 6 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 8 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 12 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 13 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 15 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 17 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 18 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 19 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+exit=0
+===== BFS roadNet-PA MPI=2 runs=20 2026-06-12T13:38:14+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[1] Master distribution time : 0.00752 seconds to read 336 bytes in 41 seeks (0.0446809 MBPS)
+[1] Starting graph reading.
+[1] Reading graph complete.
+[0] Master distribution time : 0.024749 seconds to read 176 bytes in 21 seeks (0.0071114 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[1] Edge inspection time: 0.070593 seconds to read 21064080 bytes (298.388 MBPS)
+[0] Edge inspection time: 0.068806 seconds to read 21060992 bytes (306.092 MBPS)
+Loading edge-data while creating edges
+[1] Edge loading time: 0.087868 seconds to read 21064080 bytes (239.724 MBPS)
+[1] Graph construction complete.
+[0] Edge loading time: 0.083974 seconds to read 21060992 bytes (250.804 MBPS)
+[0] Graph construction complete.
+[1] InitializeGraph::go called
+[0] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 1 called
+[1] BFS::go run 1 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 2 called
+[0] BFS::go run 2 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 3 called
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 4 called
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 6 called
+[1] BFS::go run 6 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 7 called
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 8 called
+[0] BFS::go run 8 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 9 called
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 10 called
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 11 called
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 12 called
+[0] BFS::go run 12 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 14 called
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 15 called
+[1] BFS::go run 15 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 16 called
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 17 called
+[1] BFS::go run 17 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 18 called
+[1] BFS::go run 18 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 19 called
+[0] BFS::go run 19 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+exit=0
+===== BFS roadNet-PA MPI=4 runs=20 2026-06-12T13:42:05+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[2] Master distribution time : 0.021946 seconds to read 336 bytes in 41 seeks (0.0153103 MBPS)
+[2] Starting graph reading.
+[1] Master distribution time : 0.043087 seconds to read 336 bytes in 42 seeks (0.00779818 MBPS)
+[1] Starting graph reading.
+[0] Master distribution time : 0.048147 seconds to read 176 bytes in 22 seeks (0.00365547 MBPS)
+[0] Starting graph reading.
+[2] Reading graph complete.
+[3] Master distribution time : 0.046188 seconds to read 320 bytes in 39 seeks (0.00692821 MBPS)
+[3] Starting graph reading.
+[1] Reading graph complete.
+[0] Reading graph complete.
+[3] Reading graph complete.
+[0] Edge inspection time: 0.073962 seconds to read 10511600 bytes (142.122 MBPS)
+[2] Edge inspection time: 0.096317 seconds to read 10470112 bytes (108.705 MBPS)
+[1] Edge inspection time: 0.095499 seconds to read 10549384 bytes (110.466 MBPS)
+[3] Edge inspection time: 0.097461 seconds to read 10593960 bytes (108.699 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.073855 seconds to read 10511600 bytes (142.328 MBPS)
+[0] Graph construction complete.
+[2] Edge loading time: 0.094627 seconds to read 10470112 bytes (110.646 MBPS)
+[2] Graph construction complete.
+[1] Edge loading time: 0.093753 seconds to read 10549384 bytes (112.523 MBPS)
+[1] Graph construction complete.
+[3] Edge loading time: 0.124716 seconds to read 10593960 bytes (84.9447 MBPS)
+[3] Graph construction complete.
+[3] InitializeGraph::go called
+[2] InitializeGraph::go called
+[0] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+[3] BFS::go run 0 called
+[2] BFS::go run 0 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 1 called
+[3] BFS::go run 1 called
+[2] BFS::go run 1 called
+[1] BFS::go run 1 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 2 called
+[2] BFS::go run 2 called
+[1] BFS::go run 2 called
+[3] BFS::go run 2 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 3 called
+[3] BFS::go run 3 called
+[2] BFS::go run 3 called
+[1] BFS::go run 3 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 4 called
+[2] BFS::go run 4 called
+[3] BFS::go run 4 called
+[1] BFS::go run 4 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 5 called
+[3] BFS::go run 5 called
+[2] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 6 called
+[3] BFS::go run 6 called
+[1] BFS::go run 6 called
+[2] BFS::go run 6 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 7 called
+[3] BFS::go run 7 called
+[1] BFS::go run 7 called
+[2] BFS::go run 7 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+[2] BFS::go run 8 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 9 called
+[3] BFS::go run 9 called
+[1] BFS::go run 9 called
+[2] BFS::go run 9 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 10 called
+[3] BFS::go run 10 called
+[2] BFS::go run 10 called
+[1] BFS::go run 10 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 11 called
+[3] BFS::go run 11 called
+[2] BFS::go run 11 called
+[1] BFS::go run 11 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 12 called
+[1] BFS::go run 12 called
+[3] BFS::go run 12 called
+[2] BFS::go run 12 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+[2] BFS::go run 13 called
+[3] BFS::go run 13 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 14 called
+[2] BFS::go run 14 called
+[3] BFS::go run 14 called
+[1] BFS::go run 14 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+[3] BFS::go run 15 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 16 called
+[2] BFS::go run 16 called
+[1] BFS::go run 16 called
+[3] BFS::go run 16 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 17 called
+[1] BFS::go run 17 called
+[2] BFS::go run 17 called
+[3] BFS::go run 17 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 18 called
+[3] BFS::go run 18 called
+[2] BFS::go run 18 called
+[1] BFS::go run 18 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 19 called
+[1] BFS::go run 19 called
+[3] BFS::go run 19 called
+[2] BFS::go run 19 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+exit=0
+===== BFS roadNet-PA MPI=6 runs=20 2026-06-12T13:52:25+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[3] Master distribution time : 0.035763 seconds to read 328 bytes in 40 seeks (0.00917149 MBPS)
+[3] Starting graph reading.
+[3] Reading graph complete.
+[2] Master distribution time : 0.068973 seconds to read 328 bytes in 40 seeks (0.00475548 MBPS)
+[2] Starting graph reading.
+[0] Master distribution time : 0.037839 seconds to read 168 bytes in 20 seeks (0.00443986 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[5] Master distribution time : 0.071885 seconds to read 312 bytes in 37 seeks (0.00434027 MBPS)
+[5] Starting graph reading.
+[5] Reading graph complete.
+[1] Master distribution time : 0.107599 seconds to read 336 bytes in 40 seeks (0.00312271 MBPS)
+[1] Starting graph reading.
+[2] Reading graph complete.
+[4] Master distribution time : 0.107831 seconds to read 320 bytes in 40 seeks (0.00296761 MBPS)
+[4] Starting graph reading.
+[4] Reading graph complete.
+[1] Reading graph complete.
+[0] Edge inspection time: 0.101474 seconds to read 6985408 bytes (68.8394 MBPS)
+[2] Edge inspection time: 0.07968 seconds to read 7010728 bytes (87.986 MBPS)
+[3] Edge inspection time: 0.141631 seconds to read 6971904 bytes (49.2258 MBPS)
+[5] Edge inspection time: 0.146191 seconds to read 7136320 bytes (48.815 MBPS)
+[1] Edge inspection time: 0.120002 seconds to read 7064888 bytes (58.8731 MBPS)
+[4] Edge inspection time: 0.142848 seconds to read 6955792 bytes (48.6937 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.077088 seconds to read 6985408 bytes (90.616 MBPS)
+[0] Graph construction complete.
+[2] Edge loading time: 0.074473 seconds to read 7010728 bytes (94.1378 MBPS)
+[3] Edge loading time: 0.082844 seconds to read 6971904 bytes (84.157 MBPS)
+[2] Graph construction complete.
+[3] Graph construction complete.
+[4] Edge loading time: 0.072376 seconds to read 6955792 bytes (96.1063 MBPS)
+[4] Graph construction complete.
+[1] Edge loading time: 0.099304 seconds to read 7064888 bytes (71.144 MBPS)
+[1] Graph construction complete.
+[5] Edge loading time: 0.107262 seconds to read 7136320 bytes (66.5317 MBPS)
+[5] Graph construction complete.
+[3] InitializeGraph::go called
+[5] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] InitializeGraph::go called
+[4] InitializeGraph::go called
+[2] InitializeGraph::go called
+[0] BFS::go run 0 called
+[3] BFS::go run 0 called
+[4] BFS::go run 0 called
+[2] BFS::go run 0 called
+[5] BFS::go run 0 called
+[1] BFS::go run 0 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 1 called
+[4] BFS::go run 1 called
+[1] BFS::go run 1 called
+[3] BFS::go run 1 called
+[5] BFS::go run 1 called
+[2] BFS::go run 1 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 2 called
+[2] BFS::go run 2 called
+[3] BFS::go run 2 called
+[5] BFS::go run 2 called
+[1] BFS::go run 2 called
+[4] BFS::go run 2 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 3 called
+[5] BFS::go run 3 called
+[1] BFS::go run 3 called
+[3] BFS::go run 3 called
+[4] BFS::go run 3 called
+[2] BFS::go run 3 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 4 called
+[1] BFS::go run 4 called
+[4] BFS::go run 4 called
+[5] BFS::go run 4 called
+[2] BFS::go run 4 called
+[3] BFS::go run 4 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 5 called
+[3] BFS::go run 5 called
+[2] BFS::go run 5 called
+[5] BFS::go run 5 called
+[4] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 6 called
+[5] BFS::go run 6 called
+[1] BFS::go run 6 called
+[4] BFS::go run 6 called
+[2] BFS::go run 6 called
+[3] BFS::go run 6 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 7 called
+[3] BFS::go run 7 called
+[1] BFS::go run 7 called
+[2] BFS::go run 7 called
+[4] BFS::go run 7 called
+[5] BFS::go run 7 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 8 called
+[4] BFS::go run 8 called
+[2] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+[5] BFS::go run 8 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 9 called
+[1] BFS::go run 9 called
+[5] BFS::go run 9 called
+[4] BFS::go run 9 called
+[2] BFS::go run 9 called
+[3] BFS::go run 9 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 10 called
+[2] BFS::go run 10 called
+[1] BFS::go run 10 called
+[4] BFS::go run 10 called
+[3] BFS::go run 10 called
+[5] BFS::go run 10 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 11 called
+[3] BFS::go run 11 called
+[5] BFS::go run 11 called
+[2] BFS::go run 11 called
+[4] BFS::go run 11 called
+[1] BFS::go run 11 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 12 called
+[4] BFS::go run 12 called
+[3] BFS::go run 12 called
+[1] BFS::go run 12 called
+[2] BFS::go run 12 called
+[5] BFS::go run 12 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+[3] BFS::go run 13 called
+[5] BFS::go run 13 called
+[2] BFS::go run 13 called
+[4] BFS::go run 13 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 14 called
+[1] BFS::go run 14 called
+[2] BFS::go run 14 called
+[4] BFS::go run 14 called
+[3] BFS::go run 14 called
+[5] BFS::go run 14 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+[4] BFS::go run 15 called
+[3] BFS::go run 15 called
+[5] BFS::go run 15 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 16 called
+[5] BFS::go run 16 called
+[4] BFS::go run 16 called
+[3] BFS::go run 16 called
+[2] BFS::go run 16 called
+[1] BFS::go run 16 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 17 called
+[2] BFS::go run 17 called
+[5] BFS::go run 17 called
+[1] BFS::go run 17 called
+[3] BFS::go run 17 called
+[4] BFS::go run 17 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 18 called
+[3] BFS::go run 18 called
+[5] BFS::go run 18 called
+[1] BFS::go run 18 called
+[4] BFS::go run 18 called
+[2] BFS::go run 18 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 19 called
+[1] BFS::go run 19 called
+[2] BFS::go run 19 called
+[5] BFS::go run 19 called
+[4] BFS::go run 19 called
+[3] BFS::go run 19 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+exit=0
+===== BFS roadNet-PA MPI=8 runs=20 2026-06-12T14:10:47+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.043397 seconds to read 168 bytes in 19 seeks (0.00387124 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[6] Master distribution time : 0.098335 seconds to read 320 bytes in 40 seeks (0.00325418 MBPS)
+[6] Starting graph reading.
+[6] Reading graph complete.
+[7] Master distribution time : 0.096313 seconds to read 312 bytes in 37 seeks (0.00323944 MBPS)
+[7] Starting graph reading.
+[7] Reading graph complete.
+[3] Master distribution time : 0.10613 seconds to read 328 bytes in 40 seeks (0.00309055 MBPS)
+[3] Starting graph reading.
+[3] Reading graph complete.
+[4] Master distribution time : 0.095295 seconds to read 328 bytes in 41 seeks (0.00344194 MBPS)
+[4] Starting graph reading.
+[4] Reading graph complete.
+[5] Master distribution time : 0.145785 seconds to read 328 bytes in 40 seeks (0.00224989 MBPS)
+[5] Starting graph reading.
+[5] Reading graph complete.
+[1] Master distribution time : 0.140812 seconds to read 336 bytes in 41 seeks (0.00238616 MBPS)
+[1] Starting graph reading.
+[1] Reading graph complete.
+[2] Master distribution time : 0.147764 seconds to read 344 bytes in 43 seeks (0.00232804 MBPS)
+[2] Starting graph reading.
+[2] Reading graph complete.
+[0] Edge inspection time: 0.092736 seconds to read 5223272 bytes (56.3241 MBPS)
+[3] Edge inspection time: 0.143384 seconds to read 5276216 bytes (36.7978 MBPS)
+[6] Edge inspection time: 0.160385 seconds to read 5233368 bytes (32.63 MBPS)
+[2] Edge inspection time: 0.139617 seconds to read 5273208 bytes (37.7691 MBPS)
+[1] Edge inspection time: 0.161847 seconds to read 5288320 bytes (32.6748 MBPS)
+[4] Edge inspection time: 0.191923 seconds to read 5198232 bytes (27.085 MBPS)
+[7] Edge inspection time: 0.225922 seconds to read 5360584 bytes (23.7276 MBPS)
+[5] Edge inspection time: 0.197138 seconds to read 5271824 bytes (26.7418 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.08864 seconds to read 5223272 bytes (58.9268 MBPS)
+[0] Graph construction complete.
+[1] Edge loading time: 0.10037 seconds to read 5288320 bytes (52.6883 MBPS)
+[3] Edge loading time: 0.100105 seconds to read 5276216 bytes (52.7068 MBPS)
+[3] Graph construction complete.
+[6] Edge loading time: 0.130567 seconds to read 5233368 bytes (40.0819 MBPS)
+[6] Graph construction complete.
+[2] Edge loading time: 0.109231 seconds to read 5273208 bytes (48.2757 MBPS)
+[2] Graph construction complete.
+[4] Edge loading time: 0.098082 seconds to read 5198232 bytes (52.9988 MBPS)
+[4] Graph construction complete.
+[5] Edge loading time: 0.096315 seconds to read 5271824 bytes (54.7352 MBPS)
+[5] Graph construction complete.
+[1] Graph construction complete.
+[7] Edge loading time: 0.108756 seconds to read 5360584 bytes (49.29 MBPS)
+[7] Graph construction complete.
+[5] InitializeGraph::go called
+[0] InitializeGraph::go called
+[2] InitializeGraph::go called
+[1] InitializeGraph::go called
+[6] InitializeGraph::go called
+[4] InitializeGraph::go called
+[3] InitializeGraph::go called
+[7] InitializeGraph::go called
+[6] BFS::go run 0 called
+[2] BFS::go run 0 called
+[0] BFS::go run 0 called
+[7] BFS::go run 0 called
+[4] BFS::go run 0 called
+[3] BFS::go run 0 called
+[1] BFS::go run 0 called
+[5] BFS::go run 0 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[7] BFS::go run 1 called
+[1] BFS::go run 1 called
+[5] BFS::go run 1 called
+[3] BFS::go run 1 called
+[2] BFS::go run 1 called
+[6] BFS::go run 1 called
+[0] BFS::go run 1 called
+[4] BFS::go run 1 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[2] BFS::go run 2 called
+[0] BFS::go run 2 called
+[3] BFS::go run 2 called
+[6] BFS::go run 2 called
+[7] BFS::go run 2 called
+[1] BFS::go run 2 called
+[4] BFS::go run 2 called
+[5] BFS::go run 2 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 3 called
+[1] BFS::go run 3 called
+[4] BFS::go run 3 called
+[2] BFS::go run 3 called
+[6] BFS::go run 3 called
+[3] BFS::go run 3 called
+[5] BFS::go run 3 called
+[7] BFS::go run 3 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[4] BFS::go run 4 called
+[0] BFS::go run 4 called
+[6] BFS::go run 4 called
+[5] BFS::go run 4 called
+[2] BFS::go run 4 called
+[7] BFS::go run 4 called
+[1] BFS::go run 4 called
+[3] BFS::go run 4 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[6] BFS::go run 5 called
+[4] BFS::go run 5 called
+[2] BFS::go run 5 called
+[3] BFS::go run 5 called
+[0] BFS::go run 5 called
+[7] BFS::go run 5 called
+[5] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 6 called
+[3] BFS::go run 6 called
+[5] BFS::go run 6 called
+[7] BFS::go run 6 called
+[2] BFS::go run 6 called
+[6] BFS::go run 6 called
+[0] BFS::go run 6 called
+[4] BFS::go run 6 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[4] BFS::go run 7 called
+[5] BFS::go run 7 called
+[1] BFS::go run 7 called
+[6] BFS::go run 7 called
+[0] BFS::go run 7 called
+[2] BFS::go run 7 called
+[7] BFS::go run 7 called
+[3] BFS::go run 7 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 8 called
+[4] BFS::go run 8 called
+[1] BFS::go run 8 called
+[2] BFS::go run 8 called
+[7] BFS::go run 8 called
+[6] BFS::go run 8 called
+[5] BFS::go run 8 called
+[3] BFS::go run 8 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 9 called
+[2] BFS::go run 9 called
+[4] BFS::go run 9 called
+[6] BFS::go run 9 called
+[1] BFS::go run 9 called
+[5] BFS::go run 9 called
+[3] BFS::go run 9 called
+[7] BFS::go run 9 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 10 called
+[5] BFS::go run 10 called
+[4] BFS::go run 10 called
+[0] BFS::go run 10 called
+[6] BFS::go run 10 called
+[2] BFS::go run 10 called
+[7] BFS::go run 10 called
+[3] BFS::go run 10 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[5] BFS::go run 11 called
+[4] BFS::go run 11 called
+[0] BFS::go run 11 called
+[1] BFS::go run 11 called
+[7] BFS::go run 11 called
+[3] BFS::go run 11 called
+[6] BFS::go run 11 called
+[2] BFS::go run 11 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[1] BFS::go run 12 called
+[7] BFS::go run 12 called
+[3] BFS::go run 12 called
+[2] BFS::go run 12 called
+[6] BFS::go run 12 called
+[5] BFS::go run 12 called
+[0] BFS::go run 12 called
+[4] BFS::go run 12 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[5] BFS::go run 13 called
+[7] BFS::go run 13 called
+[1] BFS::go run 13 called
+[3] BFS::go run 13 called
+[0] BFS::go run 13 called
+[4] BFS::go run 13 called
+[2] BFS::go run 13 called
+[6] BFS::go run 13 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[6] BFS::go run 14 called
+[7] BFS::go run 14 called
+[1] BFS::go run 14 called
+[5] BFS::go run 14 called
+[3] BFS::go run 14 called
+[0] BFS::go run 14 called
+[2] BFS::go run 14 called
+[4] BFS::go run 14 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[3] BFS::go run 15 called
+[7] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+[0] BFS::go run 15 called
+[6] BFS::go run 15 called
+[4] BFS::go run 15 called
+[5] BFS::go run 15 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[7] BFS::go run 16 called
+[3] BFS::go run 16 called
+[1] BFS::go run 16 called
+[6] BFS::go run 16 called
+[0] BFS::go run 16 called
+[2] BFS::go run 16 called
+[4] BFS::go run 16 called
+[5] BFS::go run 16 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[7] BFS::go run 17 called
+[4] BFS::go run 17 called
+[2] BFS::go run 17 called
+[5] BFS::go run 17 called
+[3] BFS::go run 17 called
+[6] BFS::go run 17 called
+[0] BFS::go run 17 called
+[1] BFS::go run 17 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[0] BFS::go run 18 called
+[4] BFS::go run 18 called
+[1] BFS::go run 18 called
+[2] BFS::go run 18 called
+[5] BFS::go run 18 called
+[6] BFS::go run 18 called
+[3] BFS::go run 18 called
+[7] BFS::go run 18 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+[2] BFS::go run 19 called
+[5] BFS::go run 19 called
+[0] BFS::go run 19 called
+[6] BFS::go run 19 called
+[4] BFS::go run 19 called
+[1] BFS::go run 19 called
+[7] BFS::go run 19 called
+[3] BFS::go run 19 called
+Number of nodes visited from source 0 is 1087562
+Max distance from source 0 is 541
+exit=0
+===== BFS web-Google MPI=1 runs=20 2026-06-12T14:39:34+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.000965 seconds to read 160 bytes in 19 seeks (0.165803 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[0] Edge inspection time: 0.090072 seconds to read 55503152 bytes (616.209 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.109407 seconds to read 55503152 bytes (507.309 MBPS)
+[0] Graph construction complete.
+[0] InitializeGraph::go called
+[0] BFS::go run 0 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 1 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 2 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 5 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 6 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 8 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 12 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 13 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 15 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 17 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 18 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 19 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+exit=0
+===== BFS web-Google MPI=2 runs=20 2026-06-12T14:39:44+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.010656 seconds to read 168 bytes in 21 seeks (0.0157658 MBPS)
+[0] Starting graph reading.
+[1] Master distribution time : 0.024467 seconds to read 320 bytes in 40 seeks (0.0130788 MBPS)
+[1] Starting graph reading.
+[0] Reading graph complete.
+[1] Reading graph complete.
+[0] Edge inspection time: 0.16582 seconds to read 27972084 bytes (168.689 MBPS)
+[1] Edge inspection time: 0.165502 seconds to read 27531060 bytes (166.349 MBPS)
+Loading edge-data while creating edges
+[1] Edge loading time: 0.695093 seconds to read 27531060 bytes (39.6077 MBPS)
+[1] Graph construction complete.
+[0] Edge loading time: 0.744173 seconds to read 27972084 bytes (37.5881 MBPS)
+[0] Graph construction complete.
+[0] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 1 called
+[0] BFS::go run 1 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 2 called
+[1] BFS::go run 2 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 3 called
+[1] BFS::go run 3 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 4 called
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 6 called
+[1] BFS::go run 6 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 7 called
+[1] BFS::go run 7 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 8 called
+[1] BFS::go run 8 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 9 called
+[1] BFS::go run 9 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 10 called
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 11 called
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 12 called
+[1] BFS::go run 12 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 13 called
+[0] BFS::go run 13 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 14 called
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 15 called
+[1] BFS::go run 15 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 16 called
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 17 called
+[0] BFS::go run 17 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 18 called
+[1] BFS::go run 18 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 19 called
+[1] BFS::go run 19 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+exit=0
+===== BFS web-Google MPI=4 runs=20 2026-06-12T14:40:08+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[3] Master distribution time : 0.022193 seconds to read 312 bytes in 39 seeks (0.0140585 MBPS)
+[3] Starting graph reading.
+[2] Master distribution time : 0.047462 seconds to read 328 bytes in 41 seeks (0.00691079 MBPS)
+[2] Starting graph reading.
+[0] Master distribution time : 0.045248 seconds to read 160 bytes in 19 seeks (0.00353607 MBPS)
+[0] Starting graph reading.
+[1] Master distribution time : 0.046178 seconds to read 320 bytes in 39 seeks (0.00692971 MBPS)
+[1] Starting graph reading.
+[2] Reading graph complete.
+[3] Reading graph complete.
+[0] Reading graph complete.
+[1] Reading graph complete.
+[3] Edge inspection time: 0.260143 seconds to read 13633516 bytes (52.4078 MBPS)
+[2] Edge inspection time: 0.267605 seconds to read 13897536 bytes (51.933 MBPS)
+[0] Edge inspection time: 0.264348 seconds to read 13993736 bytes (52.9368 MBPS)
+[1] Edge inspection time: 0.264936 seconds to read 13978340 bytes (52.7612 MBPS)
+Loading edge-data while creating edges
+[3] Edge loading time: 0.959821 seconds to read 13633516 bytes (14.2042 MBPS)
+[3] Graph construction complete.
+[0] Edge loading time: 0.985058 seconds to read 13993736 bytes (14.206 MBPS)
+[0] Graph construction complete.
+[2] Edge loading time: 1.05792 seconds to read 13897536 bytes (13.1367 MBPS)
+[2] Graph construction complete.
+[1] Edge loading time: 1.05453 seconds to read 13978340 bytes (13.2556 MBPS)
+[1] Graph construction complete.
+[2] InitializeGraph::go called
+[3] InitializeGraph::go called
+[0] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+[2] BFS::go run 0 called
+[3] BFS::go run 0 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 1 called
+[3] BFS::go run 1 called
+[2] BFS::go run 1 called
+[1] BFS::go run 1 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 2 called
+[1] BFS::go run 2 called
+[3] BFS::go run 2 called
+[2] BFS::go run 2 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 3 called
+[2] BFS::go run 3 called
+[3] BFS::go run 3 called
+[1] BFS::go run 3 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 4 called
+[1] BFS::go run 4 called
+[2] BFS::go run 4 called
+[3] BFS::go run 4 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 5 called
+[1] BFS::go run 5 called
+[3] BFS::go run 5 called
+[2] BFS::go run 5 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 6 called
+[2] BFS::go run 6 called
+[1] BFS::go run 6 called
+[3] BFS::go run 6 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 7 called
+[2] BFS::go run 7 called
+[3] BFS::go run 7 called
+[1] BFS::go run 7 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 8 called
+[2] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 9 called
+[2] BFS::go run 9 called
+[1] BFS::go run 9 called
+[3] BFS::go run 9 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 10 called
+[1] BFS::go run 10 called
+[3] BFS::go run 10 called
+[2] BFS::go run 10 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 11 called
+[2] BFS::go run 11 called
+[1] BFS::go run 11 called
+[3] BFS::go run 11 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 12 called
+[1] BFS::go run 12 called
+[3] BFS::go run 12 called
+[2] BFS::go run 12 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+[3] BFS::go run 13 called
+[2] BFS::go run 13 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 14 called
+[3] BFS::go run 14 called
+[1] BFS::go run 14 called
+[2] BFS::go run 14 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+[3] BFS::go run 15 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 16 called
+[1] BFS::go run 16 called
+[2] BFS::go run 16 called
+[3] BFS::go run 16 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 17 called
+[3] BFS::go run 17 called
+[2] BFS::go run 17 called
+[1] BFS::go run 17 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 18 called
+[1] BFS::go run 18 called
+[2] BFS::go run 18 called
+[3] BFS::go run 18 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 19 called
+[2] BFS::go run 19 called
+[3] BFS::go run 19 called
+[1] BFS::go run 19 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+exit=0
+===== BFS web-Google MPI=6 runs=20 2026-06-12T14:40:53+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[3] Master distribution time : 0.034042 seconds to read 328 bytes in 41 seeks (0.00963516 MBPS)
+[3] Starting graph reading.
+[0] Master distribution time : 0.066082 seconds to read 160 bytes in 19 seeks (0.00242123 MBPS)
+[0] Starting graph reading.
+[4] Master distribution time : 0.067268 seconds to read 320 bytes in 39 seeks (0.00475709 MBPS)
+[4] Starting graph reading.
+[1] Master distribution time : 0.067258 seconds to read 320 bytes in 40 seeks (0.0047578 MBPS)
+[1] Starting graph reading.
+[5] Master distribution time : 0.08198 seconds to read 312 bytes in 38 seeks (0.00380581 MBPS)
+[5] Starting graph reading.
+[2] Master distribution time : 0.070295 seconds to read 328 bytes in 41 seeks (0.00466605 MBPS)
+[2] Starting graph reading.
+[3] Reading graph complete.
+[0] Reading graph complete.
+[4] Reading graph complete.
+[1] Reading graph complete.
+[5] Reading graph complete.
+[2] Reading graph complete.
+[3] Edge inspection time: 0.325784 seconds to read 9260188 bytes (28.4243 MBPS)
+[0] Edge inspection time: 0.327398 seconds to read 9360152 bytes (28.5895 MBPS)
+[4] Edge inspection time: 0.326111 seconds to read 9250140 bytes (28.365 MBPS)
+[5] Edge inspection time: 0.322145 seconds to read 9020716 bytes (28.002 MBPS)
+[2] Edge inspection time: 0.326325 seconds to read 9295744 bytes (28.4862 MBPS)
+[1] Edge inspection time: 0.362861 seconds to read 9316172 bytes (25.6742 MBPS)
+Loading edge-data while creating edges
+[4] Edge loading time: 1.0101 seconds to read 9250140 bytes (9.15764 MBPS)
+[4] Graph construction complete.
+[5] Edge loading time: 1.01495 seconds to read 9020716 bytes (8.88784 MBPS)
+[0] Edge loading time: 1.04505 seconds to read 9360152 bytes (8.95668 MBPS)
+[0] Graph construction complete.
+[5] Graph construction complete.
+[3] Edge loading time: 1.08124 seconds to read 9260188 bytes (8.56445 MBPS)
+[3] Graph construction complete.
+[1] Edge loading time: 1.07789 seconds to read 9316172 bytes (8.64297 MBPS)
+[1] Graph construction complete.
+[2] Edge loading time: 1.08105 seconds to read 9295744 bytes (8.59885 MBPS)
+[2] Graph construction complete.
+[4] InitializeGraph::go called
+[2] InitializeGraph::go called
+[3] InitializeGraph::go called
+[0] InitializeGraph::go called
+[5] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] BFS::go run 0 called
+[5] BFS::go run 0 called
+[4] BFS::go run 0 called
+[1] BFS::go run 0 called
+[2] BFS::go run 0 called
+[3] BFS::go run 0 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 1 called
+[3] BFS::go run 1 called
+[5] BFS::go run 1 called
+[2] BFS::go run 1 called
+[1] BFS::go run 1 called
+[4] BFS::go run 1 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 2 called
+[2] BFS::go run 2 called
+[4] BFS::go run 2 called
+[1] BFS::go run 2 called
+[5] BFS::go run 2 called
+[3] BFS::go run 2 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 3 called
+[2] BFS::go run 3 called
+[5] BFS::go run 3 called
+[3] BFS::go run 3 called
+[1] BFS::go run 3 called
+[4] BFS::go run 3 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 4 called
+[4] BFS::go run 4 called
+[5] BFS::go run 4 called
+[2] BFS::go run 4 called
+[1] BFS::go run 4 called
+[3] BFS::go run 4 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 5 called
+[2] BFS::go run 5 called
+[3] BFS::go run 5 called
+[4] BFS::go run 5 called
+[1] BFS::go run 5 called
+[5] BFS::go run 5 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 6 called
+[2] BFS::go run 6 called
+[1] BFS::go run 6 called
+[4] BFS::go run 6 called
+[5] BFS::go run 6 called
+[3] BFS::go run 6 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 7 called
+[1] BFS::go run 7 called
+[5] BFS::go run 7 called
+[2] BFS::go run 7 called
+[3] BFS::go run 7 called
+[4] BFS::go run 7 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 8 called
+[5] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+[2] BFS::go run 8 called
+[4] BFS::go run 8 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 9 called
+[5] BFS::go run 9 called
+[2] BFS::go run 9 called
+[4] BFS::go run 9 called
+[1] BFS::go run 9 called
+[3] BFS::go run 9 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 10 called
+[4] BFS::go run 10 called
+[1] BFS::go run 10 called
+[2] BFS::go run 10 called
+[5] BFS::go run 10 called
+[3] BFS::go run 10 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 11 called
+[5] BFS::go run 11 called
+[4] BFS::go run 11 called
+[1] BFS::go run 11 called
+[2] BFS::go run 11 called
+[3] BFS::go run 11 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 12 called
+[5] BFS::go run 12 called
+[2] BFS::go run 12 called
+[4] BFS::go run 12 called
+[3] BFS::go run 12 called
+[1] BFS::go run 12 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+[2] BFS::go run 13 called
+[4] BFS::go run 13 called
+[3] BFS::go run 13 called
+[5] BFS::go run 13 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 14 called
+[2] BFS::go run 14 called
+[5] BFS::go run 14 called
+[3] BFS::go run 14 called
+[1] BFS::go run 14 called
+[4] BFS::go run 14 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 15 called
+[1] BFS::go run 15 called
+[5] BFS::go run 15 called
+[2] BFS::go run 15 called
+[3] BFS::go run 15 called
+[4] BFS::go run 15 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 16 called
+[3] BFS::go run 16 called
+[5] BFS::go run 16 called
+[1] BFS::go run 16 called
+[2] BFS::go run 16 called
+[4] BFS::go run 16 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 17 called
+[2] BFS::go run 17 called
+[1] BFS::go run 17 called
+[4] BFS::go run 17 called
+[3] BFS::go run 17 called
+[5] BFS::go run 17 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 18 called
+[3] BFS::go run 18 called
+[4] BFS::go run 18 called
+[2] BFS::go run 18 called
+[5] BFS::go run 18 called
+[1] BFS::go run 18 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 19 called
+[3] BFS::go run 19 called
+[5] BFS::go run 19 called
+[1] BFS::go run 19 called
+[4] BFS::go run 19 called
+[2] BFS::go run 19 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+exit=0
+===== BFS web-Google MPI=8 runs=20 2026-06-12T14:42:06+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[1] Master distribution time : 0.046334 seconds to read 336 bytes in 41 seeks (0.00725169 MBPS)
+[1] Starting graph reading.
+[1] Reading graph complete.
+[5] Master distribution time : 0.100063 seconds to read 320 bytes in 39 seeks (0.00319799 MBPS)
+[5] Starting graph reading.
+[5] Reading graph complete.
+[2] Master distribution time : 0.094239 seconds to read 328 bytes in 41 seeks (0.00348051 MBPS)
+[2] Starting graph reading.
+[2] Reading graph complete.
+[3] Master distribution time : 0.094303 seconds to read 328 bytes in 40 seeks (0.00347815 MBPS)
+[3] Starting graph reading.
+[3] Reading graph complete.
+[4] Master distribution time : 0.094198 seconds to read 328 bytes in 41 seeks (0.00348203 MBPS)
+[4] Starting graph reading.
+[4] Reading graph complete.
+[6] Master distribution time : 0.094269 seconds to read 312 bytes in 39 seeks (0.00330968 MBPS)
+[6] Starting graph reading.
+[6] Reading graph complete.
+[7] Master distribution time : 0.094393 seconds to read 304 bytes in 38 seeks (0.00322058 MBPS)
+[7] Starting graph reading.
+[7] Reading graph complete.
+[0] Master distribution time : 0.138448 seconds to read 168 bytes in 19 seeks (0.00121345 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[7] Edge inspection time: 0.38418 seconds to read 6713984 bytes (17.4761 MBPS)
+[1] Edge inspection time: 0.430371 seconds to read 6971176 bytes (16.1981 MBPS)
+[5] Edge inspection time: 0.429873 seconds to read 6939516 bytes (16.1432 MBPS)
+[2] Edge inspection time: 0.429323 seconds to read 7019600 bytes (16.3504 MBPS)
+[3] Edge inspection time: 0.429161 seconds to read 6958732 bytes (16.2147 MBPS)
+[4] Edge inspection time: 0.430146 seconds to read 6958012 bytes (16.1759 MBPS)
+[6] Edge inspection time: 0.430349 seconds to read 6919524 bytes (16.0789 MBPS)
+[0] Edge inspection time: 0.430372 seconds to read 7022552 bytes (16.3174 MBPS)
+Loading edge-data while creating edges
+[4] Edge loading time: 1.10851 seconds to read 6958012 bytes (6.27692 MBPS)
+[1] Edge loading time: 1.14561 seconds to read 6971176 bytes (6.08513 MBPS)
+[1] Graph construction complete.
+[6] Edge loading time: 1.10835 seconds to read 6919524 bytes (6.24306 MBPS)
+[7] Edge loading time: 1.1082 seconds to read 6713984 bytes (6.05844 MBPS)
+[5] Edge loading time: 1.10696 seconds to read 6939516 bytes (6.26901 MBPS)
+[5] Graph construction complete.
+[2] Edge loading time: 1.15319 seconds to read 7019600 bytes (6.0871 MBPS)
+[2] Graph construction complete.
+[3] Edge loading time: 1.14788 seconds to read 6958732 bytes (6.06225 MBPS)
+[4] Graph construction complete.
+[6] Graph construction complete.
+[7] Graph construction complete.
+[0] Edge loading time: 1.15141 seconds to read 7022552 bytes (6.09909 MBPS)
+[0] Graph construction complete.
+[3] Graph construction complete.
+[1] InitializeGraph::go called
+[0] InitializeGraph::go called
+[4] InitializeGraph::go called
+[3] InitializeGraph::go called
+[5] InitializeGraph::go called
+[6] InitializeGraph::go called
+[7] InitializeGraph::go called
+[2] InitializeGraph::go called
+[4] BFS::go run 0 called
+[6] BFS::go run 0 called
+[7] BFS::go run 0 called
+[2] BFS::go run 0 called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+[5] BFS::go run 0 called
+[3] BFS::go run 0 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[3] BFS::go run 1 called
+[6] BFS::go run 1 called
+[7] BFS::go run 1 called
+[4] BFS::go run 1 called
+[1] BFS::go run 1 called
+[0] BFS::go run 1 called
+[2] BFS::go run 1 called
+[5] BFS::go run 1 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[4] BFS::go run 2 called
+[0] BFS::go run 2 called
+[6] BFS::go run 2 called
+[2] BFS::go run 2 called
+[5] BFS::go run 2 called
+[1] BFS::go run 2 called
+[7] BFS::go run 2 called
+[3] BFS::go run 2 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[2] BFS::go run 3 called
+[7] BFS::go run 3 called
+[0] BFS::go run 3 called
+[3] BFS::go run 3 called
+[4] BFS::go run 3 called
+[6] BFS::go run 3 called
+[5] BFS::go run 3 called
+[1] BFS::go run 3 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[0] BFS::go run 4 called
+[4] BFS::go run 4 called
+[2] BFS::go run 4 called
+[1] BFS::go run 4 called
+[6] BFS::go run 4 called
+[5] BFS::go run 4 called
+[3] BFS::go run 4 called
+[7] BFS::go run 4 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[2] BFS::go run 5 called
+[4] BFS::go run 5 called
+[7] BFS::go run 5 called
+[5] BFS::go run 5 called
+[6] BFS::go run 5 called
+[3] BFS::go run 5 called
+[1] BFS::go run 5 called
+[0] BFS::go run 5 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[6] BFS::go run 6 called
+[4] BFS::go run 6 called
+[7] BFS::go run 6 called
+[2] BFS::go run 6 called
+[0] BFS::go run 6 called
+[3] BFS::go run 6 called
+[5] BFS::go run 6 called
+[1] BFS::go run 6 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[4] BFS::go run 7 called
+[6] BFS::go run 7 called
+[5] BFS::go run 7 called
+[7] BFS::go run 7 called
+[1] BFS::go run 7 called
+[0] BFS::go run 7 called
+[2] BFS::go run 7 called
+[3] BFS::go run 7 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[5] BFS::go run 8 called
+[6] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+[4] BFS::go run 8 called
+[0] BFS::go run 8 called
+[2] BFS::go run 8 called
+[7] BFS::go run 8 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[3] BFS::go run 9 called
+[7] BFS::go run 9 called
+[1] BFS::go run 9 called
+[5] BFS::go run 9 called
+[6] BFS::go run 9 called
+[2] BFS::go run 9 called
+[4] BFS::go run 9 called
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[7] BFS::go run 10 called
+[2] BFS::go run 10 called
+[1] BFS::go run 10 called
+[3] BFS::go run 10 called
+[0] BFS::go run 10 called
+[6] BFS::go run 10 called
+[4] BFS::go run 10 called
+[5] BFS::go run 10 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[7] BFS::go run 11 called
+[2] BFS::go run 11 called
+[1] BFS::go run 11 called
+[0] BFS::go run 11 called
+[6] BFS::go run 11 called
+[3] BFS::go run 11 called
+[5] BFS::go run 11 called
+[4] BFS::go run 11 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 12 called
+[3] BFS::go run 12 called
+[5] BFS::go run 12 called
+[7] BFS::go run 12 called
+[0] BFS::go run 12 called
+[2] BFS::go run 12 called
+[4] BFS::go run 12 called
+[6] BFS::go run 12 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[7] BFS::go run 13 called
+[4] BFS::go run 13 called
+[3] BFS::go run 13 called
+[2] BFS::go run 13 called
+[5] BFS::go run 13 called
+[0] BFS::go run 13 called
+[6] BFS::go run 13 called
+[1] BFS::go run 13 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[5] BFS::go run 14 called
+[7] BFS::go run 14 called
+[1] BFS::go run 14 called
+[4] BFS::go run 14 called
+[2] BFS::go run 14 called
+[3] BFS::go run 14 called
+[0] BFS::go run 14 called
+[6] BFS::go run 14 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[5] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+[6] BFS::go run 15 called
+[7] BFS::go run 15 called
+[0] BFS::go run 15 called
+[3] BFS::go run 15 called
+[4] BFS::go run 15 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[1] BFS::go run 16 called
+[2] BFS::go run 16 called
+[3] BFS::go run 16 called
+[7] BFS::go run 16 called
+[5] BFS::go run 16 called
+[0] BFS::go run 16 called
+[4] BFS::go run 16 called
+[6] BFS::go run 16 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[6] BFS::go run 17 called
+[5] BFS::go run 17 called
+[7] BFS::go run 17 called
+[2] BFS::go run 17 called
+[1] BFS::go run 17 called
+[3] BFS::go run 17 called
+[0] BFS::go run 17 called
+[4] BFS::go run 17 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[2] BFS::go run 18 called
+[1] BFS::go run 18 called
+[0] BFS::go run 18 called
+[4] BFS::go run 18 called
+[5] BFS::go run 18 called
+[3] BFS::go run 18 called
+[6] BFS::go run 18 called
+[7] BFS::go run 18 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+[5] BFS::go run 19 called
+[4] BFS::go run 19 called
+[3] BFS::go run 19 called
+[0] BFS::go run 19 called
+[1] BFS::go run 19 called
+[2] BFS::go run 19 called
+[6] BFS::go run 19 called
+[7] BFS::go run 19 called
+Number of nodes visited from source 0 is 855802
+Max distance from source 0 is 15
+exit=0
+===== BFS wiki-talk-temporal MPI=1 runs=20 2026-06-12T14:43:57+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.001092 seconds to read 168 bytes in 19 seeks (0.153846 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[0] Edge inspection time: 0.124291 seconds to read 73977088 bytes (595.193 MBPS)
+Loading edge-data while creating edges
+[0] Edge loading time: 0.146678 seconds to read 73977088 bytes (504.35 MBPS)
+[0] Graph construction complete.
+[0] InitializeGraph::go called
+[0] BFS::go run 0 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 1 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 2 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 5 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 6 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 8 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 12 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 13 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 15 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 17 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 18 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 19 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+exit=0
+===== BFS wiki-talk-temporal MPI=2 runs=20 2026-06-12T14:44:06+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[1] Master distribution time : 0.010355 seconds to read 336 bytes in 41 seeks (0.0324481 MBPS)
+[1] Starting graph reading.
+[0] Master distribution time : 0.021552 seconds to read 168 bytes in 21 seeks (0.0077951 MBPS)
+[0] Starting graph reading.
+[0] Reading graph complete.
+[1] Reading graph complete.
+[0] Edge inspection time: 0.178682 seconds to read 28019720 bytes (156.813 MBPS)
+[1] Edge inspection time: 0.238171 seconds to read 45957360 bytes (192.96 MBPS)
+Loading edge-data while creating edges
+[1] Edge loading time: 0.252477 seconds to read 45957360 bytes (182.026 MBPS)
+[1] Graph construction complete.
+[0] Edge loading time: 0.636046 seconds to read 28019720 bytes (44.053 MBPS)
+[0] Graph construction complete.
+[1] InitializeGraph::go called
+[0] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 1 called
+[0] BFS::go run 1 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 2 called
+[0] BFS::go run 2 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 3 called
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 4 called
+[0] BFS::go run 4 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 5 called
+[0] BFS::go run 5 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 6 called
+[0] BFS::go run 6 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 7 called
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 8 called
+[0] BFS::go run 8 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 9 called
+[0] BFS::go run 9 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 10 called
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 11 called
+[0] BFS::go run 11 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 12 called
+[0] BFS::go run 12 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 13 called
+[0] BFS::go run 13 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 14 called
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 15 called
+[0] BFS::go run 15 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 16 called
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 17 called
+[0] BFS::go run 17 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 18 called
+[0] BFS::go run 18 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 19 called
+[0] BFS::go run 19 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+exit=0
+===== BFS wiki-talk-temporal MPI=4 runs=20 2026-06-12T14:44:27+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[3] Master distribution time : 0.02389 seconds to read 336 bytes in 41 seeks (0.0140645 MBPS)
+[3] Starting graph reading.
+[1] Master distribution time : 0.043093 seconds to read 336 bytes in 41 seeks (0.00779709 MBPS)
+[1] Starting graph reading.
+[0] Master distribution time : 0.048128 seconds to read 168 bytes in 20 seeks (0.00349069 MBPS)
+[0] Starting graph reading.
+[2] Master distribution time : 0.046145 seconds to read 336 bytes in 41 seeks (0.0072814 MBPS)
+[2] Starting graph reading.
+[1] Reading graph complete.
+[0] Reading graph complete.
+[2] Reading graph complete.
+[3] Reading graph complete.
+[1] Edge inspection time: 0.239613 seconds to read 14045732 bytes (58.6184 MBPS)
+[0] Edge inspection time: 0.240007 seconds to read 13973980 bytes (58.2232 MBPS)
+[2] Edge inspection time: 0.218748 seconds to read 14745080 bytes (67.4067 MBPS)
+[3] Edge inspection time: 0.432305 seconds to read 31212272 bytes (72.1997 MBPS)
+Loading edge-data while creating edges
+[2] Edge loading time: 0.623576 seconds to read 14745080 bytes (23.646 MBPS)
+[2] Graph construction complete.
+[0] Edge loading time: 0.650789 seconds to read 13973980 bytes (21.4724 MBPS)
+[0] Graph construction complete.
+[1] Edge loading time: 0.744345 seconds to read 14045732 bytes (18.8699 MBPS)
+[1] Graph construction complete.
+[3] Edge loading time: 0.383706 seconds to read 31212272 bytes (81.3442 MBPS)
+[3] Graph construction complete.
+[3] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] InitializeGraph::go called
+[2] InitializeGraph::go called
+[0] BFS::go run 0 called
+[1] BFS::go run 0 called
+[2] BFS::go run 0 called
+[3] BFS::go run 0 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 1 called
+[1] BFS::go run 1 called
+[3] BFS::go run 1 called
+[2] BFS::go run 1 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 2 called
+[2] BFS::go run 2 called
+[1] BFS::go run 2 called
+[3] BFS::go run 2 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 3 called
+[2] BFS::go run 3 called
+[1] BFS::go run 3 called
+[3] BFS::go run 3 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 4 called
+[3] BFS::go run 4 called
+[1] BFS::go run 4 called
+[2] BFS::go run 4 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 5 called
+[2] BFS::go run 5 called
+[1] BFS::go run 5 called
+[3] BFS::go run 5 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 6 called
+[2] BFS::go run 6 called
+[1] BFS::go run 6 called
+[3] BFS::go run 6 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 7 called
+[1] BFS::go run 7 called
+[2] BFS::go run 7 called
+[3] BFS::go run 7 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 8 called
+[1] BFS::go run 8 called
+[3] BFS::go run 8 called
+[2] BFS::go run 8 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 9 called
+[2] BFS::go run 9 called
+[3] BFS::go run 9 called
+[1] BFS::go run 9 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 10 called
+[1] BFS::go run 10 called
+[3] BFS::go run 10 called
+[2] BFS::go run 10 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 11 called
+[2] BFS::go run 11 called
+[1] BFS::go run 11 called
+[3] BFS::go run 11 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 12 called
+[1] BFS::go run 12 called
+[2] BFS::go run 12 called
+[3] BFS::go run 12 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 13 called
+[1] BFS::go run 13 called
+[3] BFS::go run 13 called
+[2] BFS::go run 13 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 14 called
+[2] BFS::go run 14 called
+[3] BFS::go run 14 called
+[1] BFS::go run 14 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 15 called
+[1] BFS::go run 15 called
+[2] BFS::go run 15 called
+[3] BFS::go run 15 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 16 called
+[1] BFS::go run 16 called
+[2] BFS::go run 16 called
+[3] BFS::go run 16 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 17 called
+[1] BFS::go run 17 called
+[3] BFS::go run 17 called
+[2] BFS::go run 17 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 18 called
+[1] BFS::go run 18 called
+[2] BFS::go run 18 called
+[3] BFS::go run 18 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 19 called
+[2] BFS::go run 19 called
+[1] BFS::go run 19 called
+[3] BFS::go run 19 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+exit=0
+===== BFS wiki-talk-temporal MPI=6 runs=20 2026-06-12T14:45:01+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[0] Master distribution time : 0.033296 seconds to read 168 bytes in 19 seeks (0.00504565 MBPS)
+[0] Starting graph reading.
+[3] Master distribution time : 0.069078 seconds to read 336 bytes in 41 seeks (0.00486407 MBPS)
+[3] Starting graph reading.
+[5] Master distribution time : 0.06707 seconds to read 336 bytes in 42 seeks (0.00500969 MBPS)
+[5] Starting graph reading.
+[2] Master distribution time : 0.070202 seconds to read 344 bytes in 42 seeks (0.00490015 MBPS)
+[2] Starting graph reading.
+[0] Reading graph complete.
+[3] Reading graph complete.
+[4] Master distribution time : 0.109252 seconds to read 336 bytes in 41 seeks (0.00307546 MBPS)
+[4] Starting graph reading.
+[2] Reading graph complete.
+[1] Master distribution time : 0.105166 seconds to read 336 bytes in 40 seeks (0.00319495 MBPS)
+[1] Starting graph reading.
+[4] Reading graph complete.
+[5] Reading graph complete.
+[1] Reading graph complete.
+[0] Edge inspection time: 0.289734 seconds to read 9316396 bytes (32.155 MBPS)
+[3] Edge inspection time: 0.289272 seconds to read 9582584 bytes (33.1266 MBPS)
+[2] Edge inspection time: 0.291428 seconds to read 9364736 bytes (32.134 MBPS)
+[1] Edge inspection time: 0.323857 seconds to read 9338572 bytes (28.8355 MBPS)
+[4] Edge inspection time: 0.397131 seconds to read 12200296 bytes (30.7211 MBPS)
+[5] Edge inspection time: 0.682563 seconds to read 24174464 bytes (35.4172 MBPS)
+Loading edge-data while creating edges
+[4] Edge loading time: 0.586448 seconds to read 12200296 bytes (20.8037 MBPS)
+[4] Graph construction complete.
+[3] Edge loading time: 0.799118 seconds to read 9582584 bytes (11.9915 MBPS)
+[2] Edge loading time: 0.762653 seconds to read 9364736 bytes (12.2792 MBPS)
+[2] Graph construction complete.
+[0] Edge loading time: 0.755858 seconds to read 9316396 bytes (12.3256 MBPS)
+[0] Graph construction complete.
+[3] Graph construction complete.
+[1] Edge loading time: 0.754653 seconds to read 9338572 bytes (12.3747 MBPS)
+[1] Graph construction complete.
+[5] Edge loading time: 0.537284 seconds to read 24174464 bytes (44.9938 MBPS)
+[5] Graph construction complete.
+[5] InitializeGraph::go called
+[2] InitializeGraph::go called
+[3] InitializeGraph::go called
+[0] InitializeGraph::go called
+[4] InitializeGraph::go called
+[1] InitializeGraph::go called
+[0] BFS::go run 0 called
+[4] BFS::go run 0 called
+[5] BFS::go run 0 called
+[1] BFS::go run 0 called
+[3] BFS::go run 0 called
+[2] BFS::go run 0 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 1 called
+[3] BFS::go run 1 called
+[1] BFS::go run 1 called
+[5] BFS::go run 1 called
+[4] BFS::go run 1 called
+[2] BFS::go run 1 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 2 called
+[1] BFS::go run 2 called
+[3] BFS::go run 2 called
+[5] BFS::go run 2 called
+[4] BFS::go run 2 called
+[2] BFS::go run 2 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 3 called
+[3] BFS::go run 3 called
+[5] BFS::go run 3 called
+[2] BFS::go run 3 called
+[4] BFS::go run 3 called
+[1] BFS::go run 3 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 4 called
+[1] BFS::go run 4 called
+[5] BFS::go run 4 called
+[2] BFS::go run 4 called
+[4] BFS::go run 4 called
+[3] BFS::go run 4 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 5 called
+[5] BFS::go run 5 called
+[3] BFS::go run 5 called
+[2] BFS::go run 5 called
+[1] BFS::go run 5 called
+[4] BFS::go run 5 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 6 called
+[3] BFS::go run 6 called
+[1] BFS::go run 6 called
+[2] BFS::go run 6 called
+[4] BFS::go run 6 called
+[5] BFS::go run 6 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 7 called
+[1] BFS::go run 7 called
+[5] BFS::go run 7 called
+[3] BFS::go run 7 called
+[4] BFS::go run 7 called
+[2] BFS::go run 7 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 8 called
+[5] BFS::go run 8 called
+[2] BFS::go run 8 called
+[4] BFS::go run 8 called
+[3] BFS::go run 8 called
+[1] BFS::go run 8 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 9 called
+[1] BFS::go run 9 called
+[2] BFS::go run 9 called
+[4] BFS::go run 9 called
+[3] BFS::go run 9 called
+[5] BFS::go run 9 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 10 called
+[1] BFS::go run 10 called
+[2] BFS::go run 10 called
+[4] BFS::go run 10 called
+[3] BFS::go run 10 called
+[5] BFS::go run 10 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 11 called
+[1] BFS::go run 11 called
+[2] BFS::go run 11 called
+[5] BFS::go run 11 called
+[3] BFS::go run 11 called
+[4] BFS::go run 11 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 12 called
+[4] BFS::go run 12 called
+[2] BFS::go run 12 called
+[5] BFS::go run 12 called
+[3] BFS::go run 12 called
+[1] BFS::go run 12 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 13 called
+[4] BFS::go run 13 called
+[2] BFS::go run 13 called
+[3] BFS::go run 13 called
+[5] BFS::go run 13 called
+[1] BFS::go run 13 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 14 called
+[4] BFS::go run 14 called
+[2] BFS::go run 14 called
+[5] BFS::go run 14 called
+[1] BFS::go run 14 called
+[3] BFS::go run 14 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 15 called
+[4] BFS::go run 15 called
+[3] BFS::go run 15 called
+[5] BFS::go run 15 called
+[2] BFS::go run 15 called
+[1] BFS::go run 15 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 16 called
+[2] BFS::go run 16 called
+[1] BFS::go run 16 called
+[5] BFS::go run 16 called
+[4] BFS::go run 16 called
+[3] BFS::go run 16 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 17 called
+[4] BFS::go run 17 called
+[3] BFS::go run 17 called
+[2] BFS::go run 17 called
+[1] BFS::go run 17 called
+[5] BFS::go run 17 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 18 called
+[2] BFS::go run 18 called
+[3] BFS::go run 18 called
+[4] BFS::go run 18 called
+[5] BFS::go run 18 called
+[1] BFS::go run 18 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[0] BFS::go run 19 called
+[2] BFS::go run 19 called
+[3] BFS::go run 19 called
+[4] BFS::go run 19 called
+[5] BFS::go run 19 called
+[1] BFS::go run 19 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+exit=0
+===== BFS wiki-talk-temporal MPI=8 runs=20 2026-06-12T14:45:50+03:00 =====
+D-Galois Benchmark Suite v6.0.0 (unknown)
+Copyright (C) 2018 The University of Texas at Austin
+http://iss.ices.utexas.edu/galois/
+
+application: BFS - Distributed Heterogeneous with worklist.
+BFS on Distributed Galois.
+
+[3] Master distribution time : 0.046346 seconds to read 336 bytes in 40 seeks (0.00724982 MBPS)
+[3] Starting graph reading.
+[3] Reading graph complete.
+[1] Master distribution time : 0.094264 seconds to read 336 bytes in 40 seeks (0.00356446 MBPS)
+[1] Starting graph reading.
+[1] Reading graph complete.
+[7] Master distribution time : 0.094093 seconds to read 328 bytes in 39 seeks (0.00348591 MBPS)
+[7] Starting graph reading.
+[5] Master distribution time : 0.094082 seconds to read 336 bytes in 41 seeks (0.00357135 MBPS)
+[5] Starting graph reading.
+[5] Reading graph complete.
+[6] Master distribution time : 0.094381 seconds to read 336 bytes in 41 seeks (0.00356004 MBPS)
+[6] Starting graph reading.
+[4] Master distribution time : 0.141796 seconds to read 336 bytes in 42 seeks (0.0023696 MBPS)
+[4] Starting graph reading.
+[4] Reading graph complete.
+[2] Master distribution time : 0.094359 seconds to read 336 bytes in 42 seeks (0.00356087 MBPS)
+[2] Starting graph reading.
+[0] Master distribution time : 0.141281 seconds to read 168 bytes in 20 seeks (0.00118912 MBPS)
+[0] Starting graph reading.
+[7] Reading graph complete.
+[6] Reading graph complete.
+[2] Reading graph complete.
+[0] Reading graph complete.
+[1] Edge inspection time: 0.286571 seconds to read 6170296 bytes (21.5315 MBPS)
+[3] Edge inspection time: 0.333486 seconds to read 7042176 bytes (21.1169 MBPS)
+[5] Edge inspection time: 0.334599 seconds to read 7606584 bytes (22.7334 MBPS)
+[4] Edge inspection time: 0.333412 seconds to read 7138488 bytes (21.4104 MBPS)
+[2] Edge inspection time: 0.288286 seconds to read 7003548 bytes (24.2938 MBPS)
+[0] Edge inspection time: 0.336316 seconds to read 7803676 bytes (23.2034 MBPS)
+[6] Edge inspection time: 0.433541 seconds to read 12090388 bytes (27.8875 MBPS)
+[7] Edge inspection time: 0.66633 seconds to read 19121876 bytes (28.6973 MBPS)
+Loading edge-data while creating edges
+[1] Edge loading time: 0.675754 seconds to read 6170296 bytes (9.13098 MBPS)
+[1] Graph construction complete.
+[5] Edge loading time: 0.72532 seconds to read 7606584 bytes (10.4872 MBPS)
+[5] Graph construction complete.
+[3] Edge loading time: 0.726412 seconds to read 7042176 bytes (9.69447 MBPS)
+[3] Graph construction complete.
+[6] Edge loading time: 0.525657 seconds to read 12090388 bytes (23.0005 MBPS)
+[6] Graph construction complete.
+[4] Edge loading time: 0.762669 seconds to read 7138488 bytes (9.35988 MBPS)
+[4] Graph construction complete.
+[2] Edge loading time: 0.767124 seconds to read 7003548 bytes (9.12962 MBPS)
+[2] Graph construction complete.
+[0] Edge loading time: 0.761924 seconds to read 7803676 bytes (10.2421 MBPS)
+[0] Graph construction complete.
+[7] Edge loading time: 0.616089 seconds to read 19121876 bytes (31.0375 MBPS)
+[7] Graph construction complete.
+[7] InitializeGraph::go called
+[6] InitializeGraph::go called
+[1] InitializeGraph::go called
+[4] InitializeGraph::go called
+[2] InitializeGraph::go called
+[0] InitializeGraph::go called
+[3] InitializeGraph::go called
+[5] InitializeGraph::go called
+[2] BFS::go run 0 called
+[1] BFS::go run 0 called
+[3] BFS::go run 0 called
+[4] BFS::go run 0 called
+[5] BFS::go run 0 called
+[6] BFS::go run 0 called
+[7] BFS::go run 0 called
+[0] BFS::go run 0 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[2] BFS::go run 1 called
+[6] BFS::go run 1 called
+[4] BFS::go run 1 called
+[3] BFS::go run 1 called
+[1] BFS::go run 1 called
+[7] BFS::go run 1 called
+[0] BFS::go run 1 called
+[5] BFS::go run 1 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 2 called
+[5] BFS::go run 2 called
+[6] BFS::go run 2 called
+[4] BFS::go run 2 called
+[3] BFS::go run 2 called
+[1] BFS::go run 2 called
+[0] BFS::go run 2 called
+[2] BFS::go run 2 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 3 called
+[3] BFS::go run 3 called
+[6] BFS::go run 3 called
+[5] BFS::go run 3 called
+[1] BFS::go run 3 called
+[4] BFS::go run 3 called
+[2] BFS::go run 3 called
+[0] BFS::go run 3 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 4 called
+[6] BFS::go run 4 called
+[1] BFS::go run 4 called
+[2] BFS::go run 4 called
+[4] BFS::go run 4 called
+[3] BFS::go run 4 called
+[0] BFS::go run 4 called
+[5] BFS::go run 4 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[6] BFS::go run 5 called
+[2] BFS::go run 5 called
+[7] BFS::go run 5 called
+[3] BFS::go run 5 called
+[4] BFS::go run 5 called
+[0] BFS::go run 5 called
+[5] BFS::go run 5 called
+[1] BFS::go run 5 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 6 called
+[5] BFS::go run 6 called
+[1] BFS::go run 6 called
+[3] BFS::go run 6 called
+[6] BFS::go run 6 called
+[2] BFS::go run 6 called
+[4] BFS::go run 6 called
+[0] BFS::go run 6 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[5] BFS::go run 7 called
+[1] BFS::go run 7 called
+[6] BFS::go run 7 called
+[7] BFS::go run 7 called
+[2] BFS::go run 7 called
+[4] BFS::go run 7 called
+[3] BFS::go run 7 called
+[0] BFS::go run 7 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 8 called
+[3] BFS::go run 8 called
+[0] BFS::go run 8 called
+[5] BFS::go run 8 called
+[1] BFS::go run 8 called
+[4] BFS::go run 8 called
+[2] BFS::go run 8 called
+[6] BFS::go run 8 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[3] BFS::go run 9 called
+[5] BFS::go run 9 called
+[1] BFS::go run 9 called
+[7] BFS::go run 9 called
+[4] BFS::go run 9 called
+[0] BFS::go run 9 called
+[2] BFS::go run 9 called
+[6] BFS::go run 9 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 10 called
+[4] BFS::go run 10 called
+[5] BFS::go run 10 called
+[6] BFS::go run 10 called
+[7] BFS::go run 10 called
+[2] BFS::go run 10 called
+[3] BFS::go run 10 called
+[0] BFS::go run 10 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 11 called
+[4] BFS::go run 11 called
+[3] BFS::go run 11 called
+[0] BFS::go run 11 called
+[5] BFS::go run 11 called
+[7] BFS::go run 11 called
+[2] BFS::go run 11 called
+[6] BFS::go run 11 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[6] BFS::go run 12 called
+[1] BFS::go run 12 called
+[4] BFS::go run 12 called
+[3] BFS::go run 12 called
+[0] BFS::go run 12 called
+[5] BFS::go run 12 called
+[7] BFS::go run 12 called
+[2] BFS::go run 12 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[2] BFS::go run 13 called
+[1] BFS::go run 13 called
+[5] BFS::go run 13 called
+[3] BFS::go run 13 called
+[4] BFS::go run 13 called
+[6] BFS::go run 13 called
+[0] BFS::go run 13 called
+[7] BFS::go run 13 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 14 called
+[3] BFS::go run 14 called
+[5] BFS::go run 14 called
+[1] BFS::go run 14 called
+[6] BFS::go run 14 called
+[4] BFS::go run 14 called
+[2] BFS::go run 14 called
+[0] BFS::go run 14 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 15 called
+[3] BFS::go run 15 called
+[5] BFS::go run 15 called
+[1] BFS::go run 15 called
+[6] BFS::go run 15 called
+[4] BFS::go run 15 called
+[2] BFS::go run 15 called
+[0] BFS::go run 15 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[1] BFS::go run 16 called
+[3] BFS::go run 16 called
+[7] BFS::go run 16 called
+[6] BFS::go run 16 called
+[2] BFS::go run 16 called
+[5] BFS::go run 16 called
+[4] BFS::go run 16 called
+[0] BFS::go run 16 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[7] BFS::go run 17 called
+[5] BFS::go run 17 called
+[1] BFS::go run 17 called
+[6] BFS::go run 17 called
+[3] BFS::go run 17 called
+[4] BFS::go run 17 called
+[0] BFS::go run 17 called
+[2] BFS::go run 17 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[2] BFS::go run 18 called
+[5] BFS::go run 18 called
+[3] BFS::go run 18 called
+[4] BFS::go run 18 called
+[7] BFS::go run 18 called
+[6] BFS::go run 18 called
+[1] BFS::go run 18 called
+[0] BFS::go run 18 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+[6] BFS::go run 19 called
+[4] BFS::go run 19 called
+[2] BFS::go run 19 called
+[7] BFS::go run 19 called
+[0] BFS::go run 19 called
+[3] BFS::go run 19 called
+[5] BFS::go run 19 called
+[1] BFS::go run 19 called
+Number of nodes visited from source 0 is 1091742
+Max distance from source 0 is 7
+exit=0
+ALL BFS DONE 2026-06-12T14:46:51+03:00
