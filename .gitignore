@@ -1,2 +1,9 @@
 .venv
 .local
+
+Galois-pre-cpuset/
+Galois-release-*/
+
+experiments/results/
+experiments/plots/
+experiments/__pycache__/

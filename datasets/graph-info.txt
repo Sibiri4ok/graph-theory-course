@@ -9,4 +9,8 @@
 Ср. степень для ориентированного графа: E / V.
 Для неориентированного (roadNet-PA): 2E / V.
 
-Для Triangle Counting на wiki-talk-temporal: `wiki-talk-temporal-clean.sgr` (gr2cgr — без self/multi-edges).
+Файлы, нужные для experiments/run_all.sh:
+- BFS / TC: *.sgr
+- PageRank: *.gr, *.tgr
+- SSSP: *-w.gr, *-w.tgr
+- TC на wiki-talk-temporal: wiki-talk-temporal-clean.sgr (gr2cgr — без self/multi-edges)

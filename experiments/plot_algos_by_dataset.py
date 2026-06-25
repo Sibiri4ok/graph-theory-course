@@ -1,83 +1,361 @@
 #!/usr/bin/env python3
-"""Per-dataset dashboards for SSSP, PageRank, TC (metrics vs MPI).
+"""Build report.csv from stats, plot per-dataset dashboards for BFS/SSSP/PR/TC."""
+from __future__ import annotations
 
-Формат такой же, как для BFS в `plot_bfs_by_dataset.py`:
-одна картинка на (алгоритм, датасет), 5 панелей:
-  - total_time_exec
-  - sync_time
-  - sync_bytes
-  - replication_factor
-  - graph_construct_time
-"""
-from pathlib import Path
+import argparse
 import csv
 import re
+import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-CSV = ROOT / "experiments" / "report.csv"
-STATS_DIR = ROOT / "experiments" / "results" / "stats"
+EXP = ROOT / "experiments"
+STATS_DIR = EXP / "results" / "stats"
+REPORT_CSV = EXP / "results" / "report.csv"
+LOG = EXP / "results" / "run.log"
+
+ALGO_LABEL = {"bfs": "BFS", "pr": "PageRank", "sssp": "SSSP", "tc": "Triangle Counting"}
+ALGO_PRIMARY = {
+    "BFS": "compute_time",
+    "PageRank": "compute_time",
+    "SSSP": "compute_time",
+    "Triangle Counting": "total_time_exec",
+}
+EXPECTED = [
+    (algo, graph, np)
+    for algo in ("bfs", "pr", "sssp", "tc")
+    for graph in ("web-Google", "roadNet-PA", "wiki-talk-temporal")
+    for np in (1, 2, 4, 6, 8)
+]
+CSV_COLUMNS = [
+    "algorithm", "dataset", "mpi_processes", "threads", "runs",
+    "primary_metric", "primary_metric_value", "status",
+    "total_time", "total_time_exec", "compute_time", "sync_time", "barrier_time",
+    "sync_bytes", "graph_construct_time", "replication_factor", "comm_mem_max",
+    "comm_mem_min", "inspect_bytes", "load_bytes", "load_messages", "peak_load_bytes",
+    "replication_nodes", "replication_edges", "total_node_proxies", "total_edge_proxies",
+    "edge_inspection_time", "edge_loading_time",
+]
+METRIC_KEYS = CSV_COLUMNS[8:]
 
 DATASETS = [
     ("roadNet-PA", "Road network — Pennsylvania"),
     ("web-Google", "Web graph — Google"),
     ("wiki-talk-temporal", "Wikipedia talk (temporal)"),
 ]
-
 ALGORITHMS = [
+    ("BFS", "BFS", "bfs"),
     ("SSSP", "SSSP", "sssp"),
     ("PageRank", "PageRank", "pr"),
     ("Triangle Counting", "Triangle Counting", "tc"),
 ]
-
-# Default panel set for BFS-like push алгоритмы (SSSP, PageRank).
-PANEL_METRICS_DEFAULT = [
+PANEL_DEFAULT = [
     ("total_time_exec", "Total time", "ms", True),
     ("sync_time", "Synchronization time", "ms", False),
     ("sync_bytes", "Sync traffic", "bytes", True),
     ("replication_factor", "Replication factor", "", False),
-    ("graph_construct_time", "Graph construction", "ms", False),
 ]
-
-# For TC хотим видеть именно стадии построения mining-графа.
-PANEL_METRICS_TC = [
+PANEL_TC = [
     ("total_time_exec", "Total time", "ms", True),
-    ("graph_construct_time", "Graph construction", "ms", False),
     ("inspect_bytes", "Inspect bytes", "bytes", True),
     ("load_bytes", "Load bytes", "bytes", True),
-    ("load_vs_peak_bytes", "Load vs Peak load bytes", "bytes", True),
 ]
-
 MPI_TICKS = [1, 2, 4, 6, 8]
-ACCENT = {
-    "roadNet-PA": "#2563eb",
-    "web-Google": "#ea580c",
-    "wiki-talk-temporal": "#16a34a",
-}
+ACCENT = {"roadNet-PA": "#2563eb", "web-Google": "#ea580c", "wiki-talk-temporal": "#16a34a"}
 
+
+# --- stat parser (from parse_galois_stat.py) ---
+
+def _load_stat(path: Path) -> list[dict]:
+    rows = []
+    with open(path, newline="") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if len(row) < 6:
+                continue
+            rows.append({
+                "stat_type": row[0].strip(), "host_id": row[1].strip(),
+                "region": row[2].strip(), "category": row[3].strip(),
+                "total_type": row[4].strip(), "total": row[5].strip(),
+            })
+    return rows
+
+
+def _val(rows, category, exclude=("HostValues",)):
+    out = []
+    for r in rows:
+        if r["category"] == category and r["total_type"] not in exclude:
+            try:
+                out.append(float(r["total"]))
+            except ValueError:
+                pass
+    return out
+
+
+def _grep(rows, *, region=None, region_pat=None, category=None, category_pat=None,
+          total_type=None, exclude_host_values=True):
+    out = []
+    for r in rows:
+        if exclude_host_values and r["total_type"] == "HostValues":
+            continue
+        if total_type and r["total_type"] != total_type:
+            continue
+        if region and r["region"] != region:
+            continue
+        if region_pat and not re.search(region_pat, r["region"]):
+            continue
+        if category and r["category"] != category:
+            continue
+        if category_pat and not re.search(category_pat, r["category"]):
+            continue
+        try:
+            out.append(float(r["total"]))
+        except ValueError:
+            pass
+    return out
+
+
+def _first(rows, category, total_type=None):
+    v = _grep(rows, category=category, total_type=total_type)
+    if not v:
+        return ""
+    x = v[0]
+    return int(x) if x == int(x) else round(x, 2)
+
+
+def parse_stat_file(path: Path) -> dict:
+    rows = _load_stat(path)
+    param = lambda c: next(
+        (r["total"] for r in rows if r["stat_type"] == "PARAM" and r["category"] == c), ""
+    )
+    benchmark_region = next(
+        (r["region"] for r in rows if r["category"] == "Timer_0" and r["total_type"] != "HostValues"), ""
+    )
+    num_runs = int(_val(rows, "Runs")[0]) if _val(rows, "Runs") else 1
+    total_time = round(_val(rows, "TimerTotal")[0], 2) if _val(rows, "TimerTotal") else 0
+    timer_vals = _grep(rows, category_pat=r"^Timer_\d+$")
+    total_time_exec = round(sum(timer_vals) / len(timer_vals), 2) if timer_vals else 0
+
+    compute_per_run = []
+    for j in range(num_runs):
+        v = _grep(rows, region_pat=rf"^{re.escape(benchmark_region)}_{j}_\d+")
+        if v:
+            compute_per_run.append(sum(v))
+    compute_vals = _grep(rows, region_pat=rf"^{re.escape(benchmark_region)}_\d+")
+    if benchmark_region == "TC":
+        tc_times = [
+            r for r in rows
+            if r["category"] == "Time"
+            and re.fullmatch(rf"{re.escape(benchmark_region)}_\d+", r["region"])
+            and r["total_type"] != "HostValues"
+        ]
+        compute_time = round(sum(float(r["total"]) for r in tc_times) / len(tc_times), 2) if tc_times else 0
+    elif compute_per_run:
+        compute_time = round(sum(compute_per_run) / len(compute_per_run), 2)
+    elif compute_vals:
+        compute_time = round(sum(compute_vals) / len(compute_vals), 2)
+    else:
+        compute_time = 0
+
+    sync_per_run = []
+    for j in range(num_runs):
+        v = _grep(rows, category_pat=rf"^Sync_{re.escape(benchmark_region)}_{j}_\d+")
+        if v:
+            sync_per_run.append(sum(v))
+    sync_fb = _grep(rows, category_pat=rf"^Sync_{re.escape(benchmark_region)}_\d+")
+    sync_time = round(sum(sync_per_run) / len(sync_per_run), 2) if sync_per_run else (
+        round(sum(sync_fb) / max(num_runs, 1), 2) if sync_fb else 0
+    )
+
+    barrier_per_run = []
+    for j in range(num_runs):
+        v = _grep(rows, region="DGReducible", category_pat=rf"^ReduceDGAccum_{j}_\d+")
+        if v:
+            barrier_per_run.append(sum(v))
+    barrier_fb = _grep(rows, region="DGReducible", category_pat=r"^ReduceDGAccum_\d+")
+    barrier_time = round(sum(barrier_per_run) / len(barrier_per_run), 2) if barrier_per_run else (
+        round(sum(barrier_fb) / max(num_runs, 1), 2) if barrier_fb else 0
+    )
+
+    sync_bytes_rows = []
+    for r in rows:
+        if r["total_type"] != "HSUM":
+            continue
+        if re.search(rf"Reduce.*SendBytes_{re.escape(benchmark_region)}_0", r["category"]) or re.search(
+            rf"Broadcast.*SendBytes_{re.escape(benchmark_region)}_0", r["category"]
+        ):
+            try:
+                sync_bytes_rows.append(float(r["total"]))
+            except ValueError:
+                pass
+
+    gct = _val(rows, "GraphConstructTime")
+    rf = _val(rows, "ReplicationFactor")
+    mem_max = _grep(rows, category="CommunicationMemUsageMax", total_type="HMAX")
+    mem_min = _grep(rows, category="CommunicationMemUsageMin", total_type="HMIN")
+    replication_nodes = _first(rows, "ReplicationFactorNodes")
+    if replication_nodes == "":
+        rf_nodes = _val(rows, "ReplicationFactor")
+        replication_nodes = round(rf_nodes[0], 4) if rf_nodes else ""
+
+    return {
+        "num_threads": int(float(_val(rows, "Threads")[0])) if _val(rows, "Threads") else 0,
+        "runs": num_runs,
+        "total_time": total_time,
+        "total_time_exec": total_time_exec,
+        "compute_time": compute_time,
+        "sync_time": sync_time,
+        "barrier_time": barrier_time,
+        "sync_bytes": int(sum(sync_bytes_rows)) if sync_bytes_rows else 0,
+        "graph_construct_time": round(gct[0], 2) if gct else 0,
+        "replication_factor": round(rf[0], 4) if rf else 0,
+        "comm_mem_max": int(mem_max[0]) if mem_max else 0,
+        "comm_mem_min": int(mem_min[0]) if mem_min else 0,
+        "inspect_bytes": _first(rows, "EdgeInspectionBytesSent", "HSUM"),
+        "load_bytes": _first(rows, "EdgeLoadingBytesSent", "HSUM"),
+        "load_messages": _first(rows, "EdgeLoadingMessagesSent", "HSUM"),
+        "peak_load_bytes": _first(rows, "EdgeLoadingMaxBytesSent", "HMAX"),
+        "replication_nodes": replication_nodes,
+        "replication_edges": _first(rows, "ReplicatonFactorEdges"),
+        "total_node_proxies": _first(rows, "TotalNodeProxies"),
+        "total_edge_proxies": _first(rows, "TotalEdgeProxies"),
+        "edge_inspection_time": _first(rows, "EdgeInspection", "HMAX"),
+        "edge_loading_time": _first(rows, "EdgeLoading", "HMAX"),
+    }
+
+
+# --- run.log parser (from parse_run_log.py) ---
+
+_INSPECT_RE = re.compile(r"Edge inspection time:.*to read (\d+) bytes", re.I)
+_LOAD_RE = re.compile(r"Edge loading time:.*to read (\d+) bytes", re.I)
+_RUN_RE = re.compile(r"^\[[^\]]+\]\s+RUN\s+(\S+)\s*$")
+
+
+def _parse_log_file(path: Path, out: dict) -> None:
+    if not path.exists():
+        return
+    current = None
+    inspect: list[int] = []
+    loads: list[int] = []
+
+    def flush():
+        nonlocal current, inspect, loads
+        if current:
+            out[current] = {
+                "inspect_bytes": sum(inspect) if inspect else "",
+                "load_bytes": sum(loads) if loads else "",
+            }
+        current = None
+        inspect = []
+        loads = []
+
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for line in f:
+            m_run = _RUN_RE.match(line.strip())
+            if m_run:
+                flush()
+                current = m_run.group(1)
+                continue
+            if current is None:
+                continue
+            m_i = _INSPECT_RE.search(line)
+            if m_i:
+                inspect.append(int(m_i.group(1)))
+                continue
+            m_l = _LOAD_RE.search(line)
+            if m_l:
+                loads.append(int(m_l.group(1)))
+    flush()
+
+
+def parse_run_log() -> dict:
+    out: dict = {}
+    _parse_log_file(LOG, out)
+    return out
+
+
+def _parse_id(name: str):
+    for algo in ("bfs", "pr", "sssp", "tc"):
+        prefix = f"{algo}_"
+        if name.startswith(prefix):
+            rest = name[len(prefix):]
+            if rest.endswith("p"):
+                graph, np_s = rest.rsplit("_", 1)
+                return algo, graph, int(np_s[:-1])
+            break
+    return None, None, None
+
+
+def build_report_csv() -> pd.DataFrame:
+    log_index = parse_run_log()
+    rows = []
+    seen = set()
+
+    for path in sorted(STATS_DIR.glob("*.stats")):
+        if path.stem.startswith("_"):
+            continue
+        algo, dataset, np = _parse_id(path.stem)
+        if algo is None:
+            continue
+        seen.add((algo, dataset, np))
+        try:
+            m = parse_stat_file(path)
+            if path.stem in log_index:
+                for key in ("inspect_bytes", "load_bytes"):
+                    if m.get(key) == "" and log_index[path.stem].get(key) != "":
+                        m[key] = log_index[path.stem][key]
+            if m.get("replication_nodes") == "" and m.get("replication_factor") != "":
+                m["replication_nodes"] = m["replication_factor"]
+            status = "ok"
+        except Exception as e:
+            m = {}
+            status = f"parse_error: {e}"
+        rows.append((algo, dataset, np, m, status))
+
+    for algo, dataset, np in EXPECTED:
+        if (algo, dataset, np) not in seen:
+            rows.append((algo, dataset, np, {}, "missing"))
+
+    rows.sort(key=lambda r: (ALGO_LABEL.get(r[0], r[0]), r[1], r[2]))
+    out_rows = []
+    for algo_key, dataset, np, m, status in rows:
+        algo_name = ALGO_LABEL[algo_key]
+        pk = ALGO_PRIMARY[algo_name]
+        row = {
+            "algorithm": algo_name, "dataset": dataset, "mpi_processes": np,
+            "threads": m.get("num_threads", ""), "runs": m.get("runs", ""),
+            "primary_metric": pk, "primary_metric_value": m.get(pk, ""), "status": status,
+        }
+        for key in METRIC_KEYS:
+            row[key] = m.get(key, "")
+        out_rows.append(row)
+
+    REPORT_CSV.parent.mkdir(parents=True, exist_ok=True)
+    with open(REPORT_CSV, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(out_rows)
+    ok = sum(1 for r in rows if r[4] == "ok")
+    print(f"Wrote {REPORT_CSV} ({ok}/{len(rows)} ok)")
+    return pd.read_csv(REPORT_CSV)
+
+
+# --- plotting ---
 
 def _apply_style() -> None:
-    plt.rcParams.update(
-        {
-            "figure.facecolor": "#fafafa",
-            "axes.facecolor": "#ffffff",
-            "axes.edgecolor": "#94a3b8",
-            "axes.labelcolor": "#334155",
-            "axes.titleweight": "bold",
-            "axes.titlesize": 11,
-            "axes.labelsize": 10,
-            "xtick.color": "#475569",
-            "ytick.color": "#475569",
-            "grid.color": "#e2e8f0",
-            "grid.linestyle": "-",
-            "grid.alpha": 0.9,
-            "font.family": "sans-serif",
-            "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
-        }
-    )
+    plt.rcParams.update({
+        "figure.facecolor": "#fafafa", "axes.facecolor": "#ffffff",
+        "axes.edgecolor": "#94a3b8", "axes.labelcolor": "#334155",
+        "axes.titleweight": "bold", "axes.titlesize": 11, "axes.labelsize": 10,
+        "xtick.color": "#475569", "ytick.color": "#475569",
+        "grid.color": "#e2e8f0", "grid.linestyle": "-", "grid.alpha": 0.9,
+        "font.family": "sans-serif", "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
+    })
 
 
 def _format_yaxis(ax, log_scale: bool) -> None:
@@ -90,245 +368,98 @@ def _format_yaxis(ax, log_scale: bool) -> None:
         )
 
 
-def _annotate_points(ax, x, y, color: str) -> None:
-    for xi, yi in zip(x, y):
-        if pd.isna(yi):
-            continue
-        label = f"{yi:,.0f}" if yi >= 1000 else (f"{yi:.2f}" if yi < 10 else f"{yi:.0f}")
-        ax.annotate(
-            label,
-            (xi, yi),
-            textcoords="offset points",
-            xytext=(0, 7),
-            ha="center",
-            fontsize=7,
-            color=color,
-            alpha=0.85,
-        )
-
-
-def _plot_load_vs_peak_bytes(ax, x, y_load, y_peak, accent: str) -> None:
-    peak_color = "#7c3aed"
-    ax.plot(
-        x,
-        y_load,
-        color=accent,
-        linewidth=2.2,
-        marker="o",
-        markersize=8,
-        markerfacecolor="white",
-        markeredgewidth=2,
-        markeredgecolor=accent,
-        zorder=3,
-        label="Load bytes (HSUM)",
-    )
-    ax.plot(
-        x,
-        y_peak,
-        color=peak_color,
-        linewidth=2.0,
-        linestyle="--",
-        marker="s",
-        markersize=7,
-        markerfacecolor="white",
-        markeredgewidth=1.8,
-        markeredgecolor=peak_color,
-        zorder=3,
-        label="Peak load bytes (HMAX)",
-    )
-    _annotate_points(ax, x, y_load, accent)
-    _annotate_points(ax, x, y_peak, peak_color)
-    ax.legend(loc="upper left", fontsize=7, frameon=True, framealpha=0.9)
-
-
-def _timer_min_max(algo_slug: str, dataset: str, mpi_processes: int) -> tuple[float, float]:
-    path = STATS_DIR / f"{algo_slug}_{dataset}_{mpi_processes}p.stats"
-    values: list[float] = []
+def _timer_min_max(algo_slug: str, dataset: str, mpi: int) -> tuple[float, float]:
+    path = STATS_DIR / f"{algo_slug}_{dataset}_{mpi}p.stats"
+    values = []
     if not path.exists():
         return float("nan"), float("nan")
-
     with open(path, newline="") as f:
         reader = csv.reader(f)
         next(reader, None)
         for row in reader:
-            if len(row) < 6:
+            if len(row) < 6 or row[3].strip() == "Timer_0":
                 continue
-            category = row[3].strip()
-            if category == "Timer_0":
-                continue
-            if not re.fullmatch(r"Timer_\d+", category):
-                continue
-            try:
-                values.append(float(row[5]))
-            except ValueError:
-                pass
-
+            if re.fullmatch(r"Timer_\d+", row[3].strip()):
+                try:
+                    values.append(float(row[5]))
+                except ValueError:
+                    pass
     if not values:
         return float("nan"), float("nan")
     return min(values), max(values)
 
 
-def _add_timer_bounds(sub: pd.DataFrame, algo_slug: str) -> pd.DataFrame:
-    sub = sub.copy()
-    mins: list[float] = []
-    maxs: list[float] = []
-    for _, row in sub.iterrows():
-        mn, mx = _timer_min_max(algo_slug, row["dataset"], int(row["mpi_processes"]))
-        mins.append(mn)
-        maxs.append(mx)
-    sub["timer_min_excl_first"] = mins
-    sub["timer_max_excl_first"] = maxs
-    return sub
+def plot_all(df: pd.DataFrame) -> None:
+    _apply_style()
+    df = df[df["status"] == "ok"].copy()
+    for algo_label, algo_title, algo_slug in ALGORITHMS:
+        for dataset, subtitle in DATASETS:
+            sub = df[(df["algorithm"] == algo_label) & (df["dataset"] == dataset)].sort_values("mpi_processes")
+            if sub.empty:
+                continue
+            mins, maxs = [], []
+            for _, row in sub.iterrows():
+                mn, mx = _timer_min_max(algo_slug, row["dataset"], int(row["mpi_processes"]))
+                mins.append(mn)
+                maxs.append(mx)
+            sub = sub.copy()
+            sub["timer_min_excl_first"] = mins
+            sub["timer_max_excl_first"] = maxs
 
+            out_dir = EXP / "plots" / algo_slug / "by_dataset"
+            out_dir.mkdir(parents=True, exist_ok=True)
+            accent = ACCENT.get(dataset, "#334155")
+            metrics = PANEL_TC if algo_slug == "tc" else PANEL_DEFAULT
 
-def plot_dataset_for_algo(
-    df: pd.DataFrame,
-    algo_label: str,
-    algo_title: str,
-    algo_slug: str,
-    dataset: str,
-    subtitle: str,
-    *,
-    runs_label: str = "3",
-    out_path: Path | None = None,
-) -> None:
-    sub = df[(df["algorithm"] == algo_label) & (df["dataset"] == dataset)].sort_values(
-        "mpi_processes"
-    )
-    if sub.empty:
-        return
-    sub = _add_timer_bounds(sub, algo_slug)
+            fig = plt.figure(figsize=(14, 8.5))
+            fig.suptitle(f"{algo_title} scalability — {subtitle}", fontsize=15, fontweight="bold", y=0.98)
+            runs_label = str(int(sub["runs"].iloc[0])) if len(sub) else "3"
+            fig.text(0.5, 0.93, f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs_label}",
+                     ha="center", fontsize=10, color="#64748b")
 
-    out_dir = ROOT / "experiments" / "plots" / algo_slug / "by_dataset"
-    out_dir.mkdir(parents=True, exist_ok=True)
+            gs = fig.add_gridspec(2, 2, hspace=0.42, wspace=0.32, left=0.07, right=0.97, top=0.88, bottom=0.08)
+            axes = [fig.add_subplot(gs[i // 2, i % 2]) for i in range(len(metrics))]
+            if len(metrics) == 3:
+                fig.add_subplot(gs[1, 1]).set_visible(False)
 
-    accent = ACCENT.get(dataset, "#334155")
-    fig = plt.figure(figsize=(14, 8.5))
-    fig.suptitle(
-        f"{algo_title} scalability — {subtitle}",
-        fontsize=15,
-        fontweight="bold",
-        color="#0f172a",
-        y=0.98,
-    )
-    runs_label = str(int(sub["runs"].iloc[0])) if "runs" in sub.columns and len(sub) else "3"
-    fig.text(
-        0.5,
-        0.93,
-        f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs_label}",
-        ha="center",
-        fontsize=10,
-        color="#64748b",
-    )
+            x = sub["mpi_processes"].values
+            for ax, (col, title, unit, use_log) in zip(axes, metrics):
+                y = pd.to_numeric(sub[col], errors="coerce").values
+                ax.plot(x, y, color=accent, linewidth=2.4, marker="o", markersize=9,
+                        markerfacecolor="white", markeredgewidth=2, markeredgecolor=accent, label="Mean")
+                scale_y = y
+                if col == "total_time_exec":
+                    y_min = pd.to_numeric(sub["timer_min_excl_first"], errors="coerce").values
+                    y_max = pd.to_numeric(sub["timer_max_excl_first"], errors="coerce").values
+                    ax.plot(x, y_min, color="#16a34a", linewidth=1.8, linestyle="--", marker="v", markersize=6, label="Min")
+                    ax.plot(x, y_max, color="#dc2626", linewidth=1.8, linestyle="--", marker="^", markersize=6, label="Max")
+                    scale_y = pd.concat([pd.Series(y), pd.Series(y_min), pd.Series(y_max)]).dropna().values
+                    ax.legend(loc="best", fontsize=7)
+                ax.set_xticks(MPI_TICKS)
+                ax.set_xlabel("MPI processes", fontsize=9)
+                ax.set_ylabel(f"{title} ({unit})" if unit else title, fontsize=9)
+                ax.set_title(title, pad=8)
+                ax.grid(True, axis="both")
+                ax.set_xlim(0.2, 8.8)
+                _format_yaxis(ax, use_log and len(scale_y) and (scale_y > 0).all())
+                if use_log and len(scale_y) and (scale_y <= 0).any():
+                    _format_yaxis(ax, False)
+                    ax.set_ylim(bottom=0)
 
-    gs = fig.add_gridspec(
-        2, 3, hspace=0.42, wspace=0.32, left=0.07, right=0.97, top=0.88, bottom=0.08
-    )
-
-    axes = [fig.add_subplot(gs[i // 3, i % 3]) for i in range(5)]
-    fig.add_subplot(gs[1, 2]).set_visible(False)
-
-    x = sub["mpi_processes"].values
-
-    metrics = PANEL_METRICS_TC if algo_slug == "tc" else PANEL_METRICS_DEFAULT
-
-    for ax, (col, title, unit, use_log) in zip(axes, metrics):
-        if col == "load_vs_peak_bytes":
-            y_load = pd.to_numeric(sub["load_bytes"], errors="coerce").values
-            y_peak = pd.to_numeric(sub["peak_load_bytes"], errors="coerce").values
-            y = y_load
-            scale_y = pd.concat(
-                [
-                    pd.Series(y_load, dtype="float64"),
-                    pd.Series(y_peak, dtype="float64"),
-                ],
-                ignore_index=True,
-            ).dropna().values
-            _plot_load_vs_peak_bytes(ax, x, y_load, y_peak, accent)
-        else:
-            y = pd.to_numeric(sub[col], errors="coerce").values
-            ax.plot(
-                x,
-                y,
-                color=accent,
-                linewidth=2.4,
-                marker="o",
-                markersize=9,
-                markerfacecolor="white",
-                markeredgewidth=2,
-                markeredgecolor=accent,
-                zorder=3,
-                label="Mean",
-            )
-            _annotate_points(ax, x, y, accent)
-            scale_y = y
-
-            if col == "total_time_exec":
-                y_min = pd.to_numeric(sub["timer_min_excl_first"], errors="coerce").values
-                y_max = pd.to_numeric(sub["timer_max_excl_first"], errors="coerce").values
-                ax.plot(
-                    x,
-                    y_min,
-                    color="#16a34a",
-                    linewidth=1.8,
-                    linestyle="--",
-                    marker="v",
-                    markersize=6,
-                    zorder=2,
-                    label="Min (runs 1-19)",
-                )
-                ax.plot(
-                    x,
-                    y_max,
-                    color="#dc2626",
-                    linewidth=1.8,
-                    linestyle="--",
-                    marker="^",
-                    markersize=6,
-                    zorder=2,
-                    label="Max (runs 1-19)",
-                )
-                scale_y = pd.concat(
-                    [
-                        pd.Series(y, dtype="float64"),
-                        pd.Series(y_min, dtype="float64"),
-                        pd.Series(y_max, dtype="float64"),
-                    ],
-                    ignore_index=True,
-                ).dropna().values
-                ax.legend(loc="best", fontsize=7, frameon=True, framealpha=0.9)
-
-        ylabel = f"{title} ({unit})" if unit else title
-
-        ax.set_xticks(MPI_TICKS)
-        ax.set_xlabel("MPI processes", fontsize=9)
-        ax.set_ylabel(ylabel, fontsize=9)
-        ax.set_title(title, pad=8)
-        ax.grid(True, axis="both")
-        ax.set_xlim(0.2, 8.8)
-        _format_yaxis(ax, use_log and (scale_y > 0).all())
-
-        if use_log and (scale_y <= 0).any():
-            _format_yaxis(ax, False)
-            ax.set_ylim(bottom=0)
-
-    out = out_path or (out_dir / f"{algo_slug}_{dataset}.png")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out, dpi=160, facecolor=fig.get_facecolor())
-    plt.close(fig)
-    print(f"Wrote {out}")
+            out = out_dir / f"{algo_slug}_{dataset}.png"
+            fig.savefig(out, dpi=160, facecolor=fig.get_facecolor())
+            plt.close(fig)
+            print(f"Wrote {out}")
 
 
 def main() -> None:
-    _apply_style()
-    df = pd.read_csv(CSV)
-    df = df[df["status"] == "ok"].copy()
-
-    for algo_label, algo_title, algo_slug in ALGORITHMS:
-        for dataset, subtitle in DATASETS:
-            plot_dataset_for_algo(df, algo_label, algo_title, algo_slug, dataset, subtitle)
+    p = argparse.ArgumentParser()
+    p.add_argument("--report", action="store_true", help="only build report.csv")
+    args = p.parse_args()
+    df = build_report_csv()
+    if not args.report:
+        plot_all(df)
 
 
 if __name__ == "__main__":
     main()
-
