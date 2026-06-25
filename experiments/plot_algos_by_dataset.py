@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
-"""Build report.csv from stats, plot per-dataset dashboards for BFS/SSSP/PR/TC."""
-from __future__ import annotations
-
 import argparse
 import csv
 import re
-import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -68,9 +64,7 @@ MPI_TICKS = [1, 2, 4, 6, 8]
 ACCENT = {"roadNet-PA": "#2563eb", "web-Google": "#ea580c", "wiki-talk-temporal": "#16a34a"}
 
 
-# --- stat parser (from parse_galois_stat.py) ---
-
-def _load_stat(path: Path) -> list[dict]:
+def parse_stat_file(path):
     rows = []
     with open(path, newline="") as f:
         reader = csv.reader(f)
@@ -79,74 +73,71 @@ def _load_stat(path: Path) -> list[dict]:
             if len(row) < 6:
                 continue
             rows.append({
-                "stat_type": row[0].strip(), "host_id": row[1].strip(),
-                "region": row[2].strip(), "category": row[3].strip(),
-                "total_type": row[4].strip(), "total": row[5].strip(),
+                "stat_type": row[0].strip(),
+                "host_id": row[1].strip(),
+                "region": row[2].strip(),
+                "category": row[3].strip(),
+                "total_type": row[4].strip(),
+                "total": row[5].strip(),
             })
-    return rows
 
+    def param(name):
+        return next((r["total"] for r in rows if r["stat_type"] == "PARAM" and r["category"] == name), "")
 
-def _val(rows, category, exclude=("HostValues",)):
-    out = []
-    for r in rows:
-        if r["category"] == category and r["total_type"] not in exclude:
+    def values(category, exclude=("HostValues",)):
+        out = []
+        for r in rows:
+            if r["category"] == category and r["total_type"] not in exclude:
+                try:
+                    out.append(float(r["total"]))
+                except ValueError:
+                    pass
+        return out
+
+    def grep(region=None, region_pat=None, category=None, category_pat=None, total_type=None):
+        out = []
+        for r in rows:
+            if r["total_type"] == "HostValues":
+                continue
+            if total_type and r["total_type"] != total_type:
+                continue
+            if region and r["region"] != region:
+                continue
+            if region_pat and not re.search(region_pat, r["region"]):
+                continue
+            if category and r["category"] != category:
+                continue
+            if category_pat and not re.search(category_pat, r["category"]):
+                continue
             try:
                 out.append(float(r["total"]))
             except ValueError:
                 pass
-    return out
+        return out
 
+    def first(category, total_type=None):
+        nums = grep(category=category, total_type=total_type)
+        if not nums:
+            return ""
+        x = nums[0]
+        return int(x) if x == int(x) else round(x, 2)
 
-def _grep(rows, *, region=None, region_pat=None, category=None, category_pat=None,
-          total_type=None, exclude_host_values=True):
-    out = []
-    for r in rows:
-        if exclude_host_values and r["total_type"] == "HostValues":
-            continue
-        if total_type and r["total_type"] != total_type:
-            continue
-        if region and r["region"] != region:
-            continue
-        if region_pat and not re.search(region_pat, r["region"]):
-            continue
-        if category and r["category"] != category:
-            continue
-        if category_pat and not re.search(category_pat, r["category"]):
-            continue
-        try:
-            out.append(float(r["total"]))
-        except ValueError:
-            pass
-    return out
-
-
-def _first(rows, category, total_type=None):
-    v = _grep(rows, category=category, total_type=total_type)
-    if not v:
-        return ""
-    x = v[0]
-    return int(x) if x == int(x) else round(x, 2)
-
-
-def parse_stat_file(path: Path) -> dict:
-    rows = _load_stat(path)
-    param = lambda c: next(
-        (r["total"] for r in rows if r["stat_type"] == "PARAM" and r["category"] == c), ""
-    )
     benchmark_region = next(
-        (r["region"] for r in rows if r["category"] == "Timer_0" and r["total_type"] != "HostValues"), ""
+        (r["region"] for r in rows if r["category"] == "Timer_0" and r["total_type"] != "HostValues"),
+        "",
     )
-    num_runs = int(_val(rows, "Runs")[0]) if _val(rows, "Runs") else 1
-    total_time = round(_val(rows, "TimerTotal")[0], 2) if _val(rows, "TimerTotal") else 0
-    timer_vals = _grep(rows, category_pat=r"^Timer_\d+$")
+    num_runs = int(values("Runs")[0]) if values("Runs") else 1
+    total_time = round(values("TimerTotal")[0], 2) if values("TimerTotal") else 0
+    timer_vals = grep(category_pat=r"^Timer_\d+$")
     total_time_exec = round(sum(timer_vals) / len(timer_vals), 2) if timer_vals else 0
 
     compute_per_run = []
     for j in range(num_runs):
-        v = _grep(rows, region_pat=rf"^{re.escape(benchmark_region)}_{j}_\d+")
+        v = grep(region_pat=rf"^{re.escape(benchmark_region)}_{j}_\d+")
         if v:
             compute_per_run.append(sum(v))
-    compute_vals = _grep(rows, region_pat=rf"^{re.escape(benchmark_region)}_\d+")
+    compute_vals = grep(region_pat=rf"^{re.escape(benchmark_region)}_\d+")
+
     if benchmark_region == "TC":
         tc_times = [
             r for r in rows
@@ -164,23 +155,29 @@ def parse_stat_file(path: Path) -> dict:
 
     sync_per_run = []
     for j in range(num_runs):
-        v = _grep(rows, category_pat=rf"^Sync_{re.escape(benchmark_region)}_{j}_\d+")
+        v = grep(category_pat=rf"^Sync_{re.escape(benchmark_region)}_{j}_\d+")
         if v:
             sync_per_run.append(sum(v))
-    sync_fb = _grep(rows, category_pat=rf"^Sync_{re.escape(benchmark_region)}_\d+")
-    sync_time = round(sum(sync_per_run) / len(sync_per_run), 2) if sync_per_run else (
-        round(sum(sync_fb) / max(num_runs, 1), 2) if sync_fb else 0
-    )
+    sync_fb = grep(category_pat=rf"^Sync_{re.escape(benchmark_region)}_\d+")
+    if sync_per_run:
+        sync_time = round(sum(sync_per_run) / len(sync_per_run), 2)
+    elif sync_fb:
+        sync_time = round(sum(sync_fb) / max(num_runs, 1), 2)
+    else:
+        sync_time = 0
 
     barrier_per_run = []
     for j in range(num_runs):
-        v = _grep(rows, region="DGReducible", category_pat=rf"^ReduceDGAccum_{j}_\d+")
+        v = grep(region="DGReducible", category_pat=rf"^ReduceDGAccum_{j}_\d+")
         if v:
             barrier_per_run.append(sum(v))
-    barrier_fb = _grep(rows, region="DGReducible", category_pat=r"^ReduceDGAccum_\d+")
-    barrier_time = round(sum(barrier_per_run) / len(barrier_per_run), 2) if barrier_per_run else (
-        round(sum(barrier_fb) / max(num_runs, 1), 2) if barrier_fb else 0
-    )
+    barrier_fb = grep(region="DGReducible", category_pat=r"^ReduceDGAccum_\d+")
+    if barrier_per_run:
+        barrier_time = round(sum(barrier_per_run) / len(barrier_per_run), 2)
+    elif barrier_fb:
+        barrier_time = round(sum(barrier_fb) / max(num_runs, 1), 2)
+    else:
+        barrier_time = 0
 
     sync_bytes_rows = []
     for r in rows:
@@ -194,17 +191,17 @@ def parse_stat_file(path: Path) -> dict:
             except ValueError:
                 pass
 
-    gct = _val(rows, "GraphConstructTime")
-    rf = _val(rows, "ReplicationFactor")
-    mem_max = _grep(rows, category="CommunicationMemUsageMax", total_type="HMAX")
-    mem_min = _grep(rows, category="CommunicationMemUsageMin", total_type="HMIN")
-    replication_nodes = _first(rows, "ReplicationFactorNodes")
+    gct = values("GraphConstructTime")
+    rf = values("ReplicationFactor")
+    mem_max = grep(category="CommunicationMemUsageMax", total_type="HMAX")
+    mem_min = grep(category="CommunicationMemUsageMin", total_type="HMIN")
+    replication_nodes = first("ReplicationFactorNodes")
     if replication_nodes == "":
-        rf_nodes = _val(rows, "ReplicationFactor")
+        rf_nodes = values("ReplicationFactor")
         replication_nodes = round(rf_nodes[0], 4) if rf_nodes else ""
 
     return {
-        "num_threads": int(float(_val(rows, "Threads")[0])) if _val(rows, "Threads") else 0,
+        "num_threads": int(float(values("Threads")[0])) if values("Threads") else 0,
         "runs": num_runs,
         "total_time": total_time,
         "total_time_exec": total_time_exec,
@@ -216,32 +213,31 @@ def parse_stat_file(path: Path) -> dict:
         "replication_factor": round(rf[0], 4) if rf else 0,
         "comm_mem_max": int(mem_max[0]) if mem_max else 0,
         "comm_mem_min": int(mem_min[0]) if mem_min else 0,
-        "inspect_bytes": _first(rows, "EdgeInspectionBytesSent", "HSUM"),
-        "load_bytes": _first(rows, "EdgeLoadingBytesSent", "HSUM"),
-        "load_messages": _first(rows, "EdgeLoadingMessagesSent", "HSUM"),
-        "peak_load_bytes": _first(rows, "EdgeLoadingMaxBytesSent", "HMAX"),
+        "inspect_bytes": first("EdgeInspectionBytesSent", "HSUM"),
+        "load_bytes": first("EdgeLoadingBytesSent", "HSUM"),
+        "load_messages": first("EdgeLoadingMessagesSent", "HSUM"),
+        "peak_load_bytes": first("EdgeLoadingMaxBytesSent", "HMAX"),
         "replication_nodes": replication_nodes,
-        "replication_edges": _first(rows, "ReplicatonFactorEdges"),
-        "total_node_proxies": _first(rows, "TotalNodeProxies"),
-        "total_edge_proxies": _first(rows, "TotalEdgeProxies"),
-        "edge_inspection_time": _first(rows, "EdgeInspection", "HMAX"),
-        "edge_loading_time": _first(rows, "EdgeLoading", "HMAX"),
+        "replication_edges": first("ReplicatonFactorEdges"),
+        "total_node_proxies": first("TotalNodeProxies"),
+        "total_edge_proxies": first("TotalEdgeProxies"),
+        "edge_inspection_time": first("EdgeInspection", "HMAX"),
+        "edge_loading_time": first("EdgeLoading", "HMAX"),
     }
 
 
-# --- run.log parser (from parse_run_log.py) ---
+def parse_run_log():
+    inspect_re = re.compile(r"Edge inspection time:.*to read (\d+) bytes", re.I)
+    load_re = re.compile(r"Edge loading time:.*to read (\d+) bytes", re.I)
+    run_re = re.compile(r"^\[[^\]]+\]\s+RUN\s+(\S+)\s*$")
+    out = {}
 
-_INSPECT_RE = re.compile(r"Edge inspection time:.*to read (\d+) bytes", re.I)
-_LOAD_RE = re.compile(r"Edge loading time:.*to read (\d+) bytes", re.I)
-_RUN_RE = re.compile(r"^\[[^\]]+\]\s+RUN\s+(\S+)\s*$")
+    if not LOG.exists():
+        return out
 
-
-def _parse_log_file(path: Path, out: dict) -> None:
-    if not path.exists():
-        return
     current = None
-    inspect: list[int] = []
-    loads: list[int] = []
+    inspect = []
+    loads = []
 
     def flush():
         nonlocal current, inspect, loads
@@ -254,32 +250,27 @@ def _parse_log_file(path: Path, out: dict) -> None:
         inspect = []
         loads = []
 
-    with open(path, encoding="utf-8", errors="replace") as f:
+    with open(LOG, encoding="utf-8", errors="replace") as f:
         for line in f:
-            m_run = _RUN_RE.match(line.strip())
+            m_run = run_re.match(line.strip())
             if m_run:
                 flush()
                 current = m_run.group(1)
                 continue
             if current is None:
                 continue
-            m_i = _INSPECT_RE.search(line)
+            m_i = inspect_re.search(line)
             if m_i:
                 inspect.append(int(m_i.group(1)))
                 continue
-            m_l = _LOAD_RE.search(line)
+            m_l = load_re.search(line)
             if m_l:
                 loads.append(int(m_l.group(1)))
     flush()
-
-
-def parse_run_log() -> dict:
-    out: dict = {}
-    _parse_log_file(LOG, out)
     return out
 
 
-def _parse_id(name: str):
+def parse_run_id(name):
     for algo in ("bfs", "pr", "sssp", "tc"):
         prefix = f"{algo}_"
         if name.startswith(prefix):
@@ -291,7 +282,7 @@ def _parse_id(name: str):
     return None, None, None
 
 
-def build_report_csv() -> pd.DataFrame:
+def build_report_csv():
     log_index = parse_run_log()
     rows = []
     seen = set()
@@ -299,7 +290,7 @@ def build_report_csv() -> pd.DataFrame:
     for path in sorted(STATS_DIR.glob("*.stats")):
         if path.stem.startswith("_"):
             continue
-        algo, dataset, np = _parse_id(path.stem)
+        algo, dataset, np = parse_run_id(path.stem)
         if algo is None:
             continue
         seen.add((algo, dataset, np))
@@ -327,9 +318,14 @@ def build_report_csv() -> pd.DataFrame:
         algo_name = ALGO_LABEL[algo_key]
         pk = ALGO_PRIMARY[algo_name]
         row = {
-            "algorithm": algo_name, "dataset": dataset, "mpi_processes": np,
-            "threads": m.get("num_threads", ""), "runs": m.get("runs", ""),
-            "primary_metric": pk, "primary_metric_value": m.get(pk, ""), "status": status,
+            "algorithm": algo_name,
+            "dataset": dataset,
+            "mpi_processes": np,
+            "threads": m.get("num_threads", ""),
+            "runs": m.get("runs", ""),
+            "primary_metric": pk,
+            "primary_metric_value": m.get(pk, ""),
+            "status": status,
         }
         for key in METRIC_KEYS:
             row[key] = m.get(key, "")
@@ -345,63 +341,52 @@ def build_report_csv() -> pd.DataFrame:
     return pd.read_csv(REPORT_CSV)
 
 
-# --- plotting ---
-
-def _apply_style() -> None:
+def plot_all(df):
     plt.rcParams.update({
-        "figure.facecolor": "#fafafa", "axes.facecolor": "#ffffff",
-        "axes.edgecolor": "#94a3b8", "axes.labelcolor": "#334155",
-        "axes.titleweight": "bold", "axes.titlesize": 11, "axes.labelsize": 10,
-        "xtick.color": "#475569", "ytick.color": "#475569",
-        "grid.color": "#e2e8f0", "grid.linestyle": "-", "grid.alpha": 0.9,
-        "font.family": "sans-serif", "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
+        "figure.facecolor": "#fafafa",
+        "axes.facecolor": "#ffffff",
+        "axes.edgecolor": "#94a3b8",
+        "axes.labelcolor": "#334155",
+        "axes.titleweight": "bold",
+        "axes.titlesize": 11,
+        "axes.labelsize": 10,
+        "xtick.color": "#475569",
+        "ytick.color": "#475569",
+        "grid.color": "#e2e8f0",
+        "grid.linestyle": "-",
+        "grid.alpha": 0.9,
+        "font.family": "sans-serif",
+        "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
     })
 
-
-def _format_yaxis(ax, log_scale: bool) -> None:
-    if log_scale:
-        ax.set_yscale("log")
-        ax.yaxis.set_major_formatter(mticker.LogFormatterSciNotation(base=10))
-    else:
-        ax.yaxis.set_major_formatter(
-            mticker.FuncFormatter(lambda x, _: f"{x:,.0f}" if x >= 1000 else f"{x:g}")
-        )
-
-
-def _timer_min_max(algo_slug: str, dataset: str, mpi: int) -> tuple[float, float]:
-    path = STATS_DIR / f"{algo_slug}_{dataset}_{mpi}p.stats"
-    values = []
-    if not path.exists():
-        return float("nan"), float("nan")
-    with open(path, newline="") as f:
-        reader = csv.reader(f)
-        next(reader, None)
-        for row in reader:
-            if len(row) < 6 or row[3].strip() == "Timer_0":
-                continue
-            if re.fullmatch(r"Timer_\d+", row[3].strip()):
-                try:
-                    values.append(float(row[5]))
-                except ValueError:
-                    pass
-    if not values:
-        return float("nan"), float("nan")
-    return min(values), max(values)
-
-
-def plot_all(df: pd.DataFrame) -> None:
-    _apply_style()
     df = df[df["status"] == "ok"].copy()
+
     for algo_label, algo_title, algo_slug in ALGORITHMS:
         for dataset, subtitle in DATASETS:
             sub = df[(df["algorithm"] == algo_label) & (df["dataset"] == dataset)].sort_values("mpi_processes")
             if sub.empty:
                 continue
-            mins, maxs = [], []
+
+            mins = []
+            maxs = []
             for _, row in sub.iterrows():
-                mn, mx = _timer_min_max(algo_slug, row["dataset"], int(row["mpi_processes"]))
-                mins.append(mn)
-                maxs.append(mx)
+                path = STATS_DIR / f"{algo_slug}_{row['dataset']}_{int(row['mpi_processes'])}p.stats"
+                values = []
+                if path.exists():
+                    with open(path, newline="") as f:
+                        reader = csv.reader(f)
+                        next(reader, None)
+                        for stat_row in reader:
+                            if len(stat_row) < 6 or stat_row[3].strip() == "Timer_0":
+                                continue
+                            if re.fullmatch(r"Timer_\d+", stat_row[3].strip()):
+                                try:
+                                    values.append(float(stat_row[5]))
+                                except ValueError:
+                                    pass
+                mins.append(min(values) if values else float("nan"))
+                maxs.append(max(values) if values else float("nan"))
+
             sub = sub.copy()
             sub["timer_min_excl_first"] = mins
             sub["timer_max_excl_first"] = maxs
@@ -414,8 +399,11 @@ def plot_all(df: pd.DataFrame) -> None:
             fig = plt.figure(figsize=(14, 8.5))
             fig.suptitle(f"{algo_title} scalability — {subtitle}", fontsize=15, fontweight="bold", y=0.98)
             runs_label = str(int(sub["runs"].iloc[0])) if len(sub) else "3"
-            fig.text(0.5, 0.93, f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs_label}",
-                     ha="center", fontsize=10, color="#64748b")
+            fig.text(
+                0.5, 0.93,
+                f"MPI processes: 1 · 2 · 4 · 6 · 8   |   threads=2, runs={runs_label}",
+                ha="center", fontsize=10, color="#64748b",
+            )
 
             gs = fig.add_gridspec(2, 2, hspace=0.42, wspace=0.32, left=0.07, right=0.97, top=0.88, bottom=0.08)
             axes = [fig.add_subplot(gs[i // 2, i % 2]) for i in range(len(metrics))]
@@ -425,9 +413,12 @@ def plot_all(df: pd.DataFrame) -> None:
             x = sub["mpi_processes"].values
             for ax, (col, title, unit, use_log) in zip(axes, metrics):
                 y = pd.to_numeric(sub[col], errors="coerce").values
-                ax.plot(x, y, color=accent, linewidth=2.4, marker="o", markersize=9,
-                        markerfacecolor="white", markeredgewidth=2, markeredgecolor=accent, label="Mean")
+                ax.plot(
+                    x, y, color=accent, linewidth=2.4, marker="o", markersize=9,
+                    markerfacecolor="white", markeredgewidth=2, markeredgecolor=accent, label="Mean",
+                )
                 scale_y = y
+
                 if col == "total_time_exec":
                     y_min = pd.to_numeric(sub["timer_min_excl_first"], errors="coerce").values
                     y_max = pd.to_numeric(sub["timer_max_excl_first"], errors="coerce").values
@@ -435,16 +426,23 @@ def plot_all(df: pd.DataFrame) -> None:
                     ax.plot(x, y_max, color="#dc2626", linewidth=1.8, linestyle="--", marker="^", markersize=6, label="Max")
                     scale_y = pd.concat([pd.Series(y), pd.Series(y_min), pd.Series(y_max)]).dropna().values
                     ax.legend(loc="best", fontsize=7)
+
                 ax.set_xticks(MPI_TICKS)
                 ax.set_xlabel("MPI processes", fontsize=9)
                 ax.set_ylabel(f"{title} ({unit})" if unit else title, fontsize=9)
                 ax.set_title(title, pad=8)
                 ax.grid(True, axis="both")
                 ax.set_xlim(0.2, 8.8)
-                _format_yaxis(ax, use_log and len(scale_y) and (scale_y > 0).all())
-                if use_log and len(scale_y) and (scale_y <= 0).any():
-                    _format_yaxis(ax, False)
-                    ax.set_ylim(bottom=0)
+
+                if use_log and len(scale_y) and (scale_y > 0).all():
+                    ax.set_yscale("log")
+                    ax.yaxis.set_major_formatter(mticker.LogFormatterSciNotation(base=10))
+                else:
+                    ax.yaxis.set_major_formatter(
+                        mticker.FuncFormatter(lambda val, _: f"{val:,.0f}" if val >= 1000 else f"{val:g}")
+                    )
+                    if use_log and len(scale_y) and (scale_y <= 0).any():
+                        ax.set_ylim(bottom=0)
 
             out = out_dir / f"{algo_slug}_{dataset}.png"
             fig.savefig(out, dpi=160, facecolor=fig.get_facecolor())
@@ -452,12 +450,12 @@ def plot_all(df: pd.DataFrame) -> None:
             print(f"Wrote {out}")
 
 
-def main() -> None:
-    p = argparse.ArgumentParser()
-    p.add_argument("--report", action="store_true", help="only build report.csv")
-    args = p.parse_args()
+def main():
+    args = argparse.ArgumentParser()
+    args.add_argument("--report", action="store_true", help="only build report.csv")
+    opts = args.parse_args()
     df = build_report_csv()
-    if not args.report:
+    if not opts.report:
         plot_all(df)
 
 
