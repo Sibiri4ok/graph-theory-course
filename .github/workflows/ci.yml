@@ -15,7 +15,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ libopenmpi-dev openmpi-bin libboost-all-dev
+          sudo apt-get install -y cmake g++ libopenmpi-dev openmpi-bin libboost-all-dev libfmt-dev
 
       - name: Validate project
         run: |
@@ -23,6 +23,10 @@ jobs:
           test -f datasets/web-Google.gr
           test -f datasets/roadNet-PA.sgr
           test -f datasets/graph-info.txt
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
