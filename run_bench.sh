@@ -11,7 +11,7 @@ HOSTFILE="${RES}/hostfile"
 
 NP_LIST=(1 2 4 6 8)
 THREADS=2
-RUNS=3
+RUNS=20
 EXEC=Sync
 GRAPHS=(web-Google roadNet-PA wiki-talk-temporal)
 ALGOS=(bfs pr sssp tc)
