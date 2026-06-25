@@ -1,6 +1,7 @@
 .venv
 .local
 
+Galois/
 Galois-pre-cpuset/
 Galois-release-*/
 

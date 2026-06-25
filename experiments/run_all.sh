@@ -36,9 +36,16 @@ fi
 log() { echo "[$(date -Iseconds)] $*" | tee -a "${LOG}"; }
 
 build_galois() {
+  if [[ ! -f "${ROOT}/Galois/CMakeLists.txt" ]]; then
+    log "Galois source missing, cloning..."
+    rm -rf "${ROOT}/Galois"
+    git clone --depth 1 https://github.com/IntelligentSoftwareSystems/Galois.git "${ROOT}/Galois"
+  fi
+  local -a cmake_prefix=()
+  [[ -d "${ROOT}/.local/lib/cmake/fmt" ]] && cmake_prefix=(-DCMAKE_PREFIX_PATH="${ROOT}/.local")
   mkdir -p "${BUILD}"
   [[ -f "${BUILD}/CMakeCache.txt" ]] || \
-    cmake -S "${ROOT}/Galois" -B "${BUILD}" -DCMAKE_BUILD_TYPE=Release -DGALOIS_ENABLE_DIST=1
+    cmake -S "${ROOT}/Galois" -B "${BUILD}" -DCMAKE_BUILD_TYPE=Release -DGALOIS_ENABLE_DIST=1 "${cmake_prefix[@]}"
   cmake --build "${BUILD}" --target bfs-push-dist pagerank-push-dist sssp-push-dist triangle-counting-dist -j "$(nproc)"
 }
 
