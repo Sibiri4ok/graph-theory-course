@@ -32,7 +32,6 @@ size: 16:9
 
 - MPI-процессы: `1, 2, 4, 6, 8`
 - Количество повторов: `--runs=20`
-- Запуск: `mpirun --hostfile experiments/hostfile --oversubscribe --bind-to none`
 
 ---
 
