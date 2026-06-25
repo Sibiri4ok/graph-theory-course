@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libopenmpi-dev openmpi-bin libboost-all-dev
+
+      - name: Validate project
+        run: |
+          bash -n run_bench.sh
+          test -f datasets/web-Google.gr
+          test -f datasets/roadNet-PA.sgr
+          test -f datasets/graph-info.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build Galois
+        run: |
+          git clone --depth 1 https://github.com/IntelligentSoftwareSystems/Galois.git Galois
+          cmake -S Galois -B Galois/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGALOIS_ENABLE_DIST=1
+          cmake --build Galois/build --target bfs-push-dist -j2
+
+      - name: Smoke test BFS
+        run: |
+          mkdir -p results
+          echo "$(hostname) slots=2" > results/hostfile
+          mpirun --hostfile results/hostfile --oversubscribe --bind-to none -np 1 \
+            Galois/build/lonestar/analytics/distributed/bfs/bfs-push-dist \
+            datasets/roadNet-PA.sgr --symmetricGraph \
+            -t=1 --runs=1 -exec=Sync -startNode=0
