@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# 3 datasets × 4 algorithms × 5 MPI counts = 60 runs
 set -euo pipefail
 
-EXP="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "${EXP}/.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD="${ROOT}/Galois/build"
 DATA="${ROOT}/datasets"
-RES="${EXP}/results"
+RES="${ROOT}/results"
 STATS="${RES}/stats"
 LOG="${RES}/run.log"
 HOSTFILE="${RES}/hostfile"

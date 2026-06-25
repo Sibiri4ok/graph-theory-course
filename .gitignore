@@ -5,6 +5,4 @@ Galois/
 Galois-pre-cpuset/
 Galois-release-*/
 
-experiments/results/
-experiments/plots/
-experiments/__pycache__/
+results/
