@@ -25,12 +25,6 @@ PR="${BUILD}/lonestar/analytics/distributed/pagerank/pagerank-push-dist"
 SSSP="${BUILD}/lonestar/analytics/distributed/sssp/sssp-push-dist"
 TC="${BUILD}/lonestar/analytics/distributed/triangle-counting/triangle-counting-dist"
 
-if [[ -x "${ROOT}/.venv/bin/python3" ]]; then
-  PYTHON="${ROOT}/.venv/bin/python3"
-else
-  PYTHON=python3
-fi
-
 [[ -n "${EXPERIMENT_NP_LIST:-}" ]] && NP_LIST=(${EXPERIMENT_NP_LIST})
 
 log() { echo "[$(date -Iseconds)] $*" | tee -a "${LOG}"; }
@@ -103,4 +97,3 @@ for algo in "${ALGOS[@]}"; do
 done
 
 log "done"
-"${PYTHON}" "${EXP}/plot_algos_by_dataset.py" --report 2>&1 | tee -a "${LOG}"
